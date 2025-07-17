@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
+import { IoArrowForward } from "react-icons/io5";
 
 const Footer = () => {
   return (
     <footer className="pt-8">
       <div className="container">
         <div className=" mx-auto px-4  flex items-center justify-between">
-          <div className="w-[30%] py-5 px-5 pr-0 border-r-1 border-gray-300">
+          <div className="w-[30%] py-5 px-5 pl-0 border-r-1 border-gray-300">
             <img className="w-2xs" src={logo} alt="" />
             <p className="mt-4 text-sm">
               Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -23,14 +24,14 @@ const Footer = () => {
               We invite you to register to read the latest news, offers and
               events about our company. We promise not spam your inbox.
             </p>
-            <div className="flex items-center rounded-full border border-gray-200 overflow-hidden w-full max-w-md">
+            <div className="flex items-center rounded-full border border-gray-200 overflow-hidden w-full max-w-md hover:border-black">
               <input
                 type="email"
                 placeholder="Enter your e-mail..."
                 className="flex-grow px-4 py-2 outline-none bg-transparent"
               />
               <button className="bg-black text-white p-3">
-                <span className="text-xl">→</span>
+                <IoArrowForward />
               </button>
             </div>
           </div>
@@ -126,7 +127,13 @@ const Footer = () => {
         <div className="border-t border-gray-300 mt-6">
           <div className=" mx-auto px-4 py-6 flex  justify-center items-center gap-4">
             <p className="text-sm ">
-              Copyright © {new Date().getFullYear()} by <strong><Link className="link" to={"https://laxmanpal.netlify.app/"}>Laxman Pal</Link></strong>. All Rights Reserved.
+              Copyright © {new Date().getFullYear()} by{" "}
+              <strong>
+                <Link className="link" to={"https://laxmanpal.netlify.app/"}>
+                  Laxman Pal
+                </Link>
+              </strong>
+              . All Rights Reserved.
             </p>
           </div>
         </div>

@@ -6,6 +6,8 @@ import Footer from "./components/Footer";
 import Men from "./pages/Men";
 import Women from "./pages/Women";
 import Kids from "./pages/Kids";
+import Shop from "./pages/Shop";
+import Categories from "./pages/Categories";
 
 function App() {
   return (
@@ -23,6 +25,12 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/kids" element={<Kids />} />
+        </Routes>
+        <Routes>
+          <Route path="/shop" element={<Shop />} />
+        </Routes>
+         <Routes>
+          <Route path="/categories" element={<Categories />} />
         </Routes>
         <Footer />
       </BrowserRouter>

@@ -11,14 +11,13 @@ import { Button } from "@mui/material";
 export default function ProductCard({image , title , price}) {
   return (
     <div className="card-product relative  p-4">
-      <div className="relative rounded-xl bg-gray-100 p-4">
-        <a href="product-detail.html" className="product-img">
+      <div className="relative rounded-xl bg-gray-100 p-4 overflow-hidden">
           <img
-            className="img-product w-full h-auto object-contain"
+            className="img-product w-full h-auto object-contain hover:scale-110 transition ease-in-out"
             src={image}
             alt="image-product"
           />
-        </a>
+       
         <ul className="list-product-btn  flex items-center justify-center gap-3">
           <li>
             <a

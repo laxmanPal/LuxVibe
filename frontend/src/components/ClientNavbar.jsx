@@ -62,7 +62,7 @@ export default function ClientNavbar() {
                 </li>
                 <li className="list-none">
                   <Link
-                    to={"/ahop"}
+                    to={"/shop"}
                     className="link transition text-[14px] font-[500]"
                   >
                     Shop

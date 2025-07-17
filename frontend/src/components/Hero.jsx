@@ -7,8 +7,6 @@ import Banner from "./Banner";
 
 export default function Hero() {
   return (
-
-
         <div className="grid grid-cols-4 grid-rows-2 gap-4">
           <Banner
             item_classes="col-span-2 row-span-2"

@@ -8,6 +8,7 @@ import { BiSupport } from "react-icons/bi";
 import { GoGift } from "react-icons/go";
 import { RiSecurePaymentLine } from "react-icons/ri";
 import Feature from "../components/Feature";
+import Title from "../components/Title";
 
 
 export default function Home() {
@@ -21,12 +22,7 @@ export default function Home() {
       </div>
       {/* Top Picks */}
       <div className=" container py-8">
-        <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold tracking-tight">Today's Picks</h2>
-          <p className="text-gray-500 mt-2">
-            Explore our most popular pieces that customers can't get enough of
-          </p>
-        </div>
+      <Title title="Latest Products" discription="Explore our most popular pieces that customers can't get enough of" />
         <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <ProductCard
             title="Nike Air Force 1 '07"

@@ -1,15 +1,17 @@
-import React from 'react'
-import ProductListWrapper from '../components/ProductListWrapper'
-import Title from '../components/Title'
-import ProductCard from '../components/ProductCard'
+import React from "react";
+import ProductCard from "../components/ProductCard";
 import product1 from "../assets/product-2.jpg";
 
-const Men = () => {
+import ProductListWrapper from "../components/ProductListWrapper";
+import Title from "../components/Title";
+
+const Shop = () => {
   return (
+    <>
       <ProductListWrapper
         title={
           <Title
-            title="ALL MEN COLLECTIONS"
+            title="ALL COLLECTIONS"
             discription="Explore our most popular pieces that customers can't get enough of"
           />
         }
@@ -50,7 +52,8 @@ const Men = () => {
           price="$125"
         />
       </ProductListWrapper>
-  )
-}
+    </>
+  );
+};
 
-export default Men
+export default Shop;
