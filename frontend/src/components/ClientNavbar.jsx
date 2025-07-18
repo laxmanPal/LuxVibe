@@ -85,8 +85,12 @@ export default function ClientNavbar() {
                     <IoSearch className="text-[25px] text-black" />
                   </IconButton>
                 </li>
-                <li className=" link list-none">
-                  <CgProfile className="text-[25px]" />
+                <li className="list-none">
+                  <Link to={"/auth/login"}>
+                    <IconButton>
+                      <CgProfile className="link text-[25px] text-black" />
+                    </IconButton>
+                  </Link>
                 </li>
                 <li className="link list-none">
                   <Tooltip title="Wishlist" arrow>

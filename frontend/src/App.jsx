@@ -9,34 +9,32 @@ import Kids from "./pages/Kids";
 import Shop from "./pages/Shop";
 import Categories from "./pages/Categories";
 import ProductDetails from "./pages/ProductDetails";
+import Login from "./pages/Login";
+import ClientLayout from "./components/ClientLayout";
+import AuthLayout from "./components/AuthLayout";
+import Register from "./pages/Register";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-        <ClientNavbar />
         <Routes>
-          <Route path="/" element={<Home />} />
-        </Routes>
-        <Routes>
-          <Route path="/men" element={<Men />} />
-        </Routes>
-        <Routes>
-          <Route path="/women" element={<Women />} />
-        </Routes>
-        <Routes>
-          <Route path="/kids" element={<Kids />} />
+          <Route element={<ClientLayout />}>
+            <Route index element={<Home />} />
+            <Route path="/men" element={<Men />} />
+            <Route path="/women" element={<Women />} />
+            <Route path="/kids" element={<Kids />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/categories" element={<Categories />} />
+            <Route path="/product/:id" element={<ProductDetails />} />
+          </Route>
         </Routes>
         <Routes>
-          <Route path="/shop" element={<Shop />} />
+          <Route path="/auth" element={<AuthLayout />}>
+            <Route path="login" element={<Login />} />
+            <Route path="register" element={<Register />} />
+          </Route>
         </Routes>
-         <Routes>
-          <Route path="/categories" element={<Categories />} />
-        </Routes>
-         <Routes>
-          <Route path="/product/:id" element={<ProductDetails />} />
-        </Routes>
-        <Footer />
       </BrowserRouter>
     </>
   );
