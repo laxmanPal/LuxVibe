@@ -8,6 +8,7 @@ import Women from "./pages/Women";
 import Kids from "./pages/Kids";
 import Shop from "./pages/Shop";
 import Categories from "./pages/Categories";
+import ProductDetails from "./pages/ProductDetails";
 
 function App() {
   return (
@@ -31,6 +32,9 @@ function App() {
         </Routes>
          <Routes>
           <Route path="/categories" element={<Categories />} />
+        </Routes>
+         <Routes>
+          <Route path="/product/:id" element={<ProductDetails />} />
         </Routes>
         <Footer />
       </BrowserRouter>
