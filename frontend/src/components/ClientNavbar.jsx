@@ -18,7 +18,7 @@ export default function ClientNavbar() {
   };
   return (
     <>
-      <header>
+      <header className="sticky top-0 self-start bg-white z-50">
         <div className="header py-4  border-b-[1px] border-gray-300">
           <div className="container flex items-center justify-between">
             <div className="col1 w-[20%]">
@@ -93,18 +93,22 @@ export default function ClientNavbar() {
                   </Link>
                 </li>
                 <li className="link list-none">
-                  <Tooltip title="Wishlist" arrow>
-                    <Badge badgeContent={1} color="primary">
-                      <FaRegHeart className="text-[25px]" />
-                    </Badge>
-                  </Tooltip>
+                  <Link to={"myaccount/mywishlist"}>
+                    <Tooltip title="Wishlist" arrow>
+                      <Badge badgeContent={1} color="primary">
+                        <FaRegHeart className="text-[25px]" />
+                      </Badge>
+                    </Tooltip>
+                  </Link>
                 </li>
                 <li className="link list-none">
-                  <Tooltip title="Cart" arrow>
-                    <Badge badgeContent={1} color="primary">
-                      <MdOutlineShoppingCart className="text-[25px]" />
-                    </Badge>
-                  </Tooltip>
+                  <Link to={"/cart"}>
+                    <Tooltip title="Cart" arrow>
+                      <Badge badgeContent={1} color="primary">
+                        <MdOutlineShoppingCart className="text-[25px]" />
+                      </Badge>
+                    </Tooltip>
+                  </Link>
                 </li>
               </ul>
             </div>

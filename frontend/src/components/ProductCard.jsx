@@ -78,9 +78,9 @@ export default function ProductCard({image , title , price}) {
         </a>
         <p className="price-wrap flex justify-center items-center gap-2 mt-1">
           <span className="price-new text-red-500 font-semibold">{price}</span>
-          {/* <span className="price-old line-through text-gray-400 text-sm">
+          <span className="price-old line-through text-gray-400 text-sm">
             $145.00
-          </span> */}
+          </span>
         </p>
       </div>
     </div>

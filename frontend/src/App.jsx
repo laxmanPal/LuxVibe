@@ -1,8 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import ClientNavbar from "./components/clientNavbar";
 import Home from "./pages/Home";
-import Footer from "./components/Footer";
 import Men from "./pages/Men";
 import Women from "./pages/Women";
 import Kids from "./pages/Kids";
@@ -13,6 +11,13 @@ import Login from "./pages/Login";
 import ClientLayout from "./components/ClientLayout";
 import AuthLayout from "./components/AuthLayout";
 import Register from "./pages/Register";
+import Cart from "./pages/Cart";
+import Dashboard from "./pages/Dashboard";
+import MyAccount from "./components/MyAccount";
+import MyWishlist from "./pages/MyWishlist";
+import MyOrders from "./pages/MyOrders";
+import MyAddresses from "./pages/MyAddresses";
+import AccountDetails from "./pages/AccountDetails";
 
 function App() {
   return (
@@ -27,6 +32,14 @@ function App() {
             <Route path="/shop" element={<Shop />} />
             <Route path="/categories" element={<Categories />} />
             <Route path="/product/:id" element={<ProductDetails />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/myaccount" element={<MyAccount />} >
+              <Route index element={<Dashboard/>} />
+              <Route path="mywishlist" element={<MyWishlist/>} />
+              <Route path="myorders" element={<MyOrders/>} />
+              <Route path="myaddresses" element={<MyAddresses/>} />
+              <Route path="details" element={<AccountDetails/>} />
+            </Route>
           </Route>
         </Routes>
         <Routes>
