@@ -1,5 +1,9 @@
 import express from "express";
 import mongoose from "mongoose";
+import authRoutes from "./routes/auth.js"
+
+
+
 // Dotenv Config
 import 'dotenv/config'
 
@@ -9,9 +13,12 @@ const app = express();
 // PORT
 const PORT = process.env.PORT || 3000;
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Auth Routes
+app.use("/auth", authRoutes );
 
 // MongoDB Connection
 mongoose
