@@ -68,7 +68,7 @@ const ProductForm = ({title , redBtn , blueBtn}) => {
             {/* Product Image */}
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="font-semibold text-lg mb-4">Product Image</h3>
-              <ImageUploader />
+              <ImageUploader limit={5} />
             </div>
 
             {/* Pricing */}

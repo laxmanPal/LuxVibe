@@ -23,6 +23,9 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AllProducts from "./pages/admin/AllProducts";
 import CreateProduct from "./pages/admin/CreateProduct";
 import EditProduct from "./pages/admin/EditProduct";
+import AllCategories from "./pages/admin/AllCategories";
+import Users from "./pages/admin/Users";
+import Orders from "./pages/admin/Orders";
 
 function App() {
   return (
@@ -55,10 +58,13 @@ function App() {
         </Routes>
         <Routes>
           <Route path="/admin" element={<AdminLayout />}>
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="all-products" element={<AllProducts />} />
-          <Route path="create-product" element={<CreateProduct />} />
-          <Route path="edit-product" element={<EditProduct />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="all-products" element={<AllProducts />} />
+            <Route path="create-product" element={<CreateProduct />} />
+            <Route path="edit-product" element={<EditProduct />} />
+            <Route path="categories" element={<AllCategories />} />
+            <Route path="users" element={<Users />} />
+            <Route path="orders" element={<Orders />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -12,7 +12,7 @@ const AdminLayout = () => {
 
       {/* Main Content */}
       <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${
+        className={`flex-1 h-screen flex flex-col transition-all duration-300 ${
           isOpen ? "ml-[18%]" : "ml-[5%]"
         }`}
       >

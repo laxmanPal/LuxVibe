@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { FaRegImages } from "react-icons/fa";
 
 
-const ProductImageUploader = () => {
+const ProductImageUploader = ({limit}) => {
   const [images, setImages] = useState([]);
 
   const handleFiles = (files) => {
     const imageFiles = Array.from(files).filter((file) =>
       file.type.startsWith("image/")
     );
-    const limitedFiles = imageFiles.slice(0, 5 - images.length);
+    const limitedFiles = imageFiles.slice(0, limit - images.length);
     const newImages = limitedFiles.map((file) => ({
       file,
       url: URL.createObjectURL(file),
@@ -33,7 +33,7 @@ const ProductImageUploader = () => {
   return (
     <>
       <p className="text-sm text-gray-600 mb-4">
-        Choose a product photo or simply drag and drop up to 5 photos here.
+        Choose a product photo or simply drag and drop up to {limit} photos here.
       </p>
 
       {/* 🔥 Label wraps everything to trigger file input on any click */}
