@@ -12,6 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import { CiFilter } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
+import { Link } from "react-router-dom";
 
 const AllProducts = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -26,12 +27,14 @@ const AllProducts = () => {
     <div className="bg-white rounded-xl shadow p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-gray-800">Products</h2>
-        <Button
+        <Link to={"/admin/create-product"}>
+          <Button
           variant="outlined"
           className="!text-[14px] !text-[rgba(0,0,0,0.8)] !font-[500] !capitalize hover:!bg-gray-100 !border-gray-300"
         >
           <IoIosAdd className="text-2xl" /> Add Product
         </Button>
+        </Link>
       </div>
       <div className="flex justify-between items-center mb-4">
         <div className="searchBox transition w-[50%] h-[50px] bg-gray-100 rounded-xl relative p-2 hover:border-black">
@@ -87,7 +90,7 @@ const AllProducts = () => {
               <th className="p-4">Image</th>
               <th className="p-4">Name</th>
               <th className="p-4">Categories</th>
-              <th className="p-4">MRP</th>
+              <th className="p-4">Market Price</th>
               <th className="p-4">Sale Price</th>
               <th className="p-4">Quantity</th>
               <th className="p-4">Sold</th>

@@ -21,6 +21,8 @@ import AccountDetails from "./pages/AccountDetails";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AllProducts from "./pages/admin/AllProducts";
+import CreateProduct from "./pages/admin/CreateProduct";
+import EditProduct from "./pages/admin/EditProduct";
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
           <Route path="/admin" element={<AdminLayout />}>
           <Route path="dashboard" element={<AdminDashboard />} />
           <Route path="all-products" element={<AllProducts />} />
+          <Route path="create-product" element={<CreateProduct />} />
+          <Route path="edit-product" element={<EditProduct />} />
           </Route>
         </Routes>
       </BrowserRouter>
