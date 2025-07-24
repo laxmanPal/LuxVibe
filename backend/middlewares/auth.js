@@ -33,3 +33,15 @@ export const verifyAccessToken = (req, res, next) => {
     });
   }
 };
+
+
+export const verifyAdmin = (req, res, next) => {
+  if (!req.isAdmin) {
+    return res.status(403).json({
+      message: "Access denied. Admins only.",
+      error: true,
+      success: false,
+    });
+  }
+  next();
+};

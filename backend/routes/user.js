@@ -1,14 +1,16 @@
 import express from "express";
 import { verifyAccessToken } from "../middlewares/auth.js";
-import upload from "../middlewares/upload.js";
 import { updateUserDetails, uploadAvatar } from "../controllers/user.js";
+import getUploadMiddleware from "../middlewares/upload.js";
 
 const router = express.Router();
+
+const uploadAvatarImage = getUploadMiddleware("avatars");
 
 router.post(
   "/upload-avatar",
   verifyAccessToken,
-  upload.single("avatar"),
+  uploadAvatarImage.single("avatar"),
   uploadAvatar
 );
 

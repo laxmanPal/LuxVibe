@@ -2,14 +2,16 @@ import multer from 'multer';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import cloudinary from '../utils/cloudinary.js';
 
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: 'avatars',
-    allowed_formats: ['jpg', 'png', 'jpeg'],
-  },
-});
+const getUploadMiddleware = (folderName) => {
+  const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+      folder: folderName,
+      allowed_formats: ["jpg", "png", "jpeg", "webp"],
+    },
+  });
 
-const upload = multer({ storage });
+  return multer({ storage });
+};
 
-export default upload;
+export default getUploadMiddleware;

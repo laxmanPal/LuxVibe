@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.js"
 import userRoutes from "./routes/user.js"
+import categoryRoutes from "./routes/category.js"
 
 
 
@@ -25,6 +26,27 @@ app.use("/api/auth", authRoutes );
 
 // User Routes
 app.use("/api/user", userRoutes );
+
+// Admin Routes
+      // Categories
+      app.use("/api/admin/category", categoryRoutes );
+
+
+app.use((err, req, res, next) => {
+  if (err.code === "LIMIT_FILE_SIZE") {
+    return res.status(400).json({
+      success: false,
+      message: "Image file too large. Max size is 5MB.",
+    });
+  }
+
+  return res.status(500).json({
+    success: false,
+    message: "Something went wrong",
+    error: err.message,
+  });
+});
+
 
 // MongoDB Connection
 mongoose
