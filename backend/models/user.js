@@ -38,6 +38,14 @@ const userSchema = new mongoose.Schema(
       type: Date,
       default: null,
     },
+    access_token: {
+      type: String,
+      default: "",
+    },
+    refresh_token: {
+      type: String,
+      default: "",
+    },
     status: {
       type: String,
       enum: ["Active", "Blocked"],
@@ -76,4 +84,3 @@ const userSchema = new mongoose.Schema(
 );
 
 export default mongoose.model("User", userSchema);
-

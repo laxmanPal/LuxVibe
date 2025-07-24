@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.js"
 
 
@@ -16,9 +17,10 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Auth Routes
-app.use("/auth", authRoutes );
+app.use("/api/auth", authRoutes );
 
 // MongoDB Connection
 mongoose
