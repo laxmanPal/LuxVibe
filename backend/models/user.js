@@ -23,8 +23,8 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     avatar: {
-      type: String,
-      default: "",
+      url: { type: String, default: "" },
+      public_id: { type: String, default: "" },
     },
     phone: {
       type: Number,

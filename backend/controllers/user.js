@@ -1,0 +1,70 @@
+import User from "../models/user.js";
+import cloudinary from "../utils/cloudinary.js";
+import bcrypt from "bcrypt"
+
+export const uploadAvatar = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    // Delete old avatar if exists
+    if (user.avatar?.public_id) {
+      await cloudinary.uploader.destroy(user.avatar.public_id);
+    }
+
+    // Save new avatar (URL & public_id)
+    user.avatar = {
+      url: req.file.path,
+      public_id: req.file.filename,
+    };
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Avatar uploaded successfully",
+      avatar: user.avatar.url,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .json({ success: false, message: "Upload failed", error: err.message });
+  }
+};
+
+export const updateUserDetails = async (req, res) => {
+  try {
+    const userId = req.userId;
+
+    const { name, email, phone, password } = req.body;
+
+    const updates = {};
+
+    if (name) updates.name = name;
+    if (email) updates.email = email;
+    if (phone) updates.phone = phone;
+
+    
+    if (password && password.length >= 6) {
+      const hashedPassword = await bcrypt.hash(password, 12);
+      updates.password = hashedPassword;
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId, updates, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
+
+    return res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Update User Error:", error);
+    return res.status(500).json({
+      message: "Server error",
+      success: false,
+    });
+  }
+};

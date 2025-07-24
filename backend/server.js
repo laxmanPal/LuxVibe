@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.js"
+import userRoutes from "./routes/user.js"
 
 
 
@@ -21,6 +22,9 @@ app.use(cookieParser());
 
 // Auth Routes
 app.use("/api/auth", authRoutes );
+
+// User Routes
+app.use("/api/user", userRoutes );
 
 // MongoDB Connection
 mongoose
