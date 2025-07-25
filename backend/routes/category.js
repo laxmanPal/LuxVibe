@@ -11,13 +11,11 @@ import {
 
 const router = express.Router();
 
-const uploadCategoryImage = getUploadMiddleware("categories");
-
 router.post(
   "/create-category",
   verifyAccessToken,
   verifyAdmin,
-  uploadCategoryImage.single("image"),
+  getUploadMiddleware().single("image"),
   createCategory
 );
 
@@ -25,7 +23,7 @@ router.put(
   "/:id",
   verifyAccessToken,
   verifyAdmin,
-  uploadCategoryImage.single("image"),
+    getUploadMiddleware().single("image"),
   updateCategory
 );
 router.delete("/:id", verifyAccessToken, verifyAdmin, deleteCategory);

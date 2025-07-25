@@ -5,12 +5,10 @@ import getUploadMiddleware from "../middlewares/upload.js";
 
 const router = express.Router();
 
-const uploadAvatarImage = getUploadMiddleware("avatars");
-
 router.post(
   "/upload-avatar",
   verifyAccessToken,
-  uploadAvatarImage.single("avatar"),
+  getUploadMiddleware().single("avatar"),
   uploadAvatar
 );
 

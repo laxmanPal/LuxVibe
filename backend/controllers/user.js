@@ -1,6 +1,7 @@
 import User from "../models/user.js";
-import cloudinary from "../utils/cloudinary.js";
-import bcrypt from "bcrypt"
+import cloudinary from "../config/cloudinary.js";
+import bcrypt from "bcrypt";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 export const uploadAvatar = async (req, res) => {
   try {
@@ -13,10 +14,13 @@ export const uploadAvatar = async (req, res) => {
       await cloudinary.uploader.destroy(user.avatar.public_id);
     }
 
-    // Save new avatar (URL & public_id)
+    // Upload new avatar manually using memory buffer
+    const result = await uploadToCloudinary(req.file.buffer, "avatars");
+
+    // Save avatar details (url + public_id)
     user.avatar = {
-      url: req.file.path,
-      public_id: req.file.filename,
+      url: result.secure_url,
+      public_id: result.public_id,
     };
     await user.save();
 
@@ -44,7 +48,6 @@ export const updateUserDetails = async (req, res) => {
     if (email) updates.email = email;
     if (phone) updates.phone = phone;
 
-    
     if (password && password.length >= 6) {
       const hashedPassword = await bcrypt.hash(password, 12);
       updates.password = hashedPassword;

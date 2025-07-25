@@ -1,4 +1,5 @@
 import Category from "../models/category.js";
+import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 
 export const createCategory = async (req, res) => {
   try {
@@ -9,12 +10,16 @@ export const createCategory = async (req, res) => {
       return res.status(400).json({ message: "Category already exists" });
     }
 
-    const image = req.file?.path || "";
+    let imageUrl = "";
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.buffer, "categories");
+      imageUrl = result.secure_url;
+    }
 
     const category = await Category.create({
       name,
       slug,
-      image,
+      image: imageUrl,
     });
 
     res.status(201).json({
