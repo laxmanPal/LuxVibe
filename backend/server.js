@@ -6,6 +6,7 @@ import userRoutes from "./routes/user.js"
 import categoryRoutes from "./routes/category.js"
 import productRoutes from "./routes/product.js"
 import cartRoutes  from "./routes/cart.js"
+import wishlistRoutes  from "./routes/wishlist.js"
 
 
 // Dotenv Config
@@ -30,6 +31,9 @@ app.use("/api/user", userRoutes );
 
 // Cart Routes
 app.use("/api/cart", cartRoutes );
+
+// Wishlist Routes
+app.use("/api/wishlist", wishlistRoutes );
 
 // Admin Routes
       // Categories
