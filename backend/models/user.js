@@ -54,19 +54,17 @@ const userSchema = new mongoose.Schema(
     addresses: [
       {
         type: mongoose.Schema.ObjectId,
-        ref: "address",
+        ref: "Address",
       },
     ],
-    cart: [
-      {
+    cart:{
         type: mongoose.Schema.ObjectId,
-        ref: "cart",
+        ref: "Cart",
       },
-    ],
     orders: [
       {
         type: mongoose.Schema.ObjectId,
-        ref: "order",
+        ref: "Order",
       },
     ],
     otp: {

@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.js"
 import userRoutes from "./routes/user.js"
 import categoryRoutes from "./routes/category.js"
 import productRoutes from "./routes/product.js"
+import cartRoutes  from "./routes/cart.js"
 
 
 // Dotenv Config
@@ -26,6 +27,9 @@ app.use("/api/auth", authRoutes );
 
 // User Routes
 app.use("/api/user", userRoutes );
+
+// Cart Routes
+app.use("/api/cart", cartRoutes );
 
 // Admin Routes
       // Categories
