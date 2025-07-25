@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.js"
 import userRoutes from "./routes/user.js"
 import categoryRoutes from "./routes/category.js"
-
+import productRoutes from "./routes/product.js"
 
 
 // Dotenv Config
@@ -30,6 +30,8 @@ app.use("/api/user", userRoutes );
 // Admin Routes
       // Categories
       app.use("/api/admin/category", categoryRoutes );
+      // Products
+      app.use("/api/admin/product", productRoutes );
 
 
 app.use((err, req, res, next) => {
