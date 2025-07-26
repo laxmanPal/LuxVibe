@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../assets/logo.png";
 import Badge from "@mui/material/Badge";
 import { FaRegHeart } from "react-icons/fa";
@@ -22,59 +22,71 @@ export default function ClientNavbar() {
         <div className="header py-4  border-b-[1px] border-gray-300">
           <div className="container flex items-center justify-between">
             <div className="col1 w-[20%]">
-              <Link to={"/"}>
+              <NavLink to={"/"}>
                 <img className="logo" src={logo} alt="logo" />{" "}
-              </Link>
+              </NavLink>
             </div>
             <div className="col2 w-[60%]">
               <ul className="flex items-center justify-center gap-5">
                 <li className="list-none">
-                  <Link
+                  <NavLink
                     to={"/"}
-                    className="link transition text-[14px] font-[500]"
+                    className={`link transition text-[14px] font-[500] ${({
+                      isActive,
+                    }) => (isActive ? "active" : undefined)}`}
                   >
                     Home
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="list-none">
-                  <Link
-                    to={"/men"}
-                    className="link transition text-[14px] font-[500]"
+                  <NavLink
+                    to={"/category/men"}
+                     className={`link transition text-[14px] font-[500] ${({
+                      isActive,
+                    }) => (isActive ? "active" : undefined)}`}
                   >
                     Men
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="list-none">
-                  <Link
-                    to={"/women"}
-                    className="link transition text-[14px] font-[500]"
+                  <NavLink
+                    to={"/category/women"}
+                     className={`link transition text-[14px] font-[500] ${({
+                      isActive,
+                    }) => (isActive ? "active" : undefined)}`}
                   >
                     Women
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="list-none">
-                  <Link
-                    to={"/kids"}
-                    className="link transition text-[14px] font-[500]"
+                  <NavLink
+                    to={"/category/kids"}
+                     className={`link transition text-[14px] font-[500] ${({
+                      isActive,
+                    }) => (isActive ? "active" : undefined)}`}
                   >
                     Kids
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="list-none">
-                  <Link
+                  <NavLink
                     to={"/shop"}
-                    className="link transition text-[14px] font-[500]"
+                    className={`link transition text-[14px] font-[500] ${({
+                      isActive,
+                    }) => (isActive ? "active" : undefined)}`}
                   >
                     Shop
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="list-none">
-                  <Link
+                  <NavLink
                     to={"/categories"}
-                    className="link transition text-[14px] font-[500]"
+                     className={`link transition text-[14px] font-[500] ${({
+                      isActive,
+                    }) => (isActive ? "active" : undefined)}`}
                   >
                     Category
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </div>
@@ -86,29 +98,29 @@ export default function ClientNavbar() {
                   </IconButton>
                 </li>
                 <li className="list-none">
-                  <Link to={"/auth/login"}>
+                  <NavLink to={"/auth/login"}>
                     <IconButton>
                       <CgProfile className="link text-[25px] text-black" />
                     </IconButton>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="link list-none">
-                  <Link to={"myaccount/mywishlist"}>
+                  <NavLink to={"myaccount/mywishlist"}>
                     <Tooltip title="Wishlist" arrow>
                       <Badge badgeContent={1} color="primary">
                         <FaRegHeart className="text-[25px]" />
                       </Badge>
                     </Tooltip>
-                  </Link>
+                  </NavLink>
                 </li>
                 <li className="link list-none">
-                  <Link to={"/cart"}>
+                  <NavLink to={"/cart"}>
                     <Tooltip title="Cart" arrow>
                       <Badge badgeContent={1} color="primary">
                         <MdOutlineShoppingCart className="text-[25px]" />
                       </Badge>
                     </Tooltip>
-                  </Link>
+                  </NavLink>
                 </li>
               </ul>
             </div>

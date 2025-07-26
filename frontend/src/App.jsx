@@ -1,9 +1,9 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./App.css";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import Home from "./pages/Home";
-import Men from "./pages/Men";
-import Women from "./pages/Women";
-import Kids from "./pages/Kids";
 import Shop from "./pages/Shop";
 import Categories from "./pages/Categories";
 import ProductDetails from "./pages/ProductDetails";
@@ -26,48 +26,64 @@ import EditProduct from "./pages/admin/EditProduct";
 import AllCategories from "./pages/admin/AllCategories";
 import Users from "./pages/admin/Users";
 import Orders from "./pages/admin/Orders";
+import NotFound from "./pages/NotFound";
+import Category from "./pages/Category";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <ClientLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "shop", element: <Shop /> },
+      { path: "categories", element: <Categories /> },
+      { path: "category/:categoryName", element: <Category /> },
+      { path: "product/:productId", element: <ProductDetails /> },
+      { path: "cart", element: <Cart /> },
+      {
+        path: "myaccount",
+        element: <MyAccount />,
+        children: [
+          { index: true, element: <Navigate to="dashboard" /> },
+          { path: "dashboard", element: <Dashboard /> },
+          { path: "mywishlist", element: <MyWishlist /> },
+          { path: "myorders", element: <MyOrders /> },
+          { path: "myaddresses", element: <MyAddresses /> },
+          { path: "details", element: <AccountDetails /> },
+        ],
+      },
+    ],
+  },
+  {
+    path: "auth",
+    element: <AuthLayout />,
+    children: [
+      { index: true, element: <Navigate to="login" /> },
+      { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
+    ],
+  },
+  {
+    path: "admin",
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <Navigate to="dashboard" /> },
+      { path: "dashboard", element: <AdminDashboard /> },
+      { path: "products", element: <AllProducts /> },
+      { path: "create-product", element: <CreateProduct /> },
+      { path: "edit-product/:productId", element: <EditProduct /> },
+      { path: "categories", element: <AllCategories /> },
+      { path: "users", element: <Users /> },
+      { path: "orders", element: <Orders /> },
+    ],
+  },
+  { path: "*", element: <NotFound /> },
+]);
 
 function App() {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<ClientLayout />}>
-            <Route index element={<Home />} />
-            <Route path="/men" element={<Men />} />
-            <Route path="/women" element={<Women />} />
-            <Route path="/kids" element={<Kids />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/product/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/myaccount" element={<MyAccount />}>
-              <Route index element={<Dashboard />} />
-              <Route path="mywishlist" element={<MyWishlist />} />
-              <Route path="myorders" element={<MyOrders />} />
-              <Route path="myaddresses" element={<MyAddresses />} />
-              <Route path="details" element={<AccountDetails />} />
-            </Route>
-          </Route>
-        </Routes>
-        <Routes>
-          <Route path="/auth" element={<AuthLayout />}>
-            <Route path="login" element={<Login />} />
-            <Route path="register" element={<Register />} />
-          </Route>
-        </Routes>
-        <Routes>
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route path="dashboard" element={<AdminDashboard />} />
-            <Route path="all-products" element={<AllProducts />} />
-            <Route path="create-product" element={<CreateProduct />} />
-            <Route path="edit-product" element={<EditProduct />} />
-            <Route path="categories" element={<AllCategories />} />
-            <Route path="users" element={<Users />} />
-            <Route path="orders" element={<Orders />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </>
   );
 }

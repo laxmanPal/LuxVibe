@@ -42,7 +42,7 @@ const Sidebar = ({ isOpen }) => {
           </Link>
         </li>
         <li>
-          <Link to={"all-products"}>
+          <Link to={"products"}>
             <Button className="w-full !justify-start flex gap-3 !text-[14px] !text-[rgba(0,0,0,0.8)] !font-[500] items-center !capitalize !py-3 hover:!bg-gray-100">
               <BsBoxSeam className="text-[18px]" /> {isOpen && "Products"}
             </Button>
