@@ -95,9 +95,9 @@ export const loginUser = async (req, res) => {
       });
     }
 
-    const accessToken = await generateAccessToken(isUser.id , isUser.isAdmin);
+    const accessToken = await generateAccessToken(isUser.id, isUser.isAdmin);
 
-    const refreshToken = await generateRefreshToken(isUser.id ,isUser.isAdmin);
+    const refreshToken = await generateRefreshToken(isUser.id, isUser.isAdmin);
 
     await User.findByIdAndUpdate(isUser.id, {
       last_login: new Date(),

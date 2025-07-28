@@ -1,20 +1,59 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
-import {
-  FormControl,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-} from "@mui/material";
-import { FaRegEye } from "react-icons/fa";
-import { FaRegEyeSlash } from "react-icons/fa";
+import PasswordInput from "../../components/client/PasswordInput";
+const API_URL = import.meta.env.VITE_API_URL;
 import { useState } from "react";
+import { toast } from "react-toastify";
+import CircularProgress from "@mui/material/CircularProgress";
+import { decodeToken } from "../../utils/jwt";
 
 const Login = () => {
-  const [showPassword, setShowPassword] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const navigate = useNavigate();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setSubmitting(true);
+    const fd = new FormData(e.target);
+    const formData = Object.fromEntries(fd.entries());
+
+    try {
+      const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      localStorage.setItem("accessToken", data.token.accessToken);
+      localStorage.setItem("refreshToken", data.token.refreshToken);
+
+      setSubmitting(false);
+
+      toast.success("✅ Login successful!");
+
+      const token = decodeToken(data.token.accessToken);
+
+      console.log("Login info:", data);
+
+      setTimeout(() => {
+        navigate(token.isAdmin ? "/admin/dashboard" : "/");
+      }, 1500);
+    } catch (error) {
+      setSubmitting(false);
+
+      toast.error(`❌ ${error.message}`);
+
+      console.error("Login error:", error.message);
+    }
+  };
   return (
     <>
       {/* Register Section */}
@@ -31,7 +70,7 @@ const Login = () => {
       <div className="bg-white w-full max-w-md p-6 shadow-md">
         <h2 className="uppercase font-bold mb-4 text-lg">Log In</h2>
 
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email */}
           <div>
             <TextField
@@ -39,45 +78,32 @@ const Login = () => {
               type="email"
               id="email"
               label="Email"
+              name="email"
               variant="outlined"
+              required
             />
           </div>
 
           {/* Password */}
           <div>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-password">
-                Password
-              </InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-password"
-                type={showPassword ? "text" : "password"}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label={
-                        showPassword
-                          ? "hide the password"
-                          : "display the password"
-                      }
-                      onClick={handleClickShowPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
+            <PasswordInput required />
           </div>
 
           {/* Login Button */}
           <button
+            disabled={submitting}
             type="submit"
-            className="w-full bg-black text-white py-3 font-bold uppercase hover:opacity-80 cursor-pointer"
+            className={`w-full border bg-black text-white py-3 font-bold uppercase  cursor-pointer transition ${
+              submitting
+                ? "bg-gray-300 cursor-not-allowed"
+                : "hover:bg-white hover:border hover:border-black hover:text-black"
+            }`}
           >
-            Log In
+            {submitting ? (
+              <CircularProgress size="20px" color="inherit" />
+            ) : (
+              "Log in"
+            )}
           </button>
         </form>
       </div>

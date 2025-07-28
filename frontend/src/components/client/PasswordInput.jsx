@@ -1,16 +1,22 @@
-import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput } from "@mui/material";
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+} from "@mui/material";
 import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
-const PasswordInput = () => {
-    const [showPassword, setShowPassword] = useState(false);
-    
-      const handleClickShowPassword = () => setShowPassword((show) => !show);
+const PasswordInput = ({ ...props }) => {
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
   return (
     <FormControl fullWidth variant="outlined">
-      <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+      <InputLabel htmlFor="password">Password</InputLabel>
       <OutlinedInput
-        id="outlined-adornment-password"
+        id="password"
         type={showPassword ? "text" : "password"}
         endAdornment={
           <InputAdornment position="end">
@@ -26,6 +32,8 @@ const PasswordInput = () => {
           </InputAdornment>
         }
         label="Password"
+        name="password"
+        {...props}
       />
     </FormControl>
   );

@@ -3,6 +3,8 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./pages/client/Home";
 import Shop from "./pages/client/Shop";
 import Categories from "./pages/client/Categories";
@@ -28,6 +30,8 @@ import Users from "./pages/admin/Users";
 import Orders from "./pages/admin/Orders";
 import NotFound from "./pages/NotFound";
 import Category from "./pages/client/Category";
+import AdminRoute from "./components/routes/AdminRoute";
+import PrivateRoute from "./components/routes/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -42,7 +46,11 @@ const router = createBrowserRouter([
       { path: "cart", element: <Cart /> },
       {
         path: "myaccount",
-        element: <MyAccount />,
+        element: (
+          <PrivateRoute>
+            <MyAccount />
+          </PrivateRoute>
+        ),
         children: [
           { index: true, element: <Navigate to="dashboard" /> },
           { path: "dashboard", element: <Dashboard /> },
@@ -65,7 +73,11 @@ const router = createBrowserRouter([
   },
   {
     path: "admin",
-    element: <AdminLayout />,
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
     children: [
       { index: true, element: <Navigate to="dashboard" /> },
       { path: "dashboard", element: <AdminDashboard /> },
@@ -84,6 +96,7 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+      <ToastContainer position="top-right" autoClose={3000} />
     </>
   );
 }

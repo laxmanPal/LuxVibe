@@ -1,16 +1,16 @@
 import express from "express";
+import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
-import authRoutes from "./routes/auth.js"
-import userRoutes from "./routes/user.js"
-import categoryRoutes from "./routes/category.js"
-import productRoutes from "./routes/product.js"
-import cartRoutes  from "./routes/cart.js"
-import wishlistRoutes  from "./routes/wishlist.js"
-
+import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/user.js";
+import categoryRoutes from "./routes/category.js";
+import productRoutes from "./routes/product.js";
+import cartRoutes from "./routes/cart.js";
+import wishlistRoutes from "./routes/wishlist.js";
 
 // Dotenv Config
-import 'dotenv/config'
+import "dotenv/config";
 
 // APP
 const app = express();
@@ -18,29 +18,33 @@ const app = express();
 // PORT
 const PORT = process.env.PORT || 3000;
 
-
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Auth Routes
-app.use("/api/auth", authRoutes );
+app.use("/api/auth", authRoutes);
 
 // User Routes
-app.use("/api/user", userRoutes );
+app.use("/api/user", userRoutes);
 
 // Cart Routes
-app.use("/api/cart", cartRoutes );
+app.use("/api/cart", cartRoutes);
 
 // Wishlist Routes
-app.use("/api/wishlist", wishlistRoutes );
+app.use("/api/wishlist", wishlistRoutes);
 
 // Admin Routes
-      // Categories
-      app.use("/api/admin/category", categoryRoutes );
-      // Products
-      app.use("/api/admin/product", productRoutes );
-
+// Categories
+app.use("/api/admin/category", categoryRoutes);
+// Products
+app.use("/api/admin/product", productRoutes);
 
 app.use((err, req, res, next) => {
   if (err.code === "LIMIT_FILE_SIZE") {
@@ -56,7 +60,6 @@ app.use((err, req, res, next) => {
     error: err.message,
   });
 });
-
 
 // MongoDB Connection
 mongoose
