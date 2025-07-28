@@ -1,9 +1,9 @@
 import React from "react";
-import Hero from "../components/Hero";
-import ProductCard from "../components/ProductCard";
-import product1 from "../assets/product-2.jpg";
-import Title from "../components/Title";
-import Features from "../components/Features";
+import Hero from "../../components/client/Hero";
+import ProductCard from "../../components/client/ProductCard";
+import product1 from "../../assets/product-2.jpg";
+import Title from "../../components/client/Title";
+import Features from "../../components/client/Features";
 
 export default function Home() {
   return (

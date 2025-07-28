@@ -5,7 +5,7 @@ import { FaRegAddressBook } from "react-icons/fa";
 import { RiAccountPinCircleLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { IoLogOutOutline } from "react-icons/io5";
-import logo from "../assets/logo-2.png";
+import logo from "../../assets/logo-2.png";
 import { Link, Outlet } from "react-router-dom";
 
 const MyAccount = () => {

@@ -1,8 +1,8 @@
 import React from "react";
-import QuantityBox from "../components/QuantityBox";
+import QuantityBox from "../../components/client/QuantityBox";
 import { RxCross2 } from "react-icons/rx";
 import { Button, IconButton, Tooltip } from "@mui/material";
-import logo from "../assets/logo-2.png";
+import logo from "../../assets/logo-2.png";
 
 const Cart = () => {
   return (
@@ -25,9 +25,7 @@ const Cart = () => {
               </thead>
               <tbody className="text-gray-700 divide-y divide-gray-200">
                 <tr>
-                <td className="p-4">
-                   1
-                  </td>
+                  <td className="p-4">1</td>
                   <td className="p-4">
                     <img
                       src={logo}
@@ -49,7 +47,6 @@ const Cart = () => {
                     </Tooltip>
                   </td>
                 </tr>
-               
               </tbody>
             </table>
           </div>
@@ -72,7 +69,7 @@ const Cart = () => {
               <span>Total</span>
               <span>$85.00</span>
             </div>
-            
+
             <Button className="!mt-6   !py-3 hover:bg-gray-900 transition w-full  !bg-black !text-white !rounded-lg text-center font-medium hover:opacity-80 ">
               Proceed to Checkout
             </Button>

@@ -1,8 +1,8 @@
 import React from "react";
-import banner1 from "../assets/footwear-1.jpg";
-import banner2 from "../assets/footwear-2.jpg";
-import banner3 from "../assets/footwear-3.jpg";
-import banner4 from "../assets/footwear-4.jpg";
+import banner1 from "../../assets/footwear-1.jpg";
+import banner2 from "../../assets/footwear-2.jpg";
+import banner3 from "../../assets/footwear-3.jpg";
+import banner4 from "../../assets/footwear-4.jpg";
 import Banner from "./Banner";
 
 export default function Hero() {

@@ -1,8 +1,8 @@
 import React from "react";
-import QuantityBox from "../components/QuantityBox";
+import QuantityBox from "../../components/client/QuantityBox";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import { RxCross2 } from "react-icons/rx";
-import logo from "../assets/logo-2.png";
+import logo from "../../assets/logo-2.png";
 import { MdOutlineShoppingCart } from "react-icons/md";
 
 const MyOrders = () => {

@@ -1,17 +1,21 @@
 import React from "react";
-import ProductCard from "../components/ProductCard";
-import product1 from "../assets/product-2.jpg";
+import ProductListWrapper from "../../components/client/ProductListWrapper";
+import Title from "../../components/client/Title";
+import ProductCard from "../../components/client/ProductCard";
+import product1 from "../../assets/product-2.jpg";
+import { useParams } from "react-router-dom";
 
-import ProductListWrapper from "../components/ProductListWrapper";
-import Title from "../components/Title";
+const Category = () => {
+  const { categoryName } = useParams();
 
-const Shop = () => {
+  console.log(categoryName);
+
   return (
     <>
       <ProductListWrapper
         title={
           <Title
-            title="ALL COLLECTIONS"
+            title={`ALL ${categoryName.toLocaleUpperCase()} COLLECTIONS`}
             discription="Explore our most popular pieces that customers can't get enough of"
           />
         }
@@ -56,4 +60,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default Category;

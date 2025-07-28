@@ -1,6 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import React from "react";
-import PasswordInput from "../components/PasswordInput";
+import PasswordInput from "../../components/client/PasswordInput";
 
 const AccountDetails = () => {
   return (

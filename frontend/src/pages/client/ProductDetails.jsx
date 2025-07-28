@@ -1,15 +1,15 @@
-import product1 from "../assets/footwear-1.jpg";
-import product2 from "../assets/footwear-2.jpg";
-import product3 from "../assets/footwear-3.jpg";
-import product4 from "../assets/footwear-4.jpg";
+import product1 from "../../assets/footwear-1.jpg";
+import product2 from "../../assets/footwear-2.jpg";
+import product3 from "../../assets/footwear-3.jpg";
+import product4 from "../../assets/footwear-4.jpg";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
 
 import { useState } from "react";
-import Features from "../components/Features";
-import QuantityBox from "../components/QuantityBox";
+import Features from "../../components/client/Features";
+import QuantityBox from "../../components/client/QuantityBox";
 import { IconButton } from "@mui/material";
 
 // Array of image URLs

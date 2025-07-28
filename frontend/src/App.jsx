@@ -3,22 +3,22 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import Home from "./pages/Home";
-import Shop from "./pages/Shop";
-import Categories from "./pages/Categories";
-import ProductDetails from "./pages/ProductDetails";
-import Login from "./pages/Login";
-import ClientLayout from "./components/ClientLayout";
-import AuthLayout from "./components/AuthLayout";
-import Register from "./pages/Register";
-import Cart from "./pages/Cart";
-import Dashboard from "./pages/Dashboard";
-import MyAccount from "./components/MyAccount";
-import MyWishlist from "./pages/MyWishlist";
-import MyOrders from "./pages/MyOrders";
-import MyAddresses from "./pages/MyAddresses";
-import AccountDetails from "./pages/AccountDetails";
-import AdminLayout from "./components/admin/AdminLayout";
+import Home from "./pages/client/Home";
+import Shop from "./pages/client/Shop";
+import Categories from "./pages/client/Categories";
+import ProductDetails from "./pages/client/ProductDetails";
+import Login from "./pages/auth/Login";
+import ClientLayout from "./layouts/ClientLayout";
+import AuthLayout from "./layouts/AuthLayout";
+import Register from "./pages/auth/Register";
+import Cart from "./pages/client/Cart";
+import Dashboard from "./pages/client/Dashboard";
+import MyAccount from "./components/client/MyAccount";
+import MyWishlist from "./pages/client/MyWishlist";
+import MyOrders from "./pages/client/MyOrders";
+import MyAddresses from "./pages/client/MyAddresses";
+import AccountDetails from "./pages/client/AccountDetails";
+import AdminLayout from "./layouts/AdminLayout";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AllProducts from "./pages/admin/AllProducts";
 import CreateProduct from "./pages/admin/CreateProduct";
@@ -27,7 +27,7 @@ import AllCategories from "./pages/admin/AllCategories";
 import Users from "./pages/admin/Users";
 import Orders from "./pages/admin/Orders";
 import NotFound from "./pages/NotFound";
-import Category from "./pages/Category";
+import Category from "./pages/client/Category";
 
 const router = createBrowserRouter([
   {

@@ -1,10 +1,10 @@
 import React from "react";
-import Banner from "../components/Banner";
-import banner1 from "../assets/footwear-1.jpg";
-import banner2 from "../assets/footwear-2.jpg";
-import banner3 from "../assets/footwear-3.jpg";
-import banner4 from "../assets/footwear-4.jpg";
-import Title from "../components/Title";
+import Banner from "../../components/client/Banner";
+import banner1 from "../../assets/footwear-1.jpg";
+import banner2 from "../../assets/footwear-2.jpg";
+import banner3 from "../../assets/footwear-3.jpg";
+import banner4 from "../../assets/footwear-4.jpg";
+import Title from "../../components/client/Title";
 
 const Categories = () => {
   const items = [
