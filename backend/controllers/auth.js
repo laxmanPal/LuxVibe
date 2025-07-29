@@ -105,8 +105,9 @@ export const loginUser = async (req, res) => {
 
     const cookiesOption = {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      sameSite: "Strict",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
     };
 
     res.cookie("accessToken", accessToken, cookiesOption);
@@ -145,8 +146,9 @@ export const logout = async (req, res) => {
 
     const cookiesOption = {
       httpOnly: true,
-      secure: true,
-      sameSite: "None",
+      sameSite: "Strict",
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
     };
 
     res.clearCookie("accessToken", cookiesOption);
