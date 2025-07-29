@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   return (
     <div className="md:col-span-2 grid grid-cols-2 grid-rows-2 gap-4 p-6">
-      <Link to={"myorders"}>
+      <Link to={"/myaccount/myorders"}>
         <div className="my-orders col-span-1 row-span-1 p-6 rounded-2xl border border-gray-300 bg-white text-center shadow-sm hover:shadow-md transition flex items-center justify-center hover:text-gray-700 cursor-pointer">
           <div className="p-4">
             <IoBagCheckOutline className="text-5xl mb-4 mx-auto" />
@@ -17,7 +17,7 @@ const Dashboard = () => {
           </div>
         </div>
       </Link>
-      <Link to={"mywishlist"}>
+      <Link to={"/myaccount/mywishlist"}>
         <div className="my-wishlist col-span-1 row-span-1 p-6 rounded-2xl border border-gray-200 bg-white text-center shadow-sm hover:shadow-md transition flex items-center justify-center hover:text-gray-700 cursor-pointer">
           <div className="p-4">
             <FaRegHeart className="text-5xl mb-4 mx-auto" />
@@ -26,7 +26,7 @@ const Dashboard = () => {
           </div>
         </div>
       </Link>
-      <Link to={"myaddresses"}>
+      <Link to={"/myaccount/myaddresses"}>
         <div className="addresses col-span-1 row-span-1 p-6 rounded-2xl border border-gray-200 bg-white text-center shadow-sm hover:shadow-md transition flex items-center justify-center hover:text-gray-700 cursor-pointer">
           <div className="p-4">
             <FaRegAddressBook className="text-5xl mb-4 mx-auto" />
@@ -37,7 +37,7 @@ const Dashboard = () => {
           </div>
         </div>
       </Link>
-      <Link to={"details"}>
+      <Link to={"/myaccount/details"}>
         <div className="account-details col-span-1 row-span-1 p-6 rounded-2xl border border-gray-200 bg-white text-center shadow-sm hover:shadow-md transition flex items-center justify-center hover:text-gray-700 cursor-pointer">
           <div className="p-4">
             <RiAccountPinCircleLine className="text-5xl mb-4 mx-auto" />

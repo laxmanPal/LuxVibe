@@ -5,10 +5,12 @@ import { FaRegAddressBook } from "react-icons/fa";
 import { RiAccountPinCircleLine } from "react-icons/ri";
 import { RxDashboard } from "react-icons/rx";
 import { IoLogOutOutline } from "react-icons/io5";
-import logo from "../../assets/logo-2.png";
+import userDefaultImage from "../../assets/user.jpg";
 import { Link, Outlet } from "react-router-dom";
+import { useAuth } from "../../store/AuthContext";
 
 const MyAccount = () => {
+  const {user} = useAuth();
   return (
     <div className="py-8 container border-b border-gray-300">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -17,12 +19,12 @@ const MyAccount = () => {
             {/* <!-- Profile Header --> */}
             <div className="flex flex-col items-center p-6">
               <img
-                src={logo}
+                src={ user.avatar.url || userDefaultImage}
                 alt="Profile"
                 className="w-24 h-24 rounded-full bg-gray-100"
               />
-              <h2 className="text-xl font-semibold mt-4">Ghost</h2>
-              <p className="text-gray-500 text-sm">demo279@gmail.com</p>
+              <h2 className="text-xl font-semibold mt-4"> {user.name} </h2>
+              <p className="text-gray-500 text-sm"> {user.email} </p>
             </div>
 
             {/* <!-- Menu --> */}

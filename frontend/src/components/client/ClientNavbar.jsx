@@ -13,6 +13,9 @@ import { useAuth } from "../../store/AuthContext";
 import { Divider, Menu, MenuItem } from "@mui/material";
 import { RxAvatar } from "react-icons/rx";
 import { TbLogout } from "react-icons/tb";
+import { FaRegUser } from "react-icons/fa";
+import { IoLocationOutline } from "react-icons/io5";
+import { IoBagCheckOutline } from "react-icons/io5";
 
 export default function ClientNavbar() {
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -163,33 +166,35 @@ export default function ClientNavbar() {
                       transformOrigin={{ horizontal: "right", vertical: "top" }}
                       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                     >
-                      <MenuItem onClick={handleCloseMyAccMenu}>
-                        <div className="flex items-center gap-3">
-                          {user.avatar.url ? (
-                            <img
-                              className="w-10 h-10 rounded-full bg-gray-100"
-                              src={user.avatar.url}
-                              alt=""
-                            />
-                          ) : (
-                            <RxAvatar className="text-[25px] text-black" />
-                          )}
-                          <div className="info">
-                            <h3 className="text-[15px] font-[500] leading-5">
-                              {user.name}
-                            </h3>
-                            <p className="text-[13px] opacity-70 font-[400]">
-                              {user.email}
-                            </p>
+                      <MenuItem>
+                        <Link  to={"/myaccount"}>
+                          <div className="flex items-center gap-3">
+                            <FaRegUser className="text-[20px] text-black" />
+                            <span className="text-[15px]">My Account</span>
                           </div>
-                        </div>
+                        </Link>
                       </MenuItem>
-                      <Divider />
-                      <MenuItem onClick={handleCloseMyAccMenu}>
-                        <div className="flex items-center gap-3">
-                          <RxAvatar className="text-[20px] text-black" />
-                          <span className="text-[15px]">Profile</span>
-                        </div>
+                      <MenuItem>
+                        <Link
+                          
+                          to={"/myaccount/myorders"}
+                        >
+                          <div className="flex items-center gap-3">
+                            <IoBagCheckOutline className="text-[20px] text-black" />
+                            <span className="text-[15px]">Orders</span>
+                          </div>
+                        </Link>
+                      </MenuItem>
+                      <MenuItem>
+                        <Link
+                          
+                          to={"/myaccount/myaddresses"}
+                        >
+                          <div className="flex items-center gap-3">
+                            <IoLocationOutline className="text-[20px] text-black" />
+                            <span className="text-[15px]">Address</span>
+                          </div>
+                        </Link>
                       </MenuItem>
                       <MenuItem onClick={logout}>
                         <div className="flex items-center gap-3">
