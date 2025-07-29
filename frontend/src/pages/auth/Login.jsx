@@ -6,10 +6,19 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import CircularProgress from "@mui/material/CircularProgress";
 import { decodeToken } from "../../utils/jwt";
+import { useAuth } from "../../store/AuthContext";
+import { useEffect } from "react";
 
 const Login = () => {
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { login, user } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      navigate(user.isAdmin ? "/admin/dashboard" : "/");
+    }
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,6 +33,7 @@ const Login = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        credentials: "include",
       });
 
       const data = await response.json();
@@ -32,20 +42,12 @@ const Login = () => {
         throw new Error(data.message || "Login failed");
       }
 
-      localStorage.setItem("accessToken", data.token.accessToken);
-      localStorage.setItem("refreshToken", data.token.refreshToken);
-
-      setSubmitting(false);
-
       toast.success("✅ Login successful!");
+      await login();
 
-      const token = decodeToken(data.token.accessToken);
-
-      console.log("Login info:", data);
-
-      setTimeout(() => {
-        navigate(token.isAdmin ? "/admin/dashboard" : "/");
-      }, 1500);
+      // setTimeout(() => {
+      //   navigate(user?.isAdmin ? "/admin/dashboard" : "/");
+      // }, 1500);
     } catch (error) {
       setSubmitting(false);
 

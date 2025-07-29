@@ -1,16 +1,20 @@
-import React from "react";
-import { decodeToken } from "../../utils/jwt";
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../../store/AuthContext";
 
 const PrivateRoute = ({ children }) => {
-  const storedToken = localStorage.getItem("accessToken");
+  const { user } = useAuth();
 
-  if (!storedToken) {
-    return <Navigate to={"/auth/login"} />;
+  if (!user) {
+    return <Navigate to="/auth/login" replace />;
   }
-  const token = decodeToken(storedToken);
 
-  return token && !token.isAdmin ? children : <Navigate to="/admin" replace />;
+
+  if (user.isAdmin) {
+    // prevent admin from accessing user routes
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
+  return children;
 };
 
 export default PrivateRoute;

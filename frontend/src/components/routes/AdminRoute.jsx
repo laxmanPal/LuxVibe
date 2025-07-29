@@ -1,16 +1,20 @@
 import { Navigate } from "react-router-dom";
-import { decodeToken } from "../../utils/jwt";
+import { useAuth } from "../../store/AuthContext";
 
 const AdminRoute = ({ children }) => {
-  const storedToken = localStorage.getItem("accessToken");
+  const { user } = useAuth();
 
-  if (!storedToken) {
-    return <Navigate to={"/auth/login"} replace />;
+  if (!user) {
+    // not logged in
+    return <Navigate to="/auth/login" replace />;
   }
 
-  const token = decodeToken(storedToken);
+  if (!user.isAdmin) {
+    // logged in but not admin
+    return <Navigate to="/" replace />;
+  }
 
-  return token?.isAdmin ? children : <Navigate to="/" replace />;
+  return children;
 };
 
 export default AdminRoute;
