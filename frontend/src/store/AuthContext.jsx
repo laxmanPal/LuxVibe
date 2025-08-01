@@ -13,7 +13,7 @@ export const AuthContextProvider = ({ children }) => {
     fetchUserInfo();
   }, []);
 
-  const fetchUserInfo = async (token) => {
+  const fetchUserInfo = async () => {
     try {
       const res = await fetch(`${API_URL}/user/details`, {
         credentials: "include",
@@ -42,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
     setUser(null);
   };
   return (
-    <AuthContext.Provider value={{ user, setUser, login, logout , loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout , loading , fetchUserInfo }}>
       {children}
     </AuthContext.Provider>
   );

@@ -8,9 +8,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import { useState } from "react";
 import { TbLogout } from "react-icons/tb";
-
-
+import { useAuth } from "../../store/AuthContext";
+import userDefaultImage from "../../assets/user.jpg";
 const Header = ({ toggleSidebar }) => {
+  const { user, logout } = useAuth();
   const [openMyAccMenu, setopenMyAccMenu] = useState(null);
   const openMenu = Boolean(openMyAccMenu);
   const handleOpenMyAccMenu = (event) => {
@@ -49,7 +50,11 @@ const Header = ({ toggleSidebar }) => {
         {/* <!-- Profile Avatar --> */}
         <div>
           <IconButton onClick={handleOpenMyAccMenu}>
-            <RxAvatar className=" text-[25px] text-black" />
+            <img
+              src={user.avatar.url || userDefaultImage}
+              alt="user avatar"
+              className="w-10 h-10 rounded-full  object-cover"
+            />
           </IconButton>
           <Menu
             anchorEl={openMyAccMenu}
@@ -89,26 +94,34 @@ const Header = ({ toggleSidebar }) => {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <MenuItem onClick={handleCloseMyAccMenu}>
-                <div className="flex items-center gap-3">
-                    <RxAvatar className="text-[25px] text-black" />
-                    <div className="info">
-                        <h3 className="text-[15px] font-[500] leading-5">Admin</h3>
-                        <p className="text-[13px] opacity-70 font-[400]">admin@gmail.com</p>
-                    </div>
+              <div className="flex items-center gap-3">
+                <img
+                  src={user.avatar.url || userDefaultImage}
+                  alt="user avatar"
+                  className="w-10 h-10 rounded-full  object-cover"
+                />
+                <div className="info">
+                  <h3 className="text-[15px] font-[500] leading-5">
+                    {user.name}
+                  </h3>
+                  <p className="text-[13px] opacity-70 font-[400]">
+                    {user.email}
+                  </p>
                 </div>
+              </div>
             </MenuItem>
             <Divider />
-              <MenuItem onClick={handleCloseMyAccMenu}>
-                <div className="flex items-center gap-3">
-                    <RxAvatar className="text-[20px] text-black" />
-                    <span className="text-[15px]">Profile</span>
-                </div>
+            <MenuItem onClick={handleCloseMyAccMenu}>
+              <div className="flex items-center gap-3">
+                <RxAvatar className="text-[20px] text-black" />
+                <span className="text-[15px]">Profile</span>
+              </div>
             </MenuItem>
-              <MenuItem onClick={handleCloseMyAccMenu}>
-                <div className="flex items-center gap-3">
-                    <TbLogout className="text-[20px] text-black" />
-                    <span className="text-[15px]">Logout</span>
-                </div>
+            <MenuItem onClick={logout}>
+              <div className="flex items-center gap-3">
+                <TbLogout className="text-[20px] text-black" />
+                <span className="text-[15px]">Logout</span>
+              </div>
             </MenuItem>
           </Menu>
         </div>
