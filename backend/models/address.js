@@ -33,10 +33,6 @@ const addressSchema = mongoose.Schema(
     },
     status: {
       type: Boolean,
-      default: true,
-    },
-    isDefault: {
-      type: Boolean,
       default: false,
     },
     type: {
@@ -50,4 +46,4 @@ const addressSchema = mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Address", addressSchema);
+export default mongoose.model("Address", addressSchema);
