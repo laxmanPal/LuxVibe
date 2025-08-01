@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegImages } from "react-icons/fa";
 
-
-const ProductImageUploader = ({limit}) => {
+const ImageUploader = ({ limit, name, onFileSelect }) => {
   const [images, setImages] = useState([]);
 
   const handleFiles = (files) => {
@@ -30,10 +29,18 @@ const ProductImageUploader = ({limit}) => {
     e.preventDefault();
   };
 
+  useEffect(() => {
+    if (onFileSelect) {
+      const files = images.map((img) => img.file);
+      onFileSelect(files);
+    }
+  }, [images, onFileSelect]);
+
   return (
     <>
       <p className="text-sm text-gray-600 mb-4">
-        Choose a product photo or simply drag and drop up to {limit} photos here.
+        Choose a product photo or simply drag and drop up to {limit} photos
+        here.
       </p>
 
       {/* 🔥 Label wraps everything to trigger file input on any click */}
@@ -54,6 +61,7 @@ const ProductImageUploader = ({limit}) => {
           accept="image/*"
           multiple
           className="hidden"
+          name={name}
           onChange={handleChange}
         />
       </label>
@@ -79,4 +87,4 @@ const ProductImageUploader = ({limit}) => {
   );
 };
 
-export default ProductImageUploader;
+export default ImageUploader;
