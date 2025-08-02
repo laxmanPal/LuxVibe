@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaRegImages } from "react-icons/fa";
 
-const ImageUploader = ({ limit, name, onFileSelect }) => {
+const ImageUploader = ({ limit, name, onFileSelect , existingProductImages}) => {
   const [images, setImages] = useState([]);
 
   const handleFiles = (files) => {
@@ -73,6 +73,19 @@ const ImageUploader = ({ limit, name, onFileSelect }) => {
       {images.length > 0 && (
         <div className="mt-4 grid grid-cols-3 gap-3">
           {images.map((img, idx) => (
+            <div key={idx} className="relative w-full">
+              <img
+                src={img.url}
+                alt={`preview-${idx}`}
+                className="w-full h-24 object-cover rounded-md border"
+              />
+            </div>
+          ))}
+        </div>
+      )}
+        {existingProductImages && existingProductImages.length > 0 && (
+        <div className="mt-4 grid grid-cols-3 gap-3">
+          {existingProductImages.map((img, idx) => (
             <div key={idx} className="relative w-full">
               <img
                 src={img.url}

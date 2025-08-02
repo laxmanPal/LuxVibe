@@ -9,31 +9,80 @@ import Chip from "@mui/material/Chip";
 import Pagination from "@mui/material/Pagination";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiFilter } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+const API_URL = import.meta.env.VITE_API_URL;
+import CircularProgress from "@mui/material/CircularProgress";
 
 const AllProducts = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [products, setProducts] = useState([]);
+  const [deletingId, setDeletingId] = useState(null);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(`${API_URL}/admin/product/all-products`, {
+        credentials: "include",
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Fetching Products failed");
+      }
+
+      setProducts(data.products);
+    } catch (error) {
+      console.error("Fetching Products Error:", error.message);
+    }
+  };
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleDeleteProduct = async (id) => {
+    setDeletingId(id);
+    try {
+      const res = await fetch(`${API_URL}/admin/product/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const result = await res.json();
+
+      if (!res.ok)
+        throw new Error(result.message || "Failed to delete product");
+
+      toast.success("✅ Product deleted");
+      fetchProducts();
+    } catch (error) {
+      toast.error(`❌ ${error.message}`);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold text-gray-800">Products</h2>
         <Link to={"/admin/create-product"}>
           <Button
-          variant="outlined"
-          className="!text-[14px] !text-[rgba(0,0,0,0.8)] !font-[500] !capitalize hover:!bg-gray-100 !border-gray-300"
-        >
-          <IoIosAdd className="text-2xl" /> Add Product
-        </Button>
+            variant="outlined"
+            className="!text-[14px] !text-[rgba(0,0,0,0.8)] !font-[500] !capitalize hover:!bg-gray-100 !border-gray-300"
+          >
+            <IoIosAdd className="text-2xl" /> Add Product
+          </Button>
         </Link>
       </div>
       <div className="flex justify-between items-center mb-4">
@@ -90,7 +139,7 @@ const AllProducts = () => {
               <th className="p-4">Image</th>
               <th className="p-4">Name</th>
               <th className="p-4">Categories</th>
-              <th className="p-4">Market Price</th>
+              <th className="p-4">Price</th>
               <th className="p-4">Sale Price</th>
               <th className="p-4">Quantity</th>
               <th className="p-4">Sold</th>
@@ -98,42 +147,55 @@ const AllProducts = () => {
             </tr>
           </thead>
           <tbody className="text-gray-700 divide-y divide-gray-200">
-            <tr className="">
-              <td className="p-4">1</td>
-              <td className="p-4">
-                <img
-                  src={productImg}
-                  alt={productImg}
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-              </td>
-              <td className="p-4">Product 1</td>
-              <td className="p-4 gap-2 grid grid-cols-3 max-w-[300px]">
-                <Chip label="men" variant="outlined" />
-                <Chip label="topwear" variant="outlined" />
-              </td>
-              <td className="p-4">00</td>
-              <td className="p-4">$00</td>
-              <td className="p-4">00</td>
-              <td className="p-4">00</td>
-              <td className="p-4">
-                <Tooltip title="View" arrow>
-                  <IconButton>
-                    <FaRegEye className="text-[20px]" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Edit" arrow>
-                  <IconButton>
-                    <LuPencil className="text-[18px]" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Delete" arrow>
-                  <IconButton>
-                    <FaRegTrashCan className="text-[18px]" />
-                  </IconButton>
-                </Tooltip>
-              </td>
-            </tr>
+            {products.map((product, index) => {
+              return (
+                <tr key={index}>
+                  <td className="p-4"> {index + 1}</td>
+                  <td className="p-4">
+                    <img
+                      src={product.images[0].url || productImg}
+                      alt={product.name}
+                      className="w-10 h-10 rounded-full object-cover"
+                    />
+                  </td>
+                  <td className="p-4">{product.name}</td>
+                  <td className="p-4 gap-2 grid grid-cols-3 max-w-[300px]">
+                    {product.categories.map((category, index) => {
+                      return <Chip label={category.name} variant="outlined" />;
+                    })}
+                  </td>
+                  <td className="p-4"> {product.price} </td>
+                  <td className="p-4">$00</td>
+                  <td className="p-4">{product.inStock}</td>
+                  <td className="p-4">00</td>
+                  <td className="p-4">
+                    <Tooltip title="View" arrow>
+                      <IconButton>
+                        <FaRegEye className="text-[20px]" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Edit" arrow>
+                      <Link to={`/admin/edit-product/${product._id}`}>
+                        <IconButton>
+                        <LuPencil className="text-[18px]" />
+                      </IconButton>
+                      </Link>
+                    </Tooltip>
+                    <Tooltip title="Delete" arrow>
+                      <IconButton
+                        onClick={() => handleDeleteProduct(product._id)}
+                      >
+                        {deletingId === product._id ? (
+                          <CircularProgress size="18px" color="inherit" />
+                        ) : (
+                          <FaRegTrashCan className="text-[18px]" />
+                        )}
+                      </IconButton>
+                    </Tooltip>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <div className="mt-5">
