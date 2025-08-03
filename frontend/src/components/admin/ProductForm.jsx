@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useCategoryCtx } from "../../store/CategoryContext";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductForm = ({
@@ -14,10 +15,9 @@ const ProductForm = ({
   onSubmit,
   submitting,
   productDetails,
-  existingProductImages,
+  existingImages,
   redBtnAction
 }) => {
-  const [categories, setCategories] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [formFields, setFormFields] = useState({
     name: "",
@@ -27,6 +27,7 @@ const ProductForm = ({
     price: "",
     discountPrice: "",
   });
+  const {categories} = useCategoryCtx()
 
   useEffect(() => {
     if (productDetails && productDetails.name) {
@@ -51,27 +52,6 @@ const ProductForm = ({
     });
   };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch(`${API_URL}/admin/category/all-categories`, {
-        credentials: "include",
-      });
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Fetching Users failed");
-      }
-      console.log(data);
-
-      setCategories(data.categories);
-    } catch (error) {
-      console.error("Fetching Categories Error:", error.message);
-    }
-  };
   return (
     <div className="">
       <h2 className="text-2xl font-semibold mb-6">{title}</h2>
@@ -156,7 +136,7 @@ const ProductForm = ({
                 name="images"
                 limit={5}
                 onFileSelect={setProductImages}
-                existingProductImages={existingProductImages}
+                existingImages={existingImages}
               />
             </div>
 

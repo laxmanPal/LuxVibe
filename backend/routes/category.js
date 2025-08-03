@@ -15,7 +15,7 @@ router.post(
   "/create-category",
   verifyAccessToken,
   verifyAdmin,
-  getUploadMiddleware().single("image"),
+  getUploadMiddleware().array("images"),
   createCategory
 );
 

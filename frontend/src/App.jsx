@@ -33,6 +33,7 @@ import Category from "./pages/client/Category";
 import AdminRoute from "./components/routes/AdminRoute";
 import PrivateRoute from "./components/routes/PrivateRoute";
 import { AuthContextProvider } from "./store/AuthContext";
+import { CategoryContectProvider } from "./store/CategoryContext";
 
 const router = createBrowserRouter([
   {
@@ -97,8 +98,10 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <RouterProvider router={router} />
-        <ToastContainer position="top-right" autoClose={3000} />
+        <CategoryContectProvider>
+          <RouterProvider router={router} />
+          <ToastContainer position="top-right" autoClose={3000} />
+        </CategoryContectProvider>
       </AuthContextProvider>
     </>
   );

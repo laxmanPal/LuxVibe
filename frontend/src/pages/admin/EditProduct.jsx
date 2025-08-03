@@ -99,7 +99,7 @@ export default function EditProduct() {
         blueBtn={"Save"}
         onSubmit={handleUpdateProduct}
         submitting={submitting}
-        existingProductImages={existingProductImages}
+        existingImages={existingProductImages}
         redBtnAction={handleDeleteProduct}
       />
     </>
