@@ -3,9 +3,9 @@ import { FaRegImages } from "react-icons/fa";
 
 const ImageUploader = ({
   limit,
-  name,
   onFileSelect,
   existingImages,
+  resetTrigger
 }) => {
   const [images, setImages] = useState([]);
 
@@ -41,6 +41,11 @@ const ImageUploader = ({
     }
   }, [images, onFileSelect]);
 
+    // ✅ Reset images when `resetTrigger` changes
+  useEffect(() => {
+    setImages([]);
+  }, [resetTrigger]);
+
   return (
     <>
       <p className="text-sm text-gray-600 mb-4">
@@ -66,7 +71,6 @@ const ImageUploader = ({
           accept="image/*"
           multiple
           className="hidden"
-          name={name}
           onChange={handleChange}
         />
       </label>

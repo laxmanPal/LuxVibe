@@ -1,5 +1,5 @@
 import { Button, CircularProgress, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import ImageUploader from "./ImageUploader";
 import { toast } from "react-toastify";
 import { useCategoryCtx } from "../../store/CategoryContext";
@@ -9,58 +9,40 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const CreateCategory = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [formData, setFormData] = useState({ name: "", slug: "" });
-  const [imageFile, setImageFile] = useState([]);
   const { categoryAction, closeCreateCategoryModal, fetchCategories } =
     useCategoryCtx();
-
-  const [uploaderKey, setUploaderKey] = useState(0);
-
-  useEffect(() => {
-    if (categoryAction === "create-category") {
-      setFormData({ name: "", slug: "" });
-      setImageFile([]);
-      setUploaderKey((prev) => prev + 1); // this will re-render ImageUploader
-    }
-  }, [categoryAction]);
-
-  const handleFormData = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleImageSelect = (files) => {
-    setImageFile(files);
-  };
+  const [resetKey, setResetKey] = useState(0);
+  const [selectedImages, setSelectedImages] = useState([]);
+  const formRef = useRef(); // ✅ to reset the form
+  const isOpen = categoryAction === "create-category";
 
   const handleCreateCategory = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    const data = new FormData();
-    data.append("name", formData.name);
-    data.append("slug", formData.slug);
-
-    imageFile.forEach((file) => {
-      data.append("images", file);
+    const formData = new FormData(formRef.current);
+    selectedImages.forEach((file) => {
+      formData.append("images", file);
     });
 
     try {
-      const res = await fetch(`${API_URL}/admin/category/create-category`, {
-        method: "POST",
-        body: data,
-        credentials: "include",
-      });
+      const response = await fetch(
+        `${API_URL}/admin/category/create-category`,
+        {
+          method: "POST",
+          credentials: "include",
+          body: formData,
+        }
+      );
 
-      const result = await res.json();
+      const result = await response.json();
 
-      if (!res.ok) {
-        throw new Error(result.message || "Failed to create category");
+      if (!response.ok) {
+        throw new Error(result.message || "Something went wrong");
       }
 
-      toast.success("✅ Category Created");
-      setFormData({ name: "", slug: "" });
-      setImageFile([]);
-      closeCreateCategoryModal();
+      toast.success("Category created successfully");
       fetchCategories();
+      handleClose(); // ✅ call custom close handler
     } catch (error) {
       console.error("Category creation failed:", error);
       toast.error(`❌ ${error.message}`);
@@ -68,9 +50,22 @@ const CreateCategory = () => {
       setSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      formRef.current?.reset();
+      setSelectedImages([]);
+      setResetKey((prev) => prev + 1); // triggers ImageUploader reset
+    }
+  }, [isOpen]);
+
+  const handleClose = () => {
+    closeCreateCategoryModal(); // close modal
+  };
+
   return (
-    <Modal open={categoryAction === "create-category"}>
-      <form className="my-8" onSubmit={handleCreateCategory}>
+    <Modal open={isOpen}>
+      <form ref={formRef} onSubmit={handleCreateCategory} className="my-8">
         <div className="my-3">
           <TextField
             fullWidth
@@ -80,8 +75,6 @@ const CreateCategory = () => {
             variant="outlined"
             required
             name="name"
-            value={formData.name}
-            onChange={handleFormData}
           />
         </div>
         <div className="my-3">
@@ -93,22 +86,21 @@ const CreateCategory = () => {
             variant="outlined"
             required
             name="slug"
-            value={formData.slug}
-            onChange={handleFormData}
           />
         </div>
         <div className="mt-8">
           <h3 className="font-semibold text-lg mb-4">Category Image</h3>
           <ImageUploader
-            key={uploaderKey}
-            name="image"
+            name="images"
             limit={1}
-            onFileSelect={handleImageSelect}
+            onFileSelect={setSelectedImages}
+            resetTrigger={resetKey}
           />
         </div>
         <div className="flex justify-end gap-5">
           <Button
-            onClick={() => closeCreateCategoryModal()}
+            type="button"
+            onClick={handleClose}
             className="!border !border-red-600 !text-red-600 !rounded-lg text-center font-medium gap-3 !capitalize !mt-8"
           >
             Discard

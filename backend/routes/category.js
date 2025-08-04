@@ -23,7 +23,7 @@ router.put(
   "/:id",
   verifyAccessToken,
   verifyAdmin,
-    getUploadMiddleware().single("image"),
+    getUploadMiddleware().single("images"),
   updateCategory
 );
 router.delete("/:id", verifyAccessToken, verifyAdmin, deleteCategory);

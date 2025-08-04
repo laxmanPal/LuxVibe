@@ -46,8 +46,8 @@ const AllCategories = () => {
 
   return (
     <>
-      {categoryAction === "create-category" && <CreateCategory />}
-      {/* {categoryAction === "update-category" && <UpdateCategory />} */}
+      <CreateCategory />
+      {/* <UpdateCategory /> */}
       <div className="bg-white rounded-xl shadow p-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg font-semibold text-gray-800">Categories</h2>
@@ -101,13 +101,13 @@ const AllCategories = () => {
                     <td className="p-4">{category.name}</td>
                     <td className="p-4">{category.slug}</td>
                     <td className="p-4">
-                      <Tooltip title="Edit" arrow>
+                      {/* <Tooltip title="Edit" arrow>
                         <IconButton
                           onClick={() => showUpdateCategoryModal(category._id)}
                         >
                           <LuPencil className="text-[18px]" />
                         </IconButton>
-                      </Tooltip>
+                      </Tooltip> */}
                       <Tooltip title="Delete" arrow>
                         <IconButton
                           onClick={() => handleDeleteCategory(category._id)}

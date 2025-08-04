@@ -14,9 +14,10 @@ const ProductForm = ({
   blueBtn,
   onSubmit,
   submitting,
+  deleting,
   productDetails,
   existingImages,
-  redBtnAction
+  redBtnAction,
 }) => {
   const [productImages, setProductImages] = useState([]);
   const [formFields, setFormFields] = useState({
@@ -27,7 +28,7 @@ const ProductForm = ({
     price: "",
     discountPrice: "",
   });
-  const {categories} = useCategoryCtx()
+  const { categories } = useCategoryCtx();
 
   useEffect(() => {
     if (productDetails && productDetails.name) {
@@ -186,8 +187,18 @@ const ProductForm = ({
         </div>
         <div className="fixed bottom-0 left-0 w-full bg-white px-5 py-5 shadow z-40">
           <div className="flex justify-end gap-5">
-            <Button onClick={redBtnAction} className="!border !border-red-600 !text-red-600 !rounded-lg text-center font-medium gap-3 !capitalize">
-              <RiDeleteBinLine /> {redBtn}
+            <Button
+              onClick={redBtnAction}
+              className="!border !border-red-600 !text-red-600 !rounded-lg text-center font-medium gap-3 !capitalize"
+            >
+              {deleting ? (
+                <CircularProgress size="20px" color="inherit" />
+              ) : (
+                <span className="flex items-center gap-2">
+                  <RiDeleteBinLine />
+                  {redBtn}
+                </span>
+              )}
             </Button>
             <Button
               type="submit"

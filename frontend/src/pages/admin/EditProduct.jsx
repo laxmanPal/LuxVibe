@@ -9,6 +9,7 @@ export default function EditProduct() {
   const [productDetails, setProductDetails] = useState({});
   const [existingProductImages, setExistingProductImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -73,6 +74,7 @@ export default function EditProduct() {
   };
 
   const handleDeleteProduct = async () => {
+    setDeleting(true);
     try {
       const res = await fetch(`${API_URL}/admin/product/${productId}`, {
         method: "DELETE",
@@ -87,6 +89,8 @@ export default function EditProduct() {
       navigation("/admin/products");
     } catch (error) {
       toast.error(`❌ ${error.message}`);
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -99,6 +103,7 @@ export default function EditProduct() {
         blueBtn={"Save"}
         onSubmit={handleUpdateProduct}
         submitting={submitting}
+        deleting={deleting}
         existingImages={existingProductImages}
         redBtnAction={handleDeleteProduct}
       />
