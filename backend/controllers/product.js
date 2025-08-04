@@ -72,9 +72,16 @@ export const createProduct = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find()
+    const limit = parseInt(req.query.limit) || 0;
+    const productsQuery = Product.find()
       .populate("categories", "name")
       .sort({ createdAt: -1 });
+
+    if (limit > 0) {
+      productsQuery.limit(limit);
+    }
+
+    const products = await productsQuery;
 
     res.status(200).json({ success: true, products });
   } catch (error) {
@@ -211,10 +218,8 @@ export const deleteProductImage = async (req, res) => {
 
   try {
     const product = await Product.findById(id);
-    if (!product)
-      return res.status(404).json({ message: "Product not found" });
+    if (!product) return res.status(404).json({ message: "Product not found" });
 
-    
     const removedImage = product.images.find(
       (imgObj) => imgObj.url === imageUrl
     );
@@ -226,15 +231,11 @@ export const deleteProductImage = async (req, res) => {
       });
     }
 
-    
     if (removedImage.public_id) {
       await cloudinary.uploader.destroy(removedImage.public_id);
     }
 
-    
-    product.images = product.images.filter(
-      (imgObj) => imgObj.url !== imageUrl
-    );
+    product.images = product.images.filter((imgObj) => imgObj.url !== imageUrl);
 
     await product.save();
 
@@ -251,4 +252,3 @@ export const deleteProductImage = async (req, res) => {
     });
   }
 };
-

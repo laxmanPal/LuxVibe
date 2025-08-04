@@ -7,16 +7,46 @@ import Button from "@mui/material/Button";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegHeart } from "react-icons/fa";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Features from "../../components/client/Features";
 import QuantityBox from "../../components/client/QuantityBox";
 import { IconButton } from "@mui/material";
+import { useParams } from "react-router-dom";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // Array of image URLs
 const images = [product1, product2, product3, product4];
 
 export default function ProductDetails() {
-  const [mainImage, setMainImage] = useState(images[0]);
+  const [mainImage, setMainImage] = useState(null);
+  const { productId } = useParams();
+  console.log(productId);
+  const [productDetails, setProductDetails] = useState({});
+
+  useEffect(() => {
+    fetchProductDetails(productId);
+    console.log(productDetails);
+  }, [productId]);
+
+  const fetchProductDetails = async (productId) => {
+    try {
+      const response = await fetch(`${API_URL}/admin/product/${productId}`, {
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Fetching Product Details failed");
+      }
+      console.log(data.product.name);
+
+      setProductDetails(data.product);
+      setMainImage(data.product.images?.[0]?.url || null);
+    } catch (error) {
+      console.error("Fetching  Product Details Error:", error.message);
+    }
+  };
+
+  console.log(productDetails);
 
   return (
     <div className="py-8 container border-b border-gray-300">
@@ -26,19 +56,20 @@ export default function ProductDetails() {
           <div className="flex gap-4">
             {/* Thumbnails */}
             <div className="flex flex-col gap-4">
-              {images.map((img, index) => (
+              {productDetails.images?.map((imgObj, index) => (
                 <img
                   key={index}
-                  src={img}
+                  src={imgObj.url}
                   alt={`Thumbnail ${index + 1}`}
-                  onClick={() => setMainImage(img)}
+                  onClick={() => setMainImage(imgObj.url)}
                   className={`w-20 h-20 object-cover rounded-lg cursor-pointer transition-all duration-200 ${
-                    mainImage === img
+                    mainImage === imgObj.url
                       ? "opacity-100 grayscale-0 scale-105"
                       : "opacity-60 grayscale hover:opacity-100 hover:grayscale-0"
                   }`}
                 />
               ))}
+              
             </div>
 
             {/* Main Image */}
@@ -46,7 +77,7 @@ export default function ProductDetails() {
               <img
                 src={mainImage}
                 alt="Main Product"
-                className="w-full h-full aspect-square object-cover rounded-xl "
+                className="w-full h-full aspect-square object-contain rounded-xl "
               />
             </div>
           </div>
@@ -55,9 +86,11 @@ export default function ProductDetails() {
         {/* Scrollable Product Details */}
         <div className="flex flex-col justify-center">
           <div className="mb-6">
-            <p className="text-sm text-gray-500 font-medium">Reebok</p>
+            <p className="text-sm text-gray-500 font-medium">
+              {productDetails.brand}
+            </p>
             <h1 className="text-2xl font-semibold ">
-              Shoes Reebok Zig Kinetica 3{" "}
+              {productDetails.name}{" "}
               <Chip
                 className="!bg-green-200 !text-green-700"
                 size="small"
@@ -68,22 +101,19 @@ export default function ProductDetails() {
 
           <div className="mb-4">
             <p className="text-2xl font-bold mb-2">
-              ₹697
+              ₹{productDetails.discountPrice}
               <span className="text-lg font-normal text-green-700 ml-4">
                 59% Off
               </span>
             </p>
             <p className="text-sm text-gray-600">
-              MRP <span className="line-through">₹1,699</span> Inclusive of all
-              taxes
+              MRP <span className="line-through">₹{productDetails.price}</span>{" "}
+              Inclusive of all taxes
             </p>
           </div>
 
           <p className="text-gray-600 text-sm mb-6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos
-            obcaecati voluptatibus fugiat quaerat culpa maxime facilis, corporis
-            eaque pariatur dolorum maiores esse cum laudantium harum saepe!
-            Dicta consequuntur ratione magni.
+            {productDetails.description}
           </p>
 
           {/* Sizes */}
