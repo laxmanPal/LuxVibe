@@ -6,6 +6,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useCategoryCtx } from "../../store/CategoryContext";
+import Autocomplete from "@mui/material/Autocomplete";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductForm = ({
@@ -23,10 +24,11 @@ const ProductForm = ({
   const [formFields, setFormFields] = useState({
     name: "",
     brand: "",
-    categories: "",
+    categories: [],
     description: "",
     price: "",
     discountPrice: "",
+    inStock: "",
   });
   const { categories } = useCategoryCtx();
 
@@ -35,10 +37,11 @@ const ProductForm = ({
       setFormFields({
         name: productDetails.name || "",
         brand: productDetails.brand || "",
-        categories: productDetails.categories[0]?._id || "", // handle array or string
+        categories: productDetails.categories?.map((cat) => cat._id) || [], // handle array or string
         description: productDetails.description || "",
         price: productDetails.price || "",
         discountPrice: productDetails.discountPrice || "",
+        inStock: productDetails.inStock || "",
       });
       if (productDetails.images) {
         setProductImages(productDetails.images);
@@ -91,26 +94,7 @@ const ProductForm = ({
                   />
                 </div>
 
-                <div>
-                  <TextField
-                    fullWidth
-                    label="Category"
-                    id="Category"
-                    name="categories"
-                    variant="outlined"
-                    value={formFields.categories}
-                    onChange={handleInputChange}
-                    select
-                  >
-                    {categories.map((category, index) => {
-                      return (
-                        <MenuItem value={category._id}>
-                          {category.name}
-                        </MenuItem>
-                      );
-                    })}
-                  </TextField>
-                </div>
+                
 
                 <div>
                   <TextField
@@ -122,6 +106,49 @@ const ProductForm = ({
                     onChange={handleInputChange}
                     multiline
                     rows={5}
+                  />
+                </div>
+              </div>
+            </div>
+            {/* Other Information */}
+            <div className="bg-white p-6 rounded-lg shadow">
+              <h3 className="font-semibold text-lg mb-4">Other Information</h3>
+              <div className="space-y-4">
+              <div>
+                  <Autocomplete
+                    multiple
+                    id="categories"
+                    options={categories}
+                    getOptionLabel={(option) => option.name}
+                    value={categories.filter((cat) =>
+                      formFields.categories.includes(cat._id)
+                    )}
+                    onChange={(event, newValue) => {
+                      setFormFields({
+                        ...formFields,
+                        categories: newValue.map((cat) => cat._id),
+                      });
+                    }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        variant="outlined"
+                        label="Categories"
+                        placeholder="Select categories"
+                      />
+                    )}
+                  />
+                </div>
+                <div>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    id="quantity"
+                    name="inStock"
+                    label="Quantity"
+                    variant="outlined"
+                    value={formFields.inStock}
+                    onChange={handleInputChange}
                   />
                 </div>
               </div>

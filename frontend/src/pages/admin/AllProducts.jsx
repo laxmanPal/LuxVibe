@@ -148,12 +148,19 @@ const AllProducts = () => {
           </thead>
           <tbody className="text-gray-700 divide-y divide-gray-200">
             {products.map((product, index) => {
+              const productImage =
+                product.images &&
+                product.images.length > 0 &&
+                product.images[0].url
+                  ? product.images[0].url
+                  : productImg;
+
               return (
-                <tr key={index}>
+                <tr key={product.name}>
                   <td className="p-4"> {index + 1}</td>
                   <td className="p-4">
                     <img
-                      src={product.images[0].url || productImg}
+                      src={productImage}
                       alt={product.name}
                       className="w-10 h-10 rounded-full object-cover"
                     />
@@ -161,11 +168,17 @@ const AllProducts = () => {
                   <td className="p-4">{product.name}</td>
                   <td className="p-4 gap-2 grid grid-cols-3 max-w-[300px]">
                     {product.categories.map((category, index) => {
-                      return <Chip label={category.name} variant="outlined" />;
+                      return (
+                        <Chip
+                          key={category.name}
+                          label={category.name}
+                          variant="outlined"
+                        />
+                      );
                     })}
                   </td>
                   <td className="p-4"> {product.price} </td>
-                  <td className="p-4">$00</td>
+                  <td className="p-4">{product.discountPrice}</td>
                   <td className="p-4">{product.inStock}</td>
                   <td className="p-4">00</td>
                   <td className="p-4">
@@ -177,8 +190,8 @@ const AllProducts = () => {
                     <Tooltip title="Edit" arrow>
                       <Link to={`/admin/edit-product/${product._id}`}>
                         <IconButton>
-                        <LuPencil className="text-[18px]" />
-                      </IconButton>
+                          <LuPencil className="text-[18px]" />
+                        </IconButton>
                       </Link>
                     </Tooltip>
                     <Tooltip title="Delete" arrow>
