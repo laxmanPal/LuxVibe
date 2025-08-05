@@ -12,16 +12,22 @@ import Features from "../../components/client/Features";
 import QuantityBox from "../../components/client/QuantityBox";
 import { IconButton } from "@mui/material";
 import { useParams } from "react-router-dom";
+import { convertUsdToInr } from "../../config/currency-converter";
+import { useCategoryCtx } from "../../store/CategoryContext";
+import { useCartCtx } from "../../store/CartContext";
+import { toast } from "react-toastify";
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Array of image URLs
 const images = [product1, product2, product3, product4];
 
 export default function ProductDetails() {
+  const { addToCart } = useCartCtx();
   const [mainImage, setMainImage] = useState(null);
   const { productId } = useParams();
   console.log(productId);
   const [productDetails, setProductDetails] = useState({});
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     fetchProductDetails(productId);
@@ -46,8 +52,17 @@ export default function ProductDetails() {
     }
   };
 
-  console.log(productDetails);
+  const handleAddToCart = async () => {
+    try {
+      await addToCart({ productId, quantity });
+      toast.success("Product added to cart!");
+    } catch (error) {
+      toast.error(error.message || "Failed to add product to cart");
+    }
+  };
 
+  const price = convertUsdToInr(productDetails.price);
+  const discountPrice = convertUsdToInr(productDetails.discountPrice);
   return (
     <div className="py-8 container border-b border-gray-300">
       <div className="px-4 py-10 grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -69,7 +84,6 @@ export default function ProductDetails() {
                   }`}
                 />
               ))}
-              
             </div>
 
             {/* Main Image */}
@@ -77,7 +91,7 @@ export default function ProductDetails() {
               <img
                 src={mainImage}
                 alt="Main Product"
-                className="w-full h-full aspect-square object-contain rounded-xl "
+                className="w-full h-full aspect-square object-cover rounded-xl "
               />
             </div>
           </div>
@@ -101,13 +115,13 @@ export default function ProductDetails() {
 
           <div className="mb-4">
             <p className="text-2xl font-bold mb-2">
-              ₹{productDetails.discountPrice}
+              {price}
               <span className="text-lg font-normal text-green-700 ml-4">
                 59% Off
               </span>
             </p>
             <p className="text-sm text-gray-600">
-              MRP <span className="line-through">₹{productDetails.price}</span>{" "}
+              MRP <span className="line-through">{discountPrice}</span>{" "}
               Inclusive of all taxes
             </p>
           </div>
@@ -137,9 +151,12 @@ export default function ProductDetails() {
 
           <div className="flex  gap-4">
             {/* Quantity */}
-            <QuantityBox />
+            <QuantityBox quantity={quantity} setQuantity={setQuantity} />
             {/* Add to Cart */}
-            <Button className="w-full  !bg-black !text-white !rounded-lg text-center font-medium gap-3 ">
+            <Button
+              onClick={handleAddToCart}
+              className="w-full  !bg-black !text-white !rounded-lg text-center font-medium gap-3 "
+            >
               <MdOutlineShoppingCart className="text-2xl" />
               Add to cart
             </Button>

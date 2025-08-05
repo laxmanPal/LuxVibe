@@ -3,15 +3,13 @@ import { FaPlus } from "react-icons/fa6";
 import IconButton from "@mui/material/IconButton";
 import { useState } from "react";
 
-const QuantityBox = () => {
-  const [quantity, setQuantity] = useState(1);
-
+const QuantityBox = ({ quantity, setQuantity }) => {
   const handleIncrease = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+    setQuantity(quantity + 1);
   };
 
   const handleDecrease = () => {
-    setQuantity((prevQuantity) => Math.max(1, prevQuantity - 1));
+    setQuantity(Math.max(0, quantity - 1));
   };
   return (
     <div className="flex justify-center p-1 rounded-full gap-3  w-[150px] bg-gray-200">

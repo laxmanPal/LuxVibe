@@ -29,9 +29,11 @@ export default function Home() {
           {latestProducts.map((product) => (
             <Link key={product._id} to={`/product/${product._id}`}>
               <ProductCard
+                productId={product._id}
                 title={product.name}
                 image={product.images?.[0]?.url || product1}
-                price={product.discountPrice}
+                price={product.price}
+                discountPrice={product.discountPrice}
               />
             </Link>
           ))}

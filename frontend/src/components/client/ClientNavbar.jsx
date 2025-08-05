@@ -16,8 +16,10 @@ import { TbLogout } from "react-icons/tb";
 import { FaRegUser } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { IoBagCheckOutline } from "react-icons/io5";
+import { useCartCtx } from "../../store/CartContext";
 
 export default function ClientNavbar() {
+  const { cart } = useCartCtx();
   const [showSearchBar, setShowSearchBar] = useState(false);
   const { user, logout } = useAuth();
 
@@ -167,7 +169,7 @@ export default function ClientNavbar() {
                       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                     >
                       <MenuItem>
-                        <Link  to={"/myaccount"}>
+                        <Link to={"/myaccount"}>
                           <div className="flex items-center gap-3">
                             <FaRegUser className="text-[20px] text-black" />
                             <span className="text-[15px]">My Account</span>
@@ -175,10 +177,7 @@ export default function ClientNavbar() {
                         </Link>
                       </MenuItem>
                       <MenuItem>
-                        <Link
-                          
-                          to={"/myaccount/myorders"}
-                        >
+                        <Link to={"/myaccount/myorders"}>
                           <div className="flex items-center gap-3">
                             <IoBagCheckOutline className="text-[20px] text-black" />
                             <span className="text-[15px]">Orders</span>
@@ -186,10 +185,7 @@ export default function ClientNavbar() {
                         </Link>
                       </MenuItem>
                       <MenuItem>
-                        <Link
-                          
-                          to={"/myaccount/myaddresses"}
-                        >
+                        <Link to={"/myaccount/myaddresses"}>
                           <div className="flex items-center gap-3">
                             <IoLocationOutline className="text-[20px] text-black" />
                             <span className="text-[15px]">Address</span>
@@ -225,7 +221,10 @@ export default function ClientNavbar() {
                 <li className="link list-none">
                   <NavLink to={"/cart"}>
                     <Tooltip title="Cart" arrow>
-                      <Badge badgeContent={1} color="primary">
+                      <Badge
+                        badgeContent={cart?.items?.length || 0}
+                        color="primary"
+                      >
                         <MdOutlineShoppingCart className="text-[25px]" />
                       </Badge>
                     </Tooltip>

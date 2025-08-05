@@ -5,7 +5,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
 
-const ProductListWrapper = ({ children, title }) => {
+const ProductListWrapper = ({ children, title , totalProducts }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -17,15 +17,15 @@ const ProductListWrapper = ({ children, title }) => {
   return (
     <div className="py-8 container border-b border-gray-300">
       {title}
-      <div className="flex gap-3">
+      <div className="">
         {/* Filter */}
-        <div className="h-full min-w-60">
+        {/* <div className="h-full min-w-60">
           <Filter />
-        </div>
+        </div> */}
         <div className="product-list">
-          <div className="flex bg-gray-100 w-full p-2 mb-3 rounded-md items-center justify-between">
-            <p className="text-gray-700">There are 25 products.</p>
-            <div className="ml-auto flex items-center justify-center gap-3 pr-4">
+          <div className="flex bg-gray-100 w-full p-4 mb-3 rounded-md items-center justify-between">
+            <p className="text-gray-700">There are {totalProducts} products.</p>
+            {/* <div className="ml-auto flex items-center justify-center gap-3 pr-4">
               <span>Sort By :</span>
               <div className="flex items-center">
                 <Button
@@ -63,7 +63,7 @@ const ProductListWrapper = ({ children, title }) => {
                   </MenuItem>
                 </Menu>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {/* Products */}

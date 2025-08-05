@@ -19,15 +19,17 @@ const Shop = () => {
             discription="Explore our most popular pieces that customers can't get enough of"
           />
         }
+        totalProducts={products.length}
       >
         {products.map((product) => (
-          <Link key={product._id} to={`/product/${product._id}`}>
-            <ProductCard
-              title={product.name}
-              image={product.images?.[0]?.url || product1}
-              price={product.discountPrice}
-            />
-          </Link>
+          <ProductCard
+            key={product._id}
+            productId={product._id}
+            title={product.name}
+            image={product.images?.[0]?.url || product1}
+            price={product.price}
+            discountPrice={product.discountPrice}
+          />
         ))}
       </ProductListWrapper>
     </>
