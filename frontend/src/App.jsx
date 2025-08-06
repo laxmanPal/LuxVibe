@@ -36,6 +36,7 @@ import { AuthContextProvider } from "./store/AuthContext";
 import { CategoryContectProvider } from "./store/CategoryContext";
 import { ProductContextProvider } from "./store/ProductContext";
 import { CartContextProvider } from "./store/CartContext";
+import { WishlistContextProvider } from "./store/WishListContext";
 
 const router = createBrowserRouter([
   {
@@ -103,8 +104,10 @@ function App() {
         <ProductContextProvider>
           <CategoryContectProvider>
             <CartContextProvider>
-              <RouterProvider router={router} />
-              <ToastContainer position="top-center" autoClose={3000} />
+              <WishlistContextProvider>
+                <RouterProvider router={router} />
+                <ToastContainer position="top-center" autoClose={3000} />
+              </WishlistContextProvider>
             </CartContextProvider>
           </CategoryContectProvider>
         </ProductContextProvider>

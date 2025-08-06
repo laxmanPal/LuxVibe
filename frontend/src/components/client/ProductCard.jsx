@@ -8,6 +8,7 @@ import { Button } from "@mui/material";
 import { convertUsdToInr } from "../../config/currency-converter";
 import { useCartCtx } from "../../store/CartContext";
 import { Link } from "react-router-dom";
+import { useWishlistCtx } from "../../store/WishListContext";
 
 export default function ProductCard({
   image,
@@ -17,6 +18,7 @@ export default function ProductCard({
   productId,
 }) {
   const { addToCart } = useCartCtx();
+  const { addToWishlist } = useWishlistCtx();
   return (
     <div className="card-product relative p-4 w-full max-w-xs cursor-pointer group">
       {/* Link wrapping image and buttons */}
@@ -65,7 +67,11 @@ export default function ProductCard({
           <li>
             <Tooltip arrow title="Add to Wishlist" placement="top">
               <Button
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  addToWishlist({ productId });
+                }}
                 className="!bg-white !w-[37px] !min-w-[37px] !h-[37px] !rounded-full !text-black"
                 size="small"
               >

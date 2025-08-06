@@ -16,6 +16,7 @@ import { convertUsdToInr } from "../../config/currency-converter";
 import { useCategoryCtx } from "../../store/CategoryContext";
 import { useCartCtx } from "../../store/CartContext";
 import { toast } from "react-toastify";
+import { useWishlistCtx } from "../../store/WishListContext";
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Array of image URLs
@@ -23,6 +24,7 @@ const images = [product1, product2, product3, product4];
 
 export default function ProductDetails() {
   const { addToCart } = useCartCtx();
+  const { addToWishlist } = useWishlistCtx();
   const [mainImage, setMainImage] = useState(null);
   const { productId } = useParams();
   console.log(productId);
@@ -59,6 +61,10 @@ export default function ProductDetails() {
     } catch (error) {
       toast.error(error.message || "Failed to add product to cart");
     }
+  };
+
+  const handleAddToWishlist = async () => {
+    await addToWishlist({ productId });
   };
 
   const price = convertUsdToInr(productDetails.price);
@@ -115,14 +121,14 @@ export default function ProductDetails() {
 
           <div className="mb-4">
             <p className="text-2xl font-bold mb-2">
-              {price}
+              {discountPrice}
               <span className="text-lg font-normal text-green-700 ml-4">
                 59% Off
               </span>
             </p>
             <p className="text-sm text-gray-600">
-              MRP <span className="line-through">{discountPrice}</span>{" "}
-              Inclusive of all taxes
+              MRP <span className="line-through">{price}</span> Inclusive of all
+              taxes
             </p>
           </div>
 
@@ -161,7 +167,10 @@ export default function ProductDetails() {
               Add to cart
             </Button>
             {/* Add to Wishlist */}
-            <Button className="w-full !border !border-gray-300  !text-black !rounded-lg text-center font-medium gap-3 ">
+            <Button
+              onClick={handleAddToWishlist}
+              className="w-full !border !border-gray-300  !text-black !rounded-lg text-center font-medium gap-3 "
+            >
               <FaRegHeart className="text-2xl" />
               Add to Wishlist
             </Button>

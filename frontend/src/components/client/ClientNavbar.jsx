@@ -17,9 +17,11 @@ import { FaRegUser } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { useCartCtx } from "../../store/CartContext";
+import { useWishlistCtx } from "../../store/WishListContext";
 
 export default function ClientNavbar() {
   const { cart } = useCartCtx();
+  const { wishlist } = useWishlistCtx();
   const [showSearchBar, setShowSearchBar] = useState(false);
   const { user, logout } = useAuth();
 
@@ -212,7 +214,10 @@ export default function ClientNavbar() {
                 <li className="link list-none">
                   <NavLink to={"myaccount/mywishlist"}>
                     <Tooltip title="Wishlist" arrow>
-                      <Badge badgeContent={1} color="primary">
+                      <Badge
+                        badgeContent={wishlist?.items?.length || 0}
+                        color="primary"
+                      >
                         <FaRegHeart className="text-[25px]" />
                       </Badge>
                     </Tooltip>
