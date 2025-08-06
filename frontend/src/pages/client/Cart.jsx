@@ -4,17 +4,27 @@ import { RxCross2 } from "react-icons/rx";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import logo from "../../assets/logo-2.png";
 import { useCartCtx } from "../../store/CartContext";
-import { convertUsdToInr } from "../../config/currency-converter";
 import { FaRegHeart } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { Link } from "react-router-dom";
+import { currencyFormatter } from "../../config/currency-formatter";
 
 const Cart = () => {
   const { cart, updateCartQuantity, removeCartItem, clearCart } = useCartCtx();
   const cartItems = cart?.items || [];
 
-  // Calculate subtotal (sum of quantity * price)
   const subtotal = cartItems.reduce((acc, item) => {
+    return acc + item.quantity * item.product.price;
+  }, 0);
+
+  const totalPrice = cartItems.reduce((acc, item) => {
     return acc + item.quantity * item.product.discountPrice;
+  }, 0);
+
+  const totalDiscount = cartItems.reduce((acc, item) => {
+    return (
+      acc + item.quantity * (item.product.price - item.product.discountPrice)
+    );
   }, 0);
   return (
     <div className="py-8 container border-b border-gray-300">
@@ -65,7 +75,7 @@ const Cart = () => {
                         </td>
                         <td className="p-4 font-medium">{item.product.name}</td>
                         <td className="p-4">
-                          {convertUsdToInr(item.product.discountPrice)}
+                          {currencyFormatter(item.product.discountPrice)}
                         </td>
                         <td className="p-4">
                           <QuantityBox
@@ -79,7 +89,7 @@ const Cart = () => {
                             }
                           />
                         </td>
-                        <td className="p-4">{convertUsdToInr(itemTotal)}</td>
+                        <td className="p-4">{currencyFormatter(itemTotal)}</td>
                         <td className="p-4 text-center">
                           <Tooltip title="Remove" arrow>
                             <IconButton
@@ -107,10 +117,24 @@ const Cart = () => {
         {/* Cart Summary */}
         <div className="sticky top-20 self-start h-fit">
           <div className="bg-white rounded-lg shadow p-6">
-            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+            <h2 className="text-xl font-semibold mb-4">Cart Summary</h2>
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
-              <span>{convertUsdToInr(subtotal)}</span>
+              <span>{currencyFormatter(subtotal)}</span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span>Discount</span>
+              <span className="text-green-700 text-sm">
+                - {currencyFormatter(totalDiscount)}
+              </span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span>Taxes and charges</span>
+              <span>{currencyFormatter(0)}</span>
+            </div>
+            <div className="flex justify-between mb-2">
+              <span>Delivery charge</span>
+              <span>{currencyFormatter(0)}</span>
             </div>
             {/* <div className="flex justify-between mb-4">
               <span>Shipping</span>
@@ -119,12 +143,14 @@ const Cart = () => {
             <hr className="my-4" />
             <div className="flex justify-between font-bold text-lg">
               <span>Total</span>
-              <span>{convertUsdToInr(subtotal)}</span>
+              <span>{currencyFormatter(totalPrice)}</span>
             </div>
 
-            <Button className="!mt-6   !py-3 hover:bg-gray-900 transition w-full  !bg-black !text-white !rounded-lg text-center font-medium hover:opacity-80 ">
-              Proceed to Checkout
-            </Button>
+            <Link to={"/checkout"}>
+              <Button className="!mt-6   !py-3 hover:bg-gray-900 transition w-full  !bg-black !text-white !rounded-lg text-center font-medium hover:opacity-80 ">
+                Proceed to Checkout
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

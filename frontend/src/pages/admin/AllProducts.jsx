@@ -16,7 +16,8 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 const API_URL = import.meta.env.VITE_API_URL;
 import CircularProgress from "@mui/material/CircularProgress";
-import { convertUsdToInr } from "../../config/currency-converter";
+import { currencyFormatter } from "../../config/currency-formatter";
+
 
 const AllProducts = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -178,9 +179,9 @@ const AllProducts = () => {
                       );
                     })}
                   </td>
-                  <td className="p-4"> {convertUsdToInr(product.price)} </td>
+                  <td className="p-4"> {currencyFormatter(product.price)} </td>
                   <td className="p-4">
-                    {convertUsdToInr(product.discountPrice)}
+                    {currencyFormatter(product.discountPrice)}
                   </td>
                   <td className="p-4">{product.inStock}</td>
                   <td className="p-4">00</td>

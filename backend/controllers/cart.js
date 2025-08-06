@@ -11,7 +11,7 @@ const calculateCartTotals = async (cart) => {
     if (!product) continue;
 
     totalItems += item.quantity;
-    totalPrice += item.quantity * product.price;
+    totalPrice += Math.round(item.quantity * product.discountPrice);
   }
 
   cart.totalItems = totalItems;
@@ -111,10 +111,12 @@ export const updateCartItem = async (req, res) => {
   try {
     const userId = req.userId;
     const { productId, quantity, size } = req.body;
-    const sizeValue = size || ""; 
+    const sizeValue = size || "";
 
     if (!productId || quantity == null) {
-      return res.status(400).json({ message: "ProductId and quantity are required" });
+      return res
+        .status(400)
+        .json({ message: "ProductId and quantity are required" });
     }
 
     const cart = await Cart.findOne({ user: userId });
@@ -131,7 +133,8 @@ export const updateCartItem = async (req, res) => {
     if (quantity === 0) {
       // Remove item if quantity is zero
       cart.items = cart.items.filter(
-        (item) => !(item.product.toString() === productId && item.size === sizeValue)
+        (item) =>
+          !(item.product.toString() === productId && item.size === sizeValue)
       );
     } else {
       cart.items[itemIndex].quantity = quantity;
@@ -140,25 +143,26 @@ export const updateCartItem = async (req, res) => {
     await calculateCartTotals(cart);
     await cart.save();
 
-    const updatedCart = await Cart.findOne({ user: userId }).populate("items.product");
-    res.status(200).json({ success: true, message: "Cart updated", updatedCart });
+    const updatedCart = await Cart.findOne({ user: userId }).populate(
+      "items.product"
+    );
+    res
+      .status(200)
+      .json({ success: true, message: "Cart updated", updatedCart });
   } catch (error) {
     console.error("Update cart item error:", error);
     res.status(500).json({ message: "Server error" });
   }
 };
 
-
 export const removeCartItem = async (req, res) => {
   try {
     const userId = req.userId;
     const { productId, size } = req.body;
-        const sizeValue = size || ""; 
+    const sizeValue = size || "";
 
     if (!productId) {
-      return res
-        .status(400)
-        .json({ message: "Product ID is required" });
+      return res.status(400).json({ message: "Product ID is required" });
     }
 
     const cart = await Cart.findOne({ user: userId });
@@ -168,7 +172,8 @@ export const removeCartItem = async (req, res) => {
     const initialLength = cart.items.length;
 
     cart.items = cart.items.filter(
-      (item) => !(item.product.toString() === productId && item.size === sizeValue)
+      (item) =>
+        !(item.product.toString() === productId && item.size === sizeValue)
     );
 
     if (cart.items.length === initialLength) {

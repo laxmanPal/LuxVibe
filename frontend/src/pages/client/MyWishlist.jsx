@@ -5,8 +5,8 @@ import { RxCross2 } from "react-icons/rx";
 import logo from "../../assets/logo-2.png";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useWishlistCtx } from "../../store/WishListContext";
-import { convertUsdToInr } from "../../config/currency-converter";
 import { useCartCtx } from "../../store/CartContext";
+import { currencyFormatter } from "../../config/currency-formatter";
 
 const MyWishlist = () => {
   const { wishlist, removeWishlistItem } = useWishlistCtx();
@@ -46,9 +46,9 @@ const MyWishlist = () => {
                   </td>
                   <td className="p-4 font-medium">{item.product.name}</td>
                   <td className="p-4">
-                    {convertUsdToInr(item.product.discountPrice)} <br />
+                    {currencyFormatter(item.product.discountPrice)} <br />
                     <span className="line-through text-xs">
-                      {convertUsdToInr(item.product.price)}
+                      {currencyFormatter(item.product.price)}
                     </span>
                   </td>
                   <td className="p-4 text-center">

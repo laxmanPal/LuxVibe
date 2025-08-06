@@ -37,6 +37,7 @@ import { CategoryContectProvider } from "./store/CategoryContext";
 import { ProductContextProvider } from "./store/ProductContext";
 import { CartContextProvider } from "./store/CartContext";
 import { WishlistContextProvider } from "./store/WishListContext";
+import Checkout from "./pages/client/Checkout";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,14 @@ const router = createBrowserRouter([
       { path: "category/:categoryName", element: <Category /> },
       { path: "product/:productId", element: <ProductDetails /> },
       { path: "cart", element: <Cart /> },
+      {
+        path: "checkout",
+        element: (
+          <PrivateRoute>
+            <Checkout />
+          </PrivateRoute>
+        ),
+      },
       {
         path: "myaccount",
         element: (

@@ -12,11 +12,11 @@ import Features from "../../components/client/Features";
 import QuantityBox from "../../components/client/QuantityBox";
 import { IconButton } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { convertUsdToInr } from "../../config/currency-converter";
 import { useCategoryCtx } from "../../store/CategoryContext";
 import { useCartCtx } from "../../store/CartContext";
 import { toast } from "react-toastify";
 import { useWishlistCtx } from "../../store/WishListContext";
+import { currencyFormatter } from "../../config/currency-formatter";
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Array of image URLs
@@ -67,8 +67,8 @@ export default function ProductDetails() {
     await addToWishlist({ productId });
   };
 
-  const price = convertUsdToInr(productDetails.price);
-  const discountPrice = convertUsdToInr(productDetails.discountPrice);
+  const price = currencyFormatter(productDetails.price);
+  const discountPrice = currencyFormatter(productDetails.discountPrice);
   return (
     <div className="py-8 container border-b border-gray-300">
       <div className="px-4 py-10 grid grid-cols-1 md:grid-cols-2 gap-12">

@@ -5,10 +5,10 @@ import Tooltip from "@mui/material/Tooltip";
 import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { Button } from "@mui/material";
-import { convertUsdToInr } from "../../config/currency-converter";
 import { useCartCtx } from "../../store/CartContext";
 import { Link } from "react-router-dom";
 import { useWishlistCtx } from "../../store/WishListContext";
+import { currencyFormatter } from "../../config/currency-formatter";
 
 export default function ProductCard({
   image,
@@ -103,10 +103,10 @@ export default function ProductCard({
         </Link>
         <p className="price-wrap flex justify-center items-center gap-2 mt-1">
           <span className="price-new text-red-500 font-semibold">
-            {convertUsdToInr(discountPrice)}
+            {currencyFormatter(discountPrice)}
           </span>
           <span className="price-old line-through text-gray-400 text-sm">
-            {convertUsdToInr(price)}
+            {currencyFormatter(price)}
           </span>
         </p>
       </div>
