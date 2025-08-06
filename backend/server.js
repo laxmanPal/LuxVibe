@@ -10,12 +10,20 @@ import cartRoutes from "./routes/cart.js";
 import wishlistRoutes from "./routes/wishlist.js";
 import adminRoutes from "./routes/admin.js";
 import addressRoutes from "./routes/address.js";
+import paymentRoutes from "./routes/payment.js";
 
 // Dotenv Config
 import "dotenv/config";
 
 // APP
 const app = express();
+
+// Raw body parser only for Stripe Webhook
+app.use(
+  "/api/payment/webhook",
+  express.raw({ type: "application/json" })
+);
+
 
 // PORT
 const PORT = process.env.PORT || 3000;
@@ -29,6 +37,9 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Payment Routes
+app.use("/api/payment", paymentRoutes);
 
 // Auth Routes
 app.use("/api/auth", authRoutes);

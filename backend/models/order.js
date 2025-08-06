@@ -1,38 +1,96 @@
 import mongoose from "mongoose";
 
-const orderSchema = mongoose.Schema(
+const orderItemSchema = new mongoose.Schema(
   {
-    userId: {
-      type: mongoose.Schema.ObjectId,
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
+      required: true,
+    },
+    quantity: {
+      type: Number,
+      required: true,
+      min: 1,
+    },
+    size: String, // optional, if your products support sizes
+    color: String, // optional
+    price: {
+      type: Number,
+      required: true,
+    },
+  },
+  { _id: false }
+);
+
+const orderSchema = new mongoose.Schema(
+  {
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    productId: {
-      type: mongoose.Schema.ObjectId,
-      ref: "product",
+
+    items: {
+      type: [orderItemSchema],
       required: true,
     },
-    paymentId: {
-      type: String,
-      default: "",
+
+    shippingAddress: {
+      fullName: { type: String, required: true },
+      streetAddress: { type: String, required: true },
+      city: { type: String, required: true },
+      pincode: { type: String, required: true },
+      country: { type: String, required: true },
     },
-    payment_status: {
+
+    paymentMethod: {
       type: String,
-      default: "",
+      required: true,
+      enum: ["COD", "Stripe", "PayPal", "Razorpay"],
     },
-    delivery_address: {
-      type: mongoose.Schema.ObjectId,
-      ref: "address",
+
+    paymentStatus: {
+      isPaid: { type: Boolean, default: false },
+      paidAt: Date,
+      paymentId: String, // e.g. Stripe ID, Razorpay ID, etc.
+      method: String, // Store the confirmed payment method (optional redundancy)
+    },
+
+    orderStatus: {
+      type: String,
+      enum: [
+        "Pending", // Just placed, waiting for confirmation/payment
+        "Confirmed", // Payment confirmed or COD accepted
+        "Processing", // Being packed
+        "Shipped", // Shipped out
+        "Delivered", // Customer received
+        "Cancelled", // Cancelled manually or failed
+        "Returned", // Optional
+      ],
+      default: "Pending",
+    },
+
+    deliveryStatus: {
+      isDelivered: { type: Boolean, default: false },
+      deliveredAt: Date,
+    },
+
+    totalAmount: {
+      type: Number,
       required: true,
     },
-    total_amount: {
+
+    shippingFee: {
+      type: Number,
+      default: 0,
+    },
+
+    taxAmount: {
       type: Number,
       default: 0,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
-module.exports = mongoose.model("Order", orderSchema);
+export default mongoose.model("Order", orderSchema);

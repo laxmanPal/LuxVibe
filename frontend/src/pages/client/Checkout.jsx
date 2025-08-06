@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import AddressCard from "../../components/client/AddressCard";
 import { useCartCtx } from "../../store/CartContext";
 import { currencyFormatter } from "../../config/currency-formatter";
+import stripeCheckout from "../../payments/StripeCheckout";
 
 const Checkout = () => {
   const [showAddressForm, setShowAddressForm] = useState(false);
@@ -134,6 +135,17 @@ const Checkout = () => {
       console.error("Delete address error:", error.message);
     }
   };
+
+  const selectedAddress = addresses.find((a) => a._id === selectedAddressId);
+
+  const handlePayment = () => {
+    if (!selectedAddress) {
+      toast.error("Please select an address");
+      return;
+    }
+    stripeCheckout({ cartItems, shippingInfo: selectedAddress });
+  };
+
   return (
     <div className="py-8 container border-b border-gray-300">
       <div className=" grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -330,7 +342,10 @@ const Checkout = () => {
               <span>{currencyFormatter(totalPrice)}</span>
             </div>
 
-            <Button className="!mt-6   !py-3 hover:bg-gray-900 transition w-full  !bg-black !text-white !rounded-lg text-center font-medium hover:opacity-80 ">
+            <Button
+              onClick={handlePayment}
+              className="!mt-6   !py-3 hover:bg-gray-900 transition w-full  !bg-black !text-white !rounded-lg text-center font-medium hover:opacity-80 "
+            >
               Place Order
             </Button>
           </div>

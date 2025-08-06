@@ -38,6 +38,7 @@ import { ProductContextProvider } from "./store/ProductContext";
 import { CartContextProvider } from "./store/CartContext";
 import { WishlistContextProvider } from "./store/WishListContext";
 import Checkout from "./pages/client/Checkout";
+import PaymentSuccess from "./pages/client/PaymentSuccess";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +56,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <Checkout />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path:"/payment-success",
+         element: (
+          <PrivateRoute>
+            <PaymentSuccess/>
           </PrivateRoute>
         ),
       },
