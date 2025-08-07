@@ -13,12 +13,11 @@ async function handleStripeOrder(session) {
 
     const stripeLineItems = session.line_items.data;
 
-
     const items = stripeLineItems.map((item) => ({
       product: item.price.product.metadata.productId,
       quantity: item.quantity,
-      size: item.metadata?.size || "", 
-      price: item.price.unit_amount / 100, 
+      size: item.metadata?.size || "",
+      price: item.price.unit_amount / 100,
     }));
 
     const order = new Order({
@@ -81,10 +80,10 @@ export const createStripeCheckoutSession = async (req, res) => {
     }));
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ["card"], 
+      payment_method_types: ["card"],
       mode: "payment",
       line_items: lineItems,
-      success_url: `${process.env.CLIENT_URL}/payment-success`,
+      success_url: `${process.env.CLIENT_URL}/myaccount/myorders`,
       cancel_url: `${process.env.CLIENT_URL}/cart`,
       metadata: {
         userId,

@@ -39,6 +39,9 @@ import { CartContextProvider } from "./store/CartContext";
 import { WishlistContextProvider } from "./store/WishListContext";
 import Checkout from "./pages/client/Checkout";
 import PaymentSuccess from "./pages/client/PaymentSuccess";
+import { OrderContextProvider } from "./store/OrderContext";
+import Order from "./pages/client/Order";
+import SingleOrder from "./pages/admin/SingleOrder";
 
 const router = createBrowserRouter([
   {
@@ -60,10 +63,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path:"/payment-success",
-         element: (
+        path: "/payment-success",
+        element: (
           <PrivateRoute>
-            <PaymentSuccess/>
+            <PaymentSuccess />
           </PrivateRoute>
         ),
       },
@@ -79,6 +82,7 @@ const router = createBrowserRouter([
           { path: "dashboard", element: <Dashboard /> },
           { path: "mywishlist", element: <MyWishlist /> },
           { path: "myorders", element: <MyOrders /> },
+          { path: "myorders/:orderId", element: <Order /> },
           { path: "myaddresses", element: <MyAddresses /> },
           { path: "details", element: <AccountDetails /> },
         ],
@@ -110,6 +114,7 @@ const router = createBrowserRouter([
       { path: "categories", element: <AllCategories /> },
       { path: "users", element: <Users /> },
       { path: "orders", element: <Orders /> },
+      { path: "orders/:orderId", element: <SingleOrder /> },
     ],
   },
   { path: "*", element: <NotFound /> },
@@ -123,8 +128,10 @@ function App() {
           <CategoryContectProvider>
             <CartContextProvider>
               <WishlistContextProvider>
-                <RouterProvider router={router} />
-                <ToastContainer position="top-center" autoClose={3000} />
+                <OrderContextProvider>
+                  <RouterProvider router={router} />
+                  <ToastContainer position="top-center" autoClose={3000} />
+                </OrderContextProvider>
               </WishlistContextProvider>
             </CartContextProvider>
           </CategoryContectProvider>

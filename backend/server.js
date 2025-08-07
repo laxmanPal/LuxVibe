@@ -11,6 +11,7 @@ import wishlistRoutes from "./routes/wishlist.js";
 import adminRoutes from "./routes/admin.js";
 import addressRoutes from "./routes/address.js";
 import paymentRoutes from "./routes/payment.js";
+import orderRoutes from "./routes/order.js";
 
 // Dotenv Config
 import "dotenv/config";
@@ -64,6 +65,9 @@ app.use("/api/admin/category", categoryRoutes);
 app.use("/api/admin/product", productRoutes);
 // Users
 app.use("/api/admin/", adminRoutes);
+
+//Order
+app.use("/api/order", orderRoutes);
 
 app.use((err, req, res, next) => {
   if (err.code === "LIMIT_FILE_SIZE") {

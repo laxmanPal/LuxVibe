@@ -13,8 +13,14 @@ import { useState } from "react";
 import { CiFilter } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { useOrderCtx } from "../../store/OrderContext";
+import { currencyFormatter } from "../../config/currency-formatter";
 
 const Orders = () => {
+  const { allOrders } = useOrderCtx();
+
+  console.log(allOrders);
+
   return (
     <div className="bg-white rounded-xl shadow p-6">
       <div className="flex justify-between items-center mb-4">
@@ -33,35 +39,66 @@ const Orders = () => {
             <IoSearch className="text-2xl text-[#4e4e4e]" />
           </Button>
         </div>
-     
       </div>
       <div className="overflow-x-auto">
-            <table className="min-w-full bg-white rounded-lg overflow-hidden">
-            <thead className="bg-gray-100 text-gray-600 text-sm uppercase text-left">
-              <tr>
-                <th className="p-4">Order Id</th>
-                <th className="p-4">Customer</th>
-                <th className="p-4">Total Price</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Date</th>
-              </tr>
-            </thead>
-            <tbody className="text-gray-700 divide-y divide-gray-200">
-              <tr>
-                <td className="p-4">1</td>
-                <td className="p-4">Customer 1</td>
-                <td className="p-4">$25.00</td>
-                <td className="p-4">Delivered</td>
-                <td className="p-4">01/01/2026</td>
-              </tr>
-            </tbody>
-          </table>
+        <table className="min-w-full bg-white rounded-lg overflow-hidden">
+          <thead className="bg-gray-100 text-gray-600 text-sm uppercase text-left">
+            <tr>
+              <th className="p-4">Order Id</th>
+              <th className="p-4">Customer</th>
+              <th className="p-4">Total Item</th>
+              <th className="p-4">Total Amount</th>
+              <th className="p-4">Status</th>
+              <th className="p-4">Date</th>
+              <th className="p-4">Action</th>
+            </tr>
+          </thead>
+          <tbody className="text-gray-700 divide-y divide-gray-200">
+            {allOrders.map((order, index) => {
+              let totalItems = 0;
+              order.items.forEach((item) => {
+                totalItems += item.quantity;
+              });
+              return (
+                <tr>
+                  <td className="p-4">{index + 1}</td>
+                  <td className="p-4">
+                    <div className="flex gap-2 items-center">
+                      <img
+                        className="w-10 h-10 rounded-full"
+                        src={order.user.avatar?.url}
+                        alt=""
+                      />
+                      <p>
+                        <span className="font-semibold">{order.user.name}</span> <br />
+                        <span className="text-sm text-gray-500">{order.user.email}</span>
+                      </p>
+                    </div>
+                  </td>
+                  <td className="p-4">{totalItems}</td>
+                  <td className="p-4">
+                    {currencyFormatter(order.totalAmount)}
+                  </td>
+                  <td className="p-4">{order.orderStatus}</td>
+                  <td className="p-4">
+                    {new Date(order.createdAt).toLocaleDateString()}
+                  </td>
+                   <td className="p-4">
+                   <Link to={`${order._id}`}>
+                    View Order
+                   </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
         <div className="mt-5">
           <Pagination count={10} />
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Orders
+export default Orders;
