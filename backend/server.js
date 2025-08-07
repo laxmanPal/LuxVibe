@@ -14,6 +14,7 @@ import paymentRoutes from "./routes/payment.js";
 
 // Dotenv Config
 import "dotenv/config";
+import { stripeWebhook } from "./controllers/payment.js";
 
 // APP
 const app = express();
@@ -21,9 +22,9 @@ const app = express();
 // Raw body parser only for Stripe Webhook
 app.use(
   "/api/payment/webhook",
-  express.raw({ type: "application/json" })
+  express.raw({ type: "application/json" }),
+  stripeWebhook
 );
-
 
 // PORT
 const PORT = process.env.PORT || 3000;
