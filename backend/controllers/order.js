@@ -25,6 +25,7 @@ export const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
       .populate("items.product")
+      .populate("user")
       .sort({ createdAt: -1 });
 
     if (!order) {
@@ -61,3 +62,35 @@ export const getAllOrders = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch all orders" });
   }
 };
+
+export const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderStatus } = req.body;
+
+    const updatedOrder = await Order.findByIdAndUpdate(
+      req.params.id,
+      { orderStatus },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Order Status updated successfully",
+      updatedOrder,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to update order status",
+      error: error.message,
+    });
+  }
+};
+

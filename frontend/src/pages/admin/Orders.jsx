@@ -85,7 +85,7 @@ const Orders = () => {
                   </td>
                    <td className="p-4">
                    <Link to={`${order._id}`}>
-                    View Order
+                    <FaRegEye className="text-xl"/>
                    </Link>
                   </td>
                 </tr>

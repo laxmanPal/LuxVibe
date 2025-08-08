@@ -10,6 +10,7 @@ import { useState } from "react";
 import { useProductCtx } from "../../store/ProductContext";
 import { currencyFormatter } from "../../config/currency-formatter";
 import { Link } from "react-router-dom";
+import { FaRegEye } from "react-icons/fa";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const AdminDashboard = () => {
@@ -90,6 +91,7 @@ const AdminDashboard = () => {
                 <th className="p-4">Total Amount</th>
                 <th className="p-4">Status</th>
                 <th className="p-4">Date</th>
+                <th className="p-4">Action</th>
               </tr>
             </thead>
             <tbody className="text-gray-700 divide-y divide-gray-200">
@@ -126,6 +128,11 @@ const AdminDashboard = () => {
                     <td className="p-4">{order.orderStatus}</td>
                     <td className="p-4">
                       {new Date(order.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="p-4">
+                      <Link to={`/admin/orders/${order._id}`}>
+                        <FaRegEye className="text-xl" />
+                      </Link>
                     </td>
                   </tr>
                 );

@@ -4,12 +4,30 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 import { currencyFormatter } from "../../config/currency-formatter";
-import { Chip } from "@mui/material";
+import { Button, Chip, TextField } from "@mui/material";
+import { MdMailOutline } from "react-icons/md";
+import { IoCallOutline } from "react-icons/io5";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const SingleOrder = () => {
   const { orderId } = useParams();
   const [order, setOrder] = useState({});
-  const { fetchOrderById } = useOrderCtx();
+  const { fetchOrderById, updateOrderStatus } = useOrderCtx();
+
+  const [orderStatus, setOrderStatus] = useState("");
+
+  const handleChange = (event) => {
+    setOrderStatus(event.target.value);
+  };
+
+  const handleOrderStatus = (event) => {
+    event.preventDefault();
+    updateOrderStatus(orderId, orderStatus);
+  };
 
   useEffect(() => {
     fetchOrderDetails(orderId);
@@ -18,6 +36,8 @@ const SingleOrder = () => {
   const fetchOrderDetails = async (orderId) => {
     const orderDetails = await fetchOrderById(orderId);
     setOrder(orderDetails);
+    setOrderStatus(orderDetails.orderStatus);
+    console.log(orderDetails);
   };
 
   const subtotal = order.items?.reduce((acc, item) => {
@@ -44,7 +64,10 @@ const SingleOrder = () => {
             {order.items?.map((item) => {
               const itemTotal = item.quantity * item.product.discountPrice;
               return (
-                <div className="mb-5 flex gap-3 border p-4 border-gray-300 rounded">
+                <div
+                  key={item.product._id}
+                  className="mb-5 flex gap-3 border p-4 border-gray-300 rounded"
+                >
                   <img
                     className="w-20 rounded object-cover"
                     src={item.product.images[0].url}
@@ -117,31 +140,69 @@ const SingleOrder = () => {
           <div className="bg-white p-6 rounded-lg shadow">
             <h3 className="font-semibold text-lg mb-4">Customer</h3>
             <div>
-              <div>
-                <img src={order.user?.avatar?.url} alt="" />
+              <div className="flex gap-3 items-start">
+                <img
+                  className="w-20 h-20 rounded-full"
+                  src={order.user?.avatar?.url}
+                  alt=""
+                />
+                <p>
+                  <span>{order.user?.name}</span>
+                  <span className="flex items-center gap-2 text-gray-600">
+                    <MdMailOutline /> {order.user?.email}
+                  </span>
+                  <span className="flex items-center gap-2 text-gray-600">
+                    <IoCallOutline /> {order.user?.phone}
+                  </span>
+                </p>
               </div>
             </div>
           </div>
 
           {/* Pricing */}
           <div className="bg-white p-6 rounded-lg shadow">
-            <h3 className="font-semibold text-lg mb-4">Pricing</h3>
+            <h3 className="font-semibold text-lg mb-4">Shipping Address</h3>
 
-            <div className="space-y-4">
-              <div></div>
-
-              <div></div>
-
-              {/* <div>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    id="name"
-                    label="Off %"
-                    variant="outlined"
-                  />
-                </div> */}
-            </div>
+            <p>Name : {order.shippingAddress?.fullName}</p>
+            <p>Address : {order.shippingAddress?.streetAddress}</p>
+            <p>City : {order.shippingAddress?.city}</p>
+            <p>Country : {order.shippingAddress?.country}</p>
+            <p>Pincode : {order.shippingAddress?.pincode}</p>
+          </div>
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="font-semibold text-lg mb-4">Order Status</h3>
+            <form onSubmit={handleOrderStatus}>
+              <div className="flex justify-between">
+                <FormControl sx={{ m: 1, width: 300 }}>
+                  <InputLabel>Order Status</InputLabel>
+                  <Select
+                    className="!w-full"
+                    label="Order Status"
+                    id="orderStatus"
+                    value={orderStatus}
+                    onChange={handleChange}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value={"Pending"}>Pending</MenuItem>
+                    <MenuItem value={"Confirmed"}>Confirmed</MenuItem>
+                    <MenuItem value={"Processing"}>Processing</MenuItem>
+                    <MenuItem value={"Shipped"}>Shipped</MenuItem>
+                    <MenuItem value={"Delivered"}>Delivered</MenuItem>
+                    <MenuItem value={"Cancelled"}>Cancelled</MenuItem>
+                    <MenuItem value={"Returned"}>Returned</MenuItem>
+                  </Select>
+                </FormControl>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  className="!bg-black hover:!bg-gray-800 !text-white !rounded-lg !px-6 !py-2 !capitalize font-semibold"
+                >
+                  Save
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

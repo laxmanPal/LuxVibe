@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const OrderContext = createContext();
@@ -86,11 +87,32 @@ export const OrderContextProvider = ({ children }) => {
     }
   };
 
+  const updateOrderStatus = async (orderId, orderStatus) => {
+    try {
+      const response = await fetch(`${API_URL}/order/orders/${orderId}`, {
+        method: "PUT",
+        body: JSON.stringify({ orderStatus }),
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Update Order Status failed");
+      }
+      toast.success("✅ Order Status Updated");
+    } catch (error) {
+      console.error("Update Order Status Error:", error.message);
+      toast.error(`❌ ${error.message}`);
+    }
+  };
+
   const orderCtx = {
     userOrders,
     allRecentOrders,
     allOrders,
     fetchOrderById,
+    updateOrderStatus,
   };
 
   return (

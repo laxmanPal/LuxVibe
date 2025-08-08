@@ -7,6 +7,7 @@ import { MdOutlineShoppingCart } from "react-icons/md";
 import { useOrderCtx } from "../../store/OrderContext";
 import { currencyFormatter } from "../../config/currency-formatter";
 import { Link } from "react-router-dom";
+import { FaRegEye } from "react-icons/fa";
 
 const MyOrders = () => {
   const { userOrders } = useOrderCtx();
@@ -23,6 +24,7 @@ const MyOrders = () => {
               <th className="p-4">Total Items</th>
               <th className="p-4">Order Date</th>
               <th className="p-4">Status</th>
+              <th className="p-4">Action</th>
             </tr>
           </thead>
           <tbody className="text-gray-700 divide-y divide-gray-200">
@@ -60,6 +62,11 @@ const MyOrders = () => {
                         className="mb-3 !bg-green-200 !text-green-700"
                         label={order.orderStatus}
                       />
+                    </td>
+                    <td className="p-4">
+                      <Link to={`/myaccount/myorders/${order._id}`}>
+                        <FaRegEye className="text-xl" />
+                      </Link>
                     </td>
                   </tr>
                 );
