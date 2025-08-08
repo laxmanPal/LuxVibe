@@ -10,24 +10,19 @@ import { Link } from "react-router-dom";
 
 const Categories = () => {
   const { categories } = useCategoryCtx();
+
   const items = [
     { span: "col-span-2 row-span-2" },
     { span: "col-span-2 row-span-3" },
-    {
-      span: "col-span-2 row-span-2",
-    },
+    { span: "col-span-2 row-span-2" },
     { span: "col-span-1 row-span-1" },
     { span: "col-span-1 row-span-2" },
     { span: "col-span-1 row-span-1" },
     { span: "col-span-2 row-span-1" },
-    {
-      span: "col-span-2 row-span-2",
-    },
+    { span: "col-span-2 row-span-2" },
     { span: "col-span-1 row-span-1" },
     { span: "col-span-1 row-span-1" },
-    {
-      span: "col-span-1 row-span-1",
-    },
+    { span: "col-span-1 row-span-1" },
     { span: "col-span-1 row-span-1" },
   ];
 
@@ -37,20 +32,31 @@ const Categories = () => {
         title="Categories"
         discription="Choose from different Categories"
       />
-      <div className="grid grid-cols-4 gap-4 auto-rows-[150px]">
+
+      <div
+        className="
+          grid 
+          grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 
+          gap-4 
+          auto-rows-[150px] sm:auto-rows-[180px] lg:auto-rows-[200px]
+        "
+      >
         {categories.map((category, index) => (
           <Link
             key={category._id}
-            className={`relative overflow-hidden rounded-xl shadow-md${items[index].span}`}
+            className={`relative overflow-hidden rounded-xl shadow-md 
+              sm:${items[index]?.span || ""}
+            `}
             to={`/category/${category.slug}`}
           >
             <img
-              src={category.images[0].url}
+              src={category.images[0]?.url}
               alt={category.name}
-              className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              className="w-full h-full object-cover sm:object-cover object-center"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-              <h2 className="text-white text-lg font-bold uppercase text-center px-2">
+              <h2 className="text-white text-sm sm:text-lg font-bold uppercase text-center px-2">
                 {category.name}
               </h2>
             </div>

@@ -28,19 +28,19 @@ const Cart = () => {
   }, 0);
   return (
     <div className="py-8 container border-b border-gray-300">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-semibold mb-6">Shopping Cart</h2>{" "}
         <Button
-          onClick={() => clearCart()}
-          className="   !text-white !rounded-lg text-center font-medium gap-3  !bg-black !p-2"
+          onClick={clearCart}
+          className="!text-white !rounded-lg font-medium gap-2 !bg-black !p-2 flex items-center"
         >
           <RiDeleteBin6Line className="text-xl" />
           Clear Cart
         </Button>
       </div>
-      <div className=" grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2">
-          <div className="overflow-x-auto  bg-white rounded-lg shadow">
+      <div className=" flex flex-col md:flex-row gap-6">
+        <div className="md:flex-1">
+          <div className="hidden md:block bg-white rounded-lg shadow overflow-x-auto">
             <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
               <thead className="bg-gray-100 text-gray-600 text-sm uppercase text-left">
                 <tr>
@@ -112,10 +112,58 @@ const Cart = () => {
               </tbody>
             </table>
           </div>
+                    {/* Card/List view for small screens */}
+                    <div className="md:hidden space-y-6">
+                      {cartItems.length > 0 ? (
+                        cartItems.map((item, index) => {
+                          if (!item.product) return null;
+                          const itemTotal = item.quantity * item.product.discountPrice;
+                          return (
+                            <div
+                              key={item.product._id}
+                              className="bg-white rounded-lg shadow p-4 flex gap-4"
+                            >
+                              <img
+                                src={item.product.images?.[0]?.url || "/placeholder.jpg"}
+                                alt={item.product.name}
+                                className="w-20 h-20 object-cover rounded"
+                              />
+                              <div className="flex flex-col flex-1">
+                                <div className="font-semibold text-base">{item.product.name}</div>
+                                <div className="text-gray-600 text-sm">
+                                  Price: {currencyFormatter(item.product.discountPrice)}
+                                </div>
+                                <div className="flex items-center mt-2">
+                                  <span className="mr-2">Qty:</span>
+                                  <QuantityBox
+                                    quantity={item.quantity}
+                                    setQuantity={(newQty) =>
+                                      updateCartQuantity(item.product._id, newQty, item.size)
+                                    }
+                                  />
+                                </div>
+                                <div className="mt-auto font-semibold text-gray-900">
+                                  Total: {currencyFormatter(itemTotal)}
+                                </div>
+                              </div>
+                              <div className="flex items-start">
+                                <Tooltip title="Remove" arrow>
+                                  <IconButton onClick={() => removeCartItem(item.product._id)}>
+                                    <RxCross2 className="text-xl text-black" />
+                                  </IconButton>
+                                </Tooltip>
+                              </div>
+                            </div>
+                          );
+                        })
+                      ) : (
+                        <div className="text-center text-gray-500">No Items In Cart</div>
+                      )}
+                    </div>
         </div>
 
         {/* Cart Summary */}
-        <div className="sticky top-20 self-start h-fit">
+        <div className="md:w-1/3 sticky top-20 self-start h-fit w-full">
           <div className="bg-white rounded-lg shadow p-6">
             <h2 className="text-xl font-semibold mb-4">Cart Summary</h2>
             <div className="flex justify-between mb-2">

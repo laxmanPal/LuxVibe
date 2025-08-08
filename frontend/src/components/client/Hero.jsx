@@ -7,31 +7,37 @@ import Banner from "./Banner";
 
 export default function Hero() {
   return (
-        <div className="grid grid-cols-4 grid-rows-2 gap-4">
-          <Banner
-            item_classes="col-span-2 row-span-2"
-            banner_image={banner1}
-            banner_title="New Arrivals"
-            btn_title="View Collection"
-          />
-          <Banner
-            item_classes="col-span-1 row-span-1"
-            banner_image={banner2}
-            banner_title="Sneakers"
-            btn_title="Explore Now"
-          />
-          <Banner
-            item_classes="col-span-1 row-span-1"
-            banner_image={banner3}
-            banner_title="Sandals"
-            btn_title="Explore Now"
-          />
-          <Banner
-            item_classes="col-span-2 row-span-1"
-            banner_image={banner4}
-            banner_title="Boots"
-            btn_title="Explore Now"
-          />
-        </div>
+    <div
+      className="
+        grid gap-4
+        grid-cols-1 grid-rows-4
+        sm:grid-cols-2 sm:grid-rows-2
+        lg:grid-cols-4 lg:grid-rows-2"
+    >
+      <Banner
+        item_classes="col-span-1 row-span-2 sm:col-span-2 lg:col-span-2 lg:row-span-2"
+        banner_image={banner1}
+        banner_title="New Arrivals"
+        btn_title="View Collection"
+      />
+      <Banner
+        item_classes="col-span-1 row-span-1"
+        banner_image={banner2}
+        banner_title="Sneakers"
+        btn_title="Explore Now"
+      />
+      <Banner
+        item_classes="col-span-1 row-span-1"
+        banner_image={banner3}
+        banner_title="Sandals"
+        btn_title="Explore Now"
+      />
+      <Banner
+        item_classes="col-span-1 row-span-1 sm:col-span-2 sm:row-span-1"
+        banner_image={banner4}
+        banner_title="Boots"
+        btn_title="Explore Now"
+      />
+    </div>
   );
 }

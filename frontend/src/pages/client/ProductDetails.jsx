@@ -70,13 +70,13 @@ export default function ProductDetails() {
   const price = currencyFormatter(productDetails.price);
   const discountPrice = currencyFormatter(productDetails.discountPrice);
   return (
-    <div className="py-8 container border-b border-gray-300">
-      <div className="px-4 py-10 grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div className="py-6 sm:py-8 container border-b border-gray-300">
+      <div className="px-2 sm:px-4 py-6 sm:py-10 grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-12">
         {/* Sticky Images Section */}
-        <div className="sticky top-20 self-start h-fit">
-          <div className="flex gap-4">
+        <div className="md:sticky md:top-20 self-start h-fit">
+          <div className="flex flex-col lg:flex-row sm:flex-row md:flex-row gap-4">
             {/* Thumbnails */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-row sm:flex-col gap-2 sm:gap-4 order-2 sm:order-1">
               {productDetails.images?.map((imgObj, index) => (
                 <img
                   key={index}
@@ -93,7 +93,7 @@ export default function ProductDetails() {
             </div>
 
             {/* Main Image */}
-            <div className="flex-1">
+            <div className="flex-1 order-1 sm:order-2">
               <img
                 src={mainImage}
                 alt="Main Product"
@@ -105,11 +105,11 @@ export default function ProductDetails() {
 
         {/* Scrollable Product Details */}
         <div className="flex flex-col justify-center">
-          <div className="mb-6">
+          <div className="mb-4 sm:mb-6">
             <p className="text-sm text-gray-500 font-medium">
               {productDetails.brand}
             </p>
-            <h1 className="text-2xl font-semibold ">
+            <h1 className="text-xl sm:text-2xl font-semibold flex flex-wrap items-center gap-2">
               {productDetails.name}{" "}
               <Chip
                 className="!bg-green-200 !text-green-700"
@@ -120,19 +120,19 @@ export default function ProductDetails() {
           </div>
 
           <div className="mb-4">
-            <p className="text-2xl font-bold mb-2">
+            <p className="text-xl sm:text-2xl font-bold mb-1 sm:mb-2">
               {discountPrice}
-              <span className="text-lg font-normal text-green-700 ml-4">
+              <span className="text-sm sm:text-lg font-normal text-green-700 ml-2 sm:ml-4">
                 59% Off
               </span>
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-600">
               MRP <span className="line-through">{price}</span> Inclusive of all
               taxes
             </p>
           </div>
 
-          <p className="text-gray-600 text-sm mb-6">
+          <p className="text-gray-600 text-sm mb-4 sm:mb-6">
             {productDetails.description}
           </p>
 
@@ -155,23 +155,23 @@ export default function ProductDetails() {
             </div>
           </div> */}
 
-          <div className="flex  gap-4">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             {/* Quantity */}
             <QuantityBox quantity={quantity} setQuantity={setQuantity} />
             {/* Add to Cart */}
             <Button
               onClick={handleAddToCart}
-              className="w-full  !bg-black !text-white !rounded-lg text-center font-medium gap-3 "
+              className="w-full !bg-black !text-white !rounded-lg font-medium gap-2 sm:gap-3"
             >
-              <MdOutlineShoppingCart className="text-2xl" />
+              <MdOutlineShoppingCart className="text-lg sm:text-2xl" />
               Add to cart
             </Button>
             {/* Add to Wishlist */}
             <Button
               onClick={handleAddToWishlist}
-              className="w-full !border !border-gray-300  !text-black !rounded-lg text-center font-medium gap-3 "
+              className="w-full !border !border-gray-300 !text-black !rounded-lg font-medium gap-2 sm:gap-3"
             >
-              <FaRegHeart className="text-2xl" />
+              <FaRegHeart className="text-lg sm:text-2xl" />
               Add to Wishlist
             </Button>
           </div>

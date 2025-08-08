@@ -15,16 +15,16 @@ const ProductListWrapper = ({ children, title , totalProducts }) => {
     setAnchorEl(null);
   };
   return (
-    <div className="py-8 container border-b border-gray-300">
-      {title}
+    <div className="py-8 container mx-auto px-4 border-b border-gray-300">
+      <div className="mb-6">{title}</div>
       <div className="">
         {/* Filter */}
         {/* <div className="h-full min-w-60">
           <Filter />
         </div> */}
-        <div className="product-list">
-          <div className="flex bg-gray-100 w-full p-4 mb-3 rounded-md items-center justify-between">
-            <p className="text-gray-700">There are {totalProducts} products.</p>
+        <div className="product-list w-full">
+          <div className="flex flex-col gap-3 sm:flex-row bg-gray-100 w-full p-4 mb-4 rounded-md sm:items-center sm:justify-between">
+            <p className="text-gray-700 text-sm sm:text-base">There are {totalProducts} products.</p>
             {/* <div className="ml-auto flex items-center justify-center gap-3 pr-4">
               <span>Sort By :</span>
               <div className="flex items-center">
@@ -65,7 +65,7 @@ const ProductListWrapper = ({ children, title , totalProducts }) => {
               </div>
             </div> */}
           </div>
-          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
             {/* Products */}
             {children}
           </div>

@@ -20,11 +20,11 @@ export default function ProductCard({
   const { addToCart } = useCartCtx();
   const { addToWishlist } = useWishlistCtx();
   return (
-    <div className="card-product relative p-4 w-full max-w-xs cursor-pointer group">
+    <div className="card-product relative p-3 w-full cursor-pointer group rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
       {/* Link wrapping image and buttons */}
       <Link
         to={`/product/${productId}`}
-        className="block relative rounded-xl bg-gray-100 overflow-hidden"
+        className="block relative rounded-xl overflow-hidden bg-gray-100 aspect-w-1 aspect-h-1"
       >
         <img
           className="img-product w-full h-auto object-contain transition-transform duration-300 group-hover:scale-110"

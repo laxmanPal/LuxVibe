@@ -35,82 +35,104 @@ const Order = () => {
       <div className="w-full h-full py-8  md:col-span-2">
         <Chip
           size="small"
-          className="mb-3 !bg-green-200 !text-green-700"
+          className="mb-4 px-3 py-1 !bg-green-200 !text-green-700 rounded-full"
           label={order.orderStatus}
         />
-        <h2 className="text-2xl font-semibold mb-3">
-          Order Id : <span className="text-sm text-gray-500">#{order._id}</span>
+        <h2 className="text-2xl font-semibold mb-2">
+          Order Id: <span className="text-sm text-gray-500">#{order._id}</span>
         </h2>
-        <span className="text-sm font-semibold ">
-          Date: {new Date(order.createdAt).toLocaleDateString()}
+        <span className="block text-sm font-semibold text-gray-700 mb-6">
+          Date:{" "}
+          {order.createdAt
+            ? new Date(order.createdAt).toLocaleDateString()
+            : "-"}
         </span>
-        <div className="bg-white rounded-lg shadow p-6 mt-6">
-          <div>
+        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+          <div className="space-y-4 mb-8">
             {order.items?.map((item) => {
               const itemTotal = item.quantity * item.product.discountPrice;
               return (
-                <div className="mb-5 flex gap-3 border p-4 border-gray-300 rounded">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-3 border border-gray-300 rounded">
                   <img
-                    className="w-20 rounded object-cover"
+                    className="w-24 h-24 sm:w-28 sm:h-28 rounded object-cover flex-shrink-0"
                     src={item.product.images[0].url}
-                    alt=""
+                    alt={item.product.name}
                   />
-                  <div className="flex justify-between w-full">
+                  <div className="flex flex-col sm:flex-row justify-between flex-1 w-full">
                     <div>
-                      <h6>{item.product.name}</h6>
-                      <p className="">
-                        <span>
+                      <h6 className="font-semibold text-lg">
+                        {item.product.name}
+                      </h6>
+                      <p className="flex items-center gap-4 mt-1 text-gray-700">
+                        <span className="font-medium text-primary-600">
                           {currencyFormatter(item.product.discountPrice)}
                         </span>
-                        <span className="text-gray-600 ml-8">
-                          x {item.quantity}
-                        </span>
+                        <span className="text-gray-500">x {item.quantity}</span>
                       </p>
-                      <p className="text-xs line-through">
+                      <p className="text-xs text-gray-400 line-through mt-1">
                         {currencyFormatter(item.product.price)}
                       </p>
                     </div>
-                    <p>{currencyFormatter(itemTotal)}</p>
+                    <p className="font-semibold text-lg mt-3 sm:mt-0 sm:self-center">
+                      {currencyFormatter(itemTotal)}
+                    </p>
                   </div>
                 </div>
               );
             })}
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="col-span-1">
-              <h2 className="text-xl font-semibold mb-4">Shiping Address</h2>
-              <p>Name : {order.shippingAddress?.fullName}</p>
-              <p>Address : {order.shippingAddress?.streetAddress}</p>
-              <p>City : {order.shippingAddress?.city}</p>
-              <p>Country : {order.shippingAddress?.country}</p>
-              <p>Pincode : {order.shippingAddress?.pincode}</p>
-            </div>
-            <div className="col-span-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Shipping Address */}
+            <section>
+              <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
+              <p className="mb-1">
+                <span className="font-semibold">Name: </span>
+                {order.shippingAddress?.fullName || "-"}
+              </p>
+              <p className="mb-1">
+                <span className="font-semibold">Address: </span>
+                {order.shippingAddress?.streetAddress || "-"}
+              </p>
+              <p className="mb-1">
+                <span className="font-semibold">City: </span>
+                {order.shippingAddress?.city || "-"}
+              </p>
+              <p className="mb-1">
+                <span className="font-semibold">Country: </span>
+                {order.shippingAddress?.country || "-"}
+              </p>
+              <p className="mb-1">
+                <span className="font-semibold">Pincode: </span>
+                {order.shippingAddress?.pincode || "-"}
+              </p>
+            </section>
+            {/* Order Summary */}
+            <section>
               <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
-              <div className="flex justify-between mb-2">
-                <span>Subtotal</span>
-                <span>{currencyFormatter(subtotal)}</span>
+              <div className="space-y-3 text-gray-800">
+                <div className="flex justify-between">
+                  <span>Subtotal</span>
+                  <span>{currencyFormatter(subtotal)}</span>
+                </div>
+                <div className="flex justify-between text-green-700">
+                  <span>Discount</span>
+                  <span>- {currencyFormatter(totalDiscount)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Taxes and charges</span>
+                  <span>{currencyFormatter(order.taxAmount || 0)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Delivery charge</span>
+                  <span>{currencyFormatter(0)}</span>
+                </div>
+                <hr className="border-t border-gray-300 my-4" />
+                <div className="flex justify-between font-bold text-lg">
+                  <span>Total</span>
+                  <span>{currencyFormatter(order.totalAmount)}</span>
+                </div>
               </div>
-              <div className="flex justify-between mb-2">
-                <span>Discount</span>
-                <span className="text-green-700 text-sm">
-                  - {currencyFormatter(totalDiscount)}
-                </span>
-              </div>
-              <div className="flex justify-between mb-2">
-                <span>Taxes and charges</span>
-                <span>{currencyFormatter(order.taxAmount)}</span>
-              </div>
-              <div className="flex justify-between mb-2">
-                <span>Delivery charge</span>
-                <span>{currencyFormatter(0)}</span>
-              </div>
-              <hr className="my-4" />
-              <div className="flex justify-between font-bold text-lg">
-                <span>Total</span>
-                <span>{currencyFormatter(order.totalAmount)}</span>
-              </div>
-            </div>
+            </section>
           </div>
         </div>
       </div>

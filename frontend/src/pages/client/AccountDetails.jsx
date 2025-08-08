@@ -87,25 +87,25 @@ const AccountDetails = () => {
   };
 
   return (
-    <div className="md:col-span-2 w-full h-full p-6 ">
+    <div className="md:col-span-2 w-full h-full">
       <div className="rounded-xl shadow-md overflow-hidden bg-white p-6 border border-gray-300 ">
         <h2 className="text-2xl font-semibold mb-6">Account Details</h2>
 
         <form onSubmit={handleUserDetails} className="space-y-6">
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Avatar */}
-            <div className="col-span-1">
-              <div className="relative group">
+            <div className="flex justify-center md:block">
+              <div className="relative group w-32 h-32 md:w-full md:h-auto">
                 <img
                   src={avatar}
                   alt="User Avatar"
-                  className="w-full h-full object-cover border-2 border-gray-300"
+                  className="w-32 h-32 md:w-full md:h-full object-cover border-2 border-gray-300 rounded-full md:rounded-none"
                   onClick={() => fileInputRef.current.click()}
                 />
 
                 {/* Hover Overlay */}
                 <div
-                  className="absolute inset-0 bg-black bg-opacity-50  flex items-center justify-center opacity-0 group-hover:opacity-60 transition-opacity cursor-pointer text-white"
+                  className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-60 transition-opacity cursor-pointer text-white rounded-full md:rounded-none"
                   onClick={() => fileInputRef.current.click()}
                 >
                   {uploading ? (
@@ -126,52 +126,45 @@ const AccountDetails = () => {
             </div>
 
             {/* Details */}
-            <div className="grid grid-cols-1  gap-6 col-span-2">
-              <div>
-                <TextField
-                  fullWidth
-                  type="text"
-                  id="name"
-                  label="Name"
-                  name="name"
-                  variant="outlined"
-                  required
-                  defaultValue={name}
-                />
-              </div>
-              <div>
-                <TextField
-                  fullWidth
-                  type="email"
-                  id="email"
-                  label="Email"
-                  variant="outlined"
-                  name="email"
-                  // disabled
-                  required
-                  value={email}
-                />
-              </div>
-              <div>
-                <TextField
-                  fullWidth
-                  type="number"
-                  id="phone"
-                  label="Phone"
-                  name="phone"
-                  variant="outlined"
-                  required
-                  defaultValue={phone}
-                />
-              </div>
+            <div className="grid grid-cols-1 gap-6 md:col-span-2">
+              <TextField
+                fullWidth
+                type="text"
+                id="name"
+                label="Name"
+                name="name"
+                variant="outlined"
+                required
+                defaultValue={name}
+              />
+              <TextField
+                fullWidth
+                type="email"
+                id="email"
+                label="Email"
+                variant="outlined"
+                name="email"
+                required
+                value={email}
+              />
+              <TextField
+                fullWidth
+                type="number"
+                id="phone"
+                label="Phone"
+                name="phone"
+                variant="outlined"
+                required
+                defaultValue={phone}
+              />
               <PasswordInput />
             </div>
           </div>
 
-          {/* <!-- Update Button --> */}
+          {/* Update Button */}
           <Button
             type="submit"
-            className="w-full  !bg-black !text-white !rounded-lg text-center font-medium gap-3 "
+            className="w-full !bg-black !text-white !rounded-lg text-center font-medium gap-3"
           >
             UPDATE PROFILE
           </Button>

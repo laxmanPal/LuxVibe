@@ -10,65 +10,51 @@ import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../../store/AuthContext";
 
 const MyAccount = () => {
-  const {user} = useAuth();
+  const { user } = useAuth();
+
   return (
-    <div className="py-8 container border-b border-gray-300">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-1 flex items-center justify-center p-6">
-          <div className="w-80 rounded-xl shadow-md overflow-hidden bg-white border border-gray-300 sticky top-20 self-start h-fit">
-            {/* <!-- Profile Header --> */}
-            <div className="flex flex-col items-center p-6">
+    <div className="py-6 px-4 sm:px-6 lg:px-8 container border-b border-gray-300">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        {/* Sidebar */}
+        <div className="lg:col-span-1 flex items-start justify-center lg:justify-start">
+          <div className="w-full sm:w-80 rounded-xl shadow-md overflow-hidden bg-white border border-gray-300 sticky top-20 self-start">
+            
+            {/* Profile Header */}
+            <div className="flex flex-col items-center p-6 text-center">
               <img
-                src={ user.avatar.url || userDefaultImage}
+                src={user.avatar.url || userDefaultImage}
                 alt="Profile"
-                className="w-24 h-24 rounded-full bg-gray-100"
+                className="w-24 h-24 rounded-full bg-gray-100 object-cover"
               />
-              <h2 className="text-xl font-semibold mt-4"> {user.name} </h2>
-              <p className="text-gray-500 text-sm"> {user.email} </p>
+              <h2 className="text-lg sm:text-xl font-semibold mt-4">{user.name}</h2>
+              <p className="text-gray-500 text-sm break-all">{user.email}</p>
             </div>
 
-            {/* <!-- Menu --> */}
+            {/* Menu */}
             <ul className="divide-y divide-gray-200 text-sm">
-              <Link to={"/myaccount"}>
-                <li className="flex items-center px-6 py-4 gap-3 text-gray-600 hover:bg-gray-50 cursor-pointer hover:text-black">
-                  <RxDashboard />
-                  Dashboard
-                </li>
-              </Link>
-              <Link to={"details"}>
-                <li className="flex items-center px-6 py-4 gap-3 text-gray-600 hover:bg-gray-50 cursor-pointer hover:text-black">
-                  <RiAccountPinCircleLine />
-                  Account Details
-                </li>
-              </Link>
-              <Link to={"myorders"}>
-                <li className="flex items-center px-6 py-4 gap-3 text-gray-600 hover:bg-gray-50 cursor-pointer hover:text-black">
-                  <IoBagCheckOutline />
-                  Orders
-                </li>
-              </Link>
-              <Link to={"mywishlist"}>
-                <li className="flex items-center px-6 py-4 gap-3 text-gray-600 hover:bg-gray-50 cursor-pointer hover:text-black">
-                  <FaRegHeart />
-                  Wishlist
-                </li>
-              </Link>
-              <Link to={"myaddresses"}>
-                <li className="flex items-center px-6 py-4 gap-3 text-gray-600 hover:bg-gray-50 cursor-pointer hover:text-black">
-                  <FaRegAddressBook />
-                  Addresses
-                </li>
-              </Link>
-              <Link to={"/"}>
-                <li className="flex items-center px-6 py-4 gap-3 text-gray-600 hover:bg-gray-50 cursor-pointer hover:text-black">
-                  <IoLogOutOutline />
-                  Logout
-                </li>
-              </Link>
+              {[
+                { to: "/myaccount", icon: <RxDashboard />, label: "Dashboard" },
+                { to: "details", icon: <RiAccountPinCircleLine />, label: "Account Details" },
+                { to: "myorders", icon: <IoBagCheckOutline />, label: "Orders" },
+                { to: "mywishlist", icon: <FaRegHeart />, label: "Wishlist" },
+                { to: "myaddresses", icon: <FaRegAddressBook />, label: "Addresses" },
+                { to: "/", icon: <IoLogOutOutline />, label: "Logout" },
+              ].map((item, index) => (
+                <Link to={item.to} key={index}>
+                  <li className="flex items-center px-4 sm:px-6 py-3 gap-3 text-gray-600 hover:bg-gray-50 cursor-pointer hover:text-black">
+                    {item.icon} {item.label}
+                  </li>
+                </Link>
+              ))}
             </ul>
           </div>
         </div>
-        <Outlet />
+
+        {/* Dashboard Outlet Area */}
+        <div className="lg:col-span-2">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

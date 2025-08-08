@@ -14,13 +14,13 @@ export default function Home() {
   return (
     <>
       {/* Hero */}
-      <div className="py-8">
-        <div className="container">
+      <section className="py-8">
+        <div className="container mx-auto px-4">
           <Hero />
         </div>
-      </div>
+      </section>
       {/* Top Picks */}
-      <div className=" container py-8">
+      <div className="container px-4 md:px-0 py-8">
         <Title
           title="Latest Products"
           discription="Explore our most popular pieces that customers can't get enough of"
