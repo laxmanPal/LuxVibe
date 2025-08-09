@@ -6,6 +6,7 @@ const CategoryContext = createContext();
 export const useCategoryCtx = () => useContext(CategoryContext);
 
 export const CategoryContectProvider = ({ children }) => {
+  const [fetching, setFetching] = useState(false);
   const [categoryAction, setCategoryAction] = useState("");
   const [categories, setCategories] = useState([]);
   const [categoryDetails, setCategoryDetails] = useState({});
@@ -16,6 +17,7 @@ export const CategoryContectProvider = ({ children }) => {
 
   const fetchCategories = async () => {
     try {
+      setFetching(true);
       const response = await fetch(`${API_URL}/admin/category/all-categories`, {
         credentials: "include",
       });
@@ -28,6 +30,8 @@ export const CategoryContectProvider = ({ children }) => {
       setCategories(data.categories);
     } catch (error) {
       console.error("Fetching Categories Error:", error.message);
+    } finally {
+      setFetching(false);
     }
   };
 
@@ -73,6 +77,7 @@ export const CategoryContectProvider = ({ children }) => {
     showUpdateCategoryModal,
     closeUpdateCategoryModal,
     fetchCategories,
+    fetching,
   };
   return (
     <CategoryContext.Provider value={categoryCtx}>

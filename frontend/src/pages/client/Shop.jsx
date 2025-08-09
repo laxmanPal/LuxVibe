@@ -21,16 +21,20 @@ const Shop = () => {
         }
         totalProducts={products.length}
       >
-        {products.map((product) => (
-          <ProductCard
-            key={product._id}
-            productId={product._id}
-            title={product.name}
-            image={product.images?.[0]?.url || product1}
-            price={product.price}
-            discountPrice={product.discountPrice}
-          />
-        ))}
+        {products && products.length > 0 ? (
+          products.map((product) => (
+            <ProductCard
+              key={product._id}
+              productId={product._id}
+              title={product.name}
+              image={product.images?.[0]?.url || product1}
+              price={product.price}
+              discountPrice={product.discountPrice}
+            />
+          ))
+        ) : (
+          <div>No Products</div>
+        )}
       </ProductListWrapper>
     </>
   );

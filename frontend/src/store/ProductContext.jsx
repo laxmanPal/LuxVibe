@@ -6,6 +6,7 @@ const ProductContext = createContext();
 export const useProductCtx = () => useContext(ProductContext);
 
 export const ProductContextProvider = ({ children }) => {
+  const [fetching , setFetching]= useState(false)
   const [latestProducts, setLatestProducts] = useState([]);
   const [products, setProducts] = useState([]);
 
@@ -16,6 +17,7 @@ export const ProductContextProvider = ({ children }) => {
 
   const fetchProducts = async () => {
     try {
+      setFetching(true)
       const response = await fetch(`${API_URL}/admin/product/all-products`, {
         credentials: "include",
       });
@@ -26,11 +28,14 @@ export const ProductContextProvider = ({ children }) => {
       setProducts(data.products);
     } catch (error) {
       console.error("Fetching Products Error:", error.message);
+    }finally{
+      setFetching(false)
     }
   };
 
   const fetchLatestProducts = async () => {
     try {
+      setFetching(true)
       const response = await fetch(
         `${API_URL}/admin/product/all-products?limit=4`,
         {
@@ -44,6 +49,8 @@ export const ProductContextProvider = ({ children }) => {
       setLatestProducts(data.products);
     } catch (error) {
       console.error("Fetching Latest Products Error:", error.message);
+    }finally{
+      setFetching(false)
     }
   };
 
@@ -52,6 +59,7 @@ export const ProductContextProvider = ({ children }) => {
   const productCtx = {
     products,
     latestProducts,
+    fetching
   };
 
   return (

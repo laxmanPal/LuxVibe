@@ -4,8 +4,11 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Pagination from "@mui/material/Pagination";
+import { useProductCtx } from "../../store/ProductContext";
+import FetchingData from "../UI/FetchingData";
 
-const ProductListWrapper = ({ children, title , totalProducts }) => {
+const ProductListWrapper = ({ children, title, totalProducts }) => {
+  const { fetching } = useProductCtx();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -24,7 +27,9 @@ const ProductListWrapper = ({ children, title , totalProducts }) => {
         </div> */}
         <div className="product-list w-full">
           <div className="flex flex-col gap-3 sm:flex-row bg-gray-100 w-full p-4 mb-4 rounded-md sm:items-center sm:justify-between">
-            <p className="text-gray-700 text-sm sm:text-base">There are {totalProducts} products.</p>
+            <p className="text-gray-700 text-sm sm:text-base">
+              There are {totalProducts} products.
+            </p>
             {/* <div className="ml-auto flex items-center justify-center gap-3 pr-4">
               <span>Sort By :</span>
               <div className="flex items-center">
@@ -65,10 +70,14 @@ const ProductListWrapper = ({ children, title , totalProducts }) => {
               </div>
             </div> */}
           </div>
-          <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-            {/* Products */}
-            {children}
-          </div>
+          {fetching ? (
+            <FetchingData title={"Getting Products"} />
+          ) : (
+            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+              {/* Products */}
+              {children}
+            </div>
+          )}
 
           <div className="pagination flex items-center justify-center my-10">
             <Pagination count={10} shape="rounded" />

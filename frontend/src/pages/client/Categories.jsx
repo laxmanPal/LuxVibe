@@ -7,9 +7,10 @@ import banner4 from "../../assets/footwear-4.jpg";
 import Title from "../../components/client/Title";
 import { useCategoryCtx } from "../../store/CategoryContext";
 import { Link } from "react-router-dom";
+import FetchingData from "../../components/UI/FetchingData";
 
 const Categories = () => {
-  const { categories } = useCategoryCtx();
+  const { categories, fetching } = useCategoryCtx();
 
   const items = [
     { span: "col-span-2 row-span-2" },
@@ -33,36 +34,42 @@ const Categories = () => {
         discription="Choose from different Categories"
       />
 
-      <div
-        className="
+      {fetching ? (
+        <FetchingData title={"Getiing Categories"} />
+      ) : categories && categories.length > 0 ? (
+        <div
+          className="
           grid 
           grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 
           gap-4 
           auto-rows-[150px] sm:auto-rows-[180px] lg:auto-rows-[200px]
         "
-      >
-        {categories.map((category, index) => (
-          <Link
-            key={category._id}
-            className={`relative overflow-hidden rounded-xl shadow-md 
+        >
+          {categories.map((category, index) => (
+            <Link
+              key={category._id}
+              className={`relative overflow-hidden rounded-xl shadow-md 
               sm:${items[index]?.span || ""}
             `}
-            to={`/category/${category.slug}`}
-          >
-            <img
-              src={category.images[0]?.url}
-              alt={category.name}
-              className="w-full h-full object-cover sm:object-cover object-center"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-              <h2 className="text-white text-sm sm:text-lg font-bold uppercase text-center px-2">
-                {category.name}
-              </h2>
-            </div>
-          </Link>
-        ))}
-      </div>
+              to={`/category/${category.slug}`}
+            >
+              <img
+                src={category.images[0]?.url}
+                alt={category.name}
+                className="w-full h-full object-cover sm:object-cover object-center"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                <h2 className="text-white text-sm sm:text-lg font-bold uppercase text-center px-2">
+                  {category.name}
+                </h2>
+              </div>
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <div> No Categories </div>
+      )}
     </div>
   );
 };

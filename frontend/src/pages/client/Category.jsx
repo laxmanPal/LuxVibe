@@ -31,8 +31,8 @@ const Category = () => {
         }
         totalProducts={filteredProducts.length}
       >
-        {filteredProducts.map((product) => (
-          <Link key={product._id} to={`/product/${product._id}`}>
+        {filteredProducts && filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
             <ProductCard
               productId={product._id}
               title={product.name}
@@ -40,8 +40,10 @@ const Category = () => {
               price={product.price}
               discountPrice={product.discountPrice}
             />
-          </Link>
-        ))}
+          ))
+        ) : (
+          <div>No Products for {`${categoryName.toLocaleUpperCase()}`} </div>
+        )}
       </ProductListWrapper>
     </>
   );
