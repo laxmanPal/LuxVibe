@@ -19,96 +19,88 @@ export default function ProductCard({
 }) {
   const { addToCart } = useCartCtx();
   const { addToWishlist } = useWishlistCtx();
+  
   return (
-    <div className="card-product relative p-3 w-full cursor-pointer group rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
-      {/* Link wrapping image and buttons */}
+    <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-100 hover:border-gray-200">
+      {/* Image Container */}
       <Link
         to={`/product/${productId}`}
-        className="block relative rounded-xl overflow-hidden bg-gray-100 aspect-w-1 aspect-h-1"
+        className="block relative bg-gradient-to-br from-gray-50 to-gray-100 aspect-square overflow-hidden"
       >
         <img
-          className="img-product w-full h-auto object-contain transition-transform duration-300 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           src={image}
-          alt="image-product"
+          alt={title}
           loading="lazy"
         />
 
-        {/* Action buttons: absolute overlay, hidden by default, fade in on hover */}
-        <ul
-          className="  list-product-btn
-    absolute inset-0
-    flex items-center justify-center gap-3
-    bg-black/20
-    opacity-0
-    translate-y-6
-    scale-90
-    pointer-events-none
-    group-hover:opacity-100
-    group-hover:translate-y-0
-    group-hover:scale-100
-    group-hover:pointer-events-auto
-    transition-all duration-300 ease-in-out"
-        >
-          <li>
-            <Tooltip arrow title="Add to Cart" placement="top">
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  addToCart({ productId, quantity: 1 });
-                }}
-                className="!bg-white !w-[37px] !min-w-[37px] !h-[37px] !rounded-full !text-black"
-                size="small"
-              >
-                <MdOutlineShoppingCart />
-              </Button>
-            </Tooltip>
-          </li>
-          <li>
-            <Tooltip arrow title="Add to Wishlist" placement="top">
-              <Button
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  addToWishlist({ productId });
-                }}
-                className="!bg-white !w-[37px] !min-w-[37px] !h-[37px] !rounded-full !text-black"
-                size="small"
-              >
-                <FaRegHeart />
-              </Button>
-            </Tooltip>
-          </li>
-          <li>
-            <Tooltip arrow title="View" placement="top">
-              <Button
-                onClick={(e) => e.stopPropagation()}
-                className="!bg-white !w-[37px] !min-w-[37px] !h-[37px] !rounded-full !text-black"
-                size="small"
-              >
-                <MdOutlineRemoveRedEye />
-              </Button>
-            </Tooltip>
-          </li>
-        </ul>
+        {/* Overlay with Action Buttons */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300">
+          <ul className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-out pointer-events-none group-hover:pointer-events-auto">
+            <li>
+              <Tooltip arrow title="Add to Cart" placement="top">
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addToCart({ productId, quantity: 1 });
+                  }}
+                  className="!bg-white/95 !backdrop-blur-sm !w-12 !min-w-12 !h-12 !rounded-full !text-gray-700 !shadow-lg hover:!bg-white hover:!shadow-xl hover:!scale-110 !transition-all !duration-200"
+                  size="small"
+                >
+                  <MdOutlineShoppingCart className="text-lg" />
+                </Button>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip arrow title="Add to Wishlist" placement="top">
+                <Button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addToWishlist({ productId });
+                  }}
+                  className="!bg-white/95 !backdrop-blur-sm !w-12 !min-w-12 !h-12 !rounded-full !text-red-500 !shadow-lg hover:!bg-white hover:!shadow-xl hover:!scale-110 !transition-all !duration-200"
+                  size="small"
+                >
+                  <FaRegHeart className="text-lg" />
+                </Button>
+              </Tooltip>
+            </li>
+            <li>
+              <Tooltip arrow title="Quick View" placement="top">
+                <Button
+                  onClick={(e) => e.stopPropagation()}
+                  className="!bg-white/95 !backdrop-blur-sm !w-12 !min-w-12 !h-12 !rounded-full !text-gray-700 !shadow-lg hover:!bg-white hover:!shadow-xl hover:!scale-110 !transition-all !duration-200"
+                  size="small"
+                >
+                  <MdOutlineRemoveRedEye className="text-lg" />
+                </Button>
+              </Tooltip>
+            </li>
+          </ul>
+        </div>
       </Link>
 
-      {/* Product info outside link so only image area navigates */}
-      <div className="card-product-info mt-4 text-center">
+      {/* Product Information */}
+      <div className="p-4 space-y-3">
         <Link
           to={`/product/${productId}`}
-          className="name-product link text-md font-medium text-gray-900 hover:underline"
+          className="block"
         >
-          {title}
+          <h3 className="text-gray-800 font-semibold text-base leading-tight line-clamp-2 hover:text-blue-600 transition-colors duration-200 min-h-[2.5rem]">
+            {title}
+          </h3>
         </Link>
-        <p className="price-wrap flex justify-center items-center gap-2 mt-1">
-          <span className="price-new text-red-500 font-semibold">
+        
+        <div className="flex items-center justify-center gap-3">
+          <span className="text-xl font-bold text-red-500">
             {currencyFormatter(discountPrice)}
           </span>
-          <span className="price-old line-through text-gray-400 text-sm">
+          <span className="text-sm text-gray-400 line-through">
             {currencyFormatter(price)}
           </span>
-        </p>
+        </div>
       </div>
     </div>
   );

@@ -11,78 +11,104 @@ const ProductListWrapper = ({ children, title, totalProducts }) => {
   const { fetching } = useProductCtx();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+  
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
-    <div className="py-8 container mx-auto px-4 border-b border-gray-300">
-      <div className="mb-6">{title}</div>
-      <div className="">
-        {/* Filter */}
-        {/* <div className="h-full min-w-60">
-          <Filter />
-        </div> */}
-        <div className="product-list w-full">
-          <div className="flex flex-col gap-3 sm:flex-row bg-gray-100 w-full p-4 mb-4 rounded-md sm:items-center sm:justify-between">
-            <p className="text-gray-700 text-sm sm:text-base">
-              There are {totalProducts} products.
-            </p>
-            {/* <div className="ml-auto flex items-center justify-center gap-3 pr-4">
-              <span>Sort By :</span>
-              <div className="flex items-center">
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header Section */}
+        <div className="mb-8">
+          {title}
+        </div>
+
+        {/* Main Content Area */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          {/* Product Info Bar */}
+          <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex items-center gap-2">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                  {totalProducts} Products
+                </span>
+                <span className="text-gray-600 text-sm">Available in our collection</span>
+              </div>
+              
+              {/* Uncomment when ready to use sorting */}
+              {/* <div className="flex items-center gap-3">
+                <span className="text-gray-700 text-sm font-medium">Sort By:</span>
                 <Button
-                  id="basic-button"
-                  aria-controls={open ? "basic-menu" : undefined}
+                  id="sort-button"
+                  aria-controls={open ? "sort-menu" : undefined}
                   aria-haspopup="true"
                   aria-expanded={open ? "true" : undefined}
                   onClick={handleClick}
-                  className="!bg-white !text-[12px] !text-black !capitalize"
+                  className="!bg-white !text-sm !text-gray-700 !capitalize !shadow-sm hover:!shadow-md !transition-shadow"
+                  endIcon={<MdKeyboardArrowDown />}
                 >
                   Name, A to Z
                 </Button>
                 <Menu
-                  id="basic-menu"
+                  id="sort-menu"
                   anchorEl={anchorEl}
                   open={open}
                   onClose={handleClose}
                   slotProps={{
                     list: {
-                      "aria-labelledby": "basic-button",
+                      "aria-labelledby": "sort-button",
                     },
                   }}
                 >
-                  <MenuItem className="!text-[12px]" onClick={handleClose}>
+                  <MenuItem className="!text-sm" onClick={handleClose}>
                     Name, A to Z
                   </MenuItem>
-                  <MenuItem className="!text-[12px]" onClick={handleClose}>
+                  <MenuItem className="!text-sm" onClick={handleClose}>
                     Name, Z to A
                   </MenuItem>
-                  <MenuItem className="!text-[12px]" onClick={handleClose}>
-                    Price, high to low
+                  <MenuItem className="!text-sm" onClick={handleClose}>
+                    Price, High to Low
                   </MenuItem>
-                  <MenuItem className="!text-[12px]" onClick={handleClose}>
-                    Price, low to high
+                  <MenuItem className="!text-sm" onClick={handleClose}>
+                    Price, Low to High
                   </MenuItem>
                 </Menu>
-              </div>
-            </div> */}
-          </div>
-          {fetching ? (
-            <FetchingData title={"Getting Products"} />
-          ) : (
-            <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-              {/* Products */}
-              {children}
+              </div> */}
             </div>
-          )}
+          </div>
 
-          <div className="pagination flex items-center justify-center my-10">
-            <Pagination count={10} shape="rounded" />
+          {/* Products Grid */}
+          <div className="p-6">
+            {fetching ? (
+              <div className="flex items-center justify-center py-16">
+                <FetchingData title={"Loading Products..."} />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+                {children}
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Pagination */}
+        {!fetching && totalProducts > 0 && (
+          <div className="flex justify-center mt-12">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+              <Pagination 
+                count={10} 
+                shape="rounded" 
+                color="primary"
+                size="large"
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

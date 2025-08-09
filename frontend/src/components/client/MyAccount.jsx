@@ -13,68 +13,117 @@ const MyAccount = () => {
   const { user } = useAuth();
 
   return (
-    <div className="py-6 px-4 sm:px-6 lg:px-8 container border-b border-gray-300">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Sidebar */}
-        <div className="lg:col-span-1 flex items-start justify-center lg:justify-start">
-          <div className="w-full sm:w-80 rounded-xl shadow-md overflow-hidden bg-white border border-gray-300 sticky top-20 self-start">
-            {/* Profile Header */}
-            <div className="flex flex-col items-center p-6 text-center">
-              <img
-                src={user.avatar.url || userDefaultImage}
-                alt="Profile"
-                className="w-24 h-24 rounded-full bg-gray-100 object-cover"
-              />
-              <h2 className="text-lg sm:text-xl font-semibold mt-4">
-                {user.name}
-              </h2>
-              <p className="text-gray-500 text-sm break-all">{user.email}</p>
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-white">
+      <div className="py-8 px-4 sm:px-6 lg:px-8 max-w-8xl mx-auto">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Enhanced Sidebar */}
+          <div className="xl:col-span-1">
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-300 overflow-hidden sticky top-6">
+              {/* Profile Header with Gradient */}
+              <div className="relative p-8">
+                <div className="absolute inset-0 bg-black opacity-20"></div>
+                <div className="relative flex flex-col items-center text-center ">
+                  <div className="relative mb-4">
+                    <img
+                      src={user.avatar.url || userDefaultImage}
+                      alt="Profile"
+                      className="w-28 h-28 rounded-full border-4 border-white shadow-lg object-cover"
+                    />
+                    <div className="absolute -bottom-2 -right-2 bg-green-400 w-8 h-8 rounded-full border-4 border-white flex items-center justify-center">
+                      <div className="w-3 h-3 bg-white rounded-full"></div>
+                    </div>
+                  </div>
+                  <h2 className="text-xl font-bold mb-2 drop-shadow-sm">
+                    {user.name}
+                  </h2>
+                  <p className=" text-sm break-all opacity-90">
+                    {user.email}
+                  </p>
+                </div>
+              </div>
+
+              {/* Navigation Menu */}
+              <div className="p-2">
+                <ul className="space-y-1">
+                  {[
+                    { 
+                      to: "/myaccount", 
+                      icon: <RxDashboard className="w-5 h-5" />, 
+                      label: "Dashboard",
+                      color: "text-blue-600"
+                    },
+                    {
+                      to: "details",
+                      icon: <RiAccountPinCircleLine className="w-5 h-5" />,
+                      label: "Account Details",
+                      color: "text-green-600"
+                    },
+                    {
+                      to: "myorders",
+                      icon: <IoBagCheckOutline className="w-5 h-5" />,
+                      label: "Orders",
+                      color: "text-orange-600"
+                    },
+                    { 
+                      to: "mywishlist", 
+                      icon: <FaRegHeart className="w-5 h-5" />, 
+                      label: "Wishlist",
+                      color: "text-red-600"
+                    },
+                    {
+                      to: "myaddresses",
+                      icon: <FaRegAddressBook className="w-5 h-5" />,
+                      label: "Addresses",
+                      color: "text-purple-600"
+                    },
+                    { 
+                      to: "/", 
+                      icon: <IoLogOutOutline className="w-5 h-5" />, 
+                      label: "Logout",
+                      color: "text-gray-600"
+                    },
+                  ].map((item, index) => (
+                    <li key={index}>
+                      <NavLink
+                        className={({ isActive }) =>
+                          `flex items-center px-4 py-4 gap-4 rounded-xl transition-all duration-200 font-medium group relative overflow-hidden ${
+                            isActive
+                              ? "bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 shadow-md border border-blue-200"
+                              : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm"
+                          }`
+                        }
+                        to={item.to}
+                        end
+                      >
+                        {({ isActive }) => (
+                          <>
+                            <div className={`${isActive ? item.color : 'text-gray-500 group-hover:text-gray-700'} transition-colors duration-200`}>
+                              {item.icon}
+                            </div>
+                            <span className="text-base font-medium">
+                              {item.label}
+                            </span>
+                            {isActive && (
+                              <div className="absolute right-3 w-2 h-2 bg-blue-600 rounded-full"></div>
+                            )}
+                          </>
+                        )}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-
-            {/* Menu */}
-            <ul className="divide-y divide-gray-200 text-sm">
-              {[
-                { to: "/myaccount", icon: <RxDashboard />, label: "Dashboard" },
-                {
-                  to: "details",
-                  icon: <RiAccountPinCircleLine />,
-                  label: "Account Details",
-                },
-                {
-                  to: "myorders",
-                  icon: <IoBagCheckOutline />,
-                  label: "Orders",
-                },
-                { to: "mywishlist", icon: <FaRegHeart />, label: "Wishlist" },
-                {
-                  to: "myaddresses",
-                  icon: <FaRegAddressBook />,
-                  label: "Addresses",
-                },
-                { to: "/", icon: <IoLogOutOutline />, label: "Logout" },
-              ].map((item, index) => (
-                <NavLink
-                  className={({ isActive }) =>
-                    `flex items-center px-4 sm:px-6 py-3 gap-3 cursor-pointer transition text-base font-medium ${
-                      isActive
-                        ? "text-black font-semibold bg-gray-100"
-                        : "text-gray-600 hover:bg-gray-100 hover:text-black"
-                    }`
-                  }
-                  to={item.to}
-                  key={index}
-                  end
-                >
-                  {item.icon} {item.label}
-                </NavLink>
-              ))}
-            </ul>
           </div>
-        </div>
 
-        {/* Dashboard Outlet Area */}
-        <div className="lg:col-span-2">
-          <Outlet />
+          {/* Main Content Area */}
+          <div className="xl:col-span-3">
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-200 min-h-[600px] overflow-hidden">
+              <div className="p-8">
+                <Outlet />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

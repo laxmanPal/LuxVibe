@@ -42,6 +42,7 @@ import PaymentSuccess from "./pages/client/PaymentSuccess";
 import { OrderContextProvider } from "./store/OrderContext";
 import Order from "./pages/client/Order";
 import SingleOrder from "./pages/admin/SingleOrder";
+import { AddressContextProvider } from "./store/AddressContext";
 
 const router = createBrowserRouter([
   {
@@ -128,10 +129,12 @@ function App() {
           <CategoryContectProvider>
             <CartContextProvider>
               <WishlistContextProvider>
-                <OrderContextProvider>
-                  <RouterProvider router={router} />
-                  <ToastContainer position="top-center" autoClose={3000} />
-                </OrderContextProvider>
+                <AddressContextProvider>
+                  <OrderContextProvider>
+                    <RouterProvider router={router} />
+                    <ToastContainer position="top-center" autoClose={3000} />
+                  </OrderContextProvider>
+                </AddressContextProvider>
               </WishlistContextProvider>
             </CartContextProvider>
           </CategoryContectProvider>

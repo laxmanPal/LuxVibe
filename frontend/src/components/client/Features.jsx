@@ -8,9 +8,9 @@ import { RiSecurePaymentLine } from "react-icons/ri";
 
 const Features = () => {
   return (
-    <div className="py-10 border border-gray-200 bg-white">
+    <div className="py-12 border border-gray-200 bg-gradient-to-r from-gray-50 via-white to-gray-50 rounded-xl shadow-sm">
       <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-center">
           <Feature
             icon={<LiaShippingFastSolid />}
             title="FREE DELIVERY"

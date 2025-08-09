@@ -7,13 +7,7 @@ import Banner from "./Banner";
 
 export default function Hero() {
   return (
-    <div
-      className="
-        grid gap-4
-        grid-cols-1 grid-rows-4
-        sm:grid-cols-2 sm:grid-rows-2
-        lg:grid-cols-4 lg:grid-rows-2"
-    >
+    <div className="grid gap-4 lg:gap-6 grid-cols-1 grid-rows-4 sm:grid-cols-2 sm:grid-rows-2 lg:grid-cols-4 lg:grid-rows-2">
       <Banner
         item_classes="col-span-1 row-span-2 sm:col-span-2 lg:col-span-2 lg:row-span-2"
         banner_image={banner1}

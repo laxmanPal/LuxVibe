@@ -1,9 +1,9 @@
 import React from "react";
-import ClientNavbar from "../components/client/clientNavbar";
 import Footer from "../components/client/Footer";
 import { Navigate, Outlet } from "react-router-dom";
 import { decodeToken } from "../utils/jwt";
 import { useAuth } from "../store/AuthContext";
+import ClientNavbar from "../components/client/ClientNavbar";
 
 const ClientLayout = () => {
   const { user } = useAuth();

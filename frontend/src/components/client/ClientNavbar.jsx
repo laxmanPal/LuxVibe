@@ -6,7 +6,7 @@ import { FaRegHeart } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import Tooltip from "@mui/material/Tooltip";
 import { CgProfile } from "react-icons/cg";
-import { IoMenu, IoSearch } from "react-icons/io5";
+import { IoClose, IoMenu, IoSearch } from "react-icons/io5";
 import SearchBar from "./SearchBar";
 import IconButton from "@mui/material/IconButton";
 import { useAuth } from "../../store/AuthContext";
@@ -28,9 +28,8 @@ export default function ClientNavbar() {
 
   const [openMyAccMenu, setopenMyAccMenu] = useState(null);
   const openMenu = Boolean(openMyAccMenu);
-
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  
   const navigationLinks = [
     { label: "Home", to: "/" },
     { label: "Men", to: "/category/men" },
@@ -40,164 +39,172 @@ export default function ClientNavbar() {
     { label: "Category", to: "/categories" },
   ];
 
-  // Account actions used in both drawer & desktop menu
+  // Account actions used in drawer only
   const accountActions = user
     ? [
         {
           to: "/myaccount",
-          icon: <FaRegUser className="text-[20px] text-black" />,
+          icon: <FaRegUser className="text-[20px] text-gray-700" />,
           label: "My Account",
         },
         {
           to: "/myaccount/myorders",
-          icon: <IoBagCheckOutline className="text-[20px] text-black" />,
+          icon: <IoBagCheckOutline className="text-[20px] text-gray-700" />,
           label: "Orders",
         },
         {
           to: "/myaccount/myaddresses",
-          icon: <IoLocationOutline className="text-[20px] text-black" />,
+          icon: <IoLocationOutline className="text-[20px] text-gray-700" />,
           label: "Address",
         },
         {
           onClick: logout,
-          icon: <TbLogout className="text-[20px] text-black" />,
+          icon: <TbLogout className="text-[20px] text-red-600" />,
           label: "Logout",
         },
       ]
     : [
         {
           to: "/auth/login",
-          icon: <CgProfile className="text-[20px] text-black" />,
+          icon: <CgProfile className="text-[20px] text-gray-700" />,
           label: "Login",
         },
       ];
 
   return (
     <>
-      <header className="sticky top-0 bg-white z-50 border-b border-gray-200">
-        <nav className="container mx-auto px-4 max-w-7xl flex items-center justify-between h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center h-full">
-            <NavLink to="/">
-              <img className="h-10 w-auto" src={logo} alt="Logo" />
-            </NavLink>
-          </div>
-          {/* Desktop Nav */}
-          <ul className="hidden md:flex flex-1 items-center justify-center gap-6">
-            {navigationLinks.map((nav, i) => (
-              <li key={i}>
-                <NavLink
-                  to={nav.to}
-                  className={({ isActive }) =>
-                    `transition text-base font-medium hover:text-blue-600 ${
-                      isActive
-                        ? "text-blue-700 font-semibold border-b-2 border-blue-600 pb-1"
-                        : "text-gray-700"
-                    }`
-                  }
-                >
-                  {nav.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-          {/* Desktop Action Icons */}
-          <div className="hidden md:flex items-center gap-4 ">
-            {/* Search */}
-            <div>
-              <IconButton onClick={() => setShowSearchBar((s) => !s)}>
-                <IoSearch className="text-2xl text-gray-700" />
-              </IconButton>
+      <header className="sticky top-0 bg-white/95 backdrop-blur-md z-50 border-b border-gray-200 shadow-sm">
+        <nav className="container mx-auto px-2 sm:px-4 max-w-7xl">
+          <div className="flex items-center justify-between h-16 sm:h-20">
+            
+            {/* Logo */}
+            <div className="flex-shrink-0">
+              <NavLink to="/" className="group">
+                <img 
+                  className="h-8 sm:h-10 lg:h-12 w-auto transition-transform duration-200 group-hover:scale-105" 
+                  src={logo} 
+                  alt="Logo" 
+                />
+              </NavLink>
             </div>
-            {/* Profile */}
-            <div>
-              {user ? (
-                <IconButton
-                  onClick={(e) => setopenMyAccMenu(e.currentTarget)}
-                  className="p-1"
+
+            {/* Desktop Navigation - Hidden on mobile */}
+            <div className="hidden lg:flex flex-1 justify-center">
+              <ul className="flex items-center gap-8">
+                {navigationLinks.map((nav, i) => (
+                  <li key={i}>
+                    <NavLink
+                      to={nav.to}
+                      className={({ isActive }) =>
+                        `relative py-2 px-1 transition-all duration-200 text-base font-medium hover:text-blue-600 ${
+                          isActive
+                            ? "text-blue-600 font-semibold"
+                            : "text-gray-700"
+                        } after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-blue-600 after:transition-all after:duration-200 hover:after:w-full ${
+                          isActive ? "after:w-full" : ""
+                        }`
+                      }
+                    >
+                      {nav.label}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Desktop Action Icons - Only on desktop */}
+            <div className="hidden lg:flex items-center gap-2">
+              {/* Search */}
+              <Tooltip title="Search" arrow>
+                <IconButton 
+                  onClick={() => setShowSearchBar((s) => !s)}
+                  className="!p-2 hover:!bg-gray-100 !transition-all !duration-200"
                 >
-                  {user.avatar?.url ? (
-                    <img
-                      className="w-8 h-8 rounded-full object-cover"
-                      src={user.avatar.url}
-                      alt="profile"
-                    />
-                  ) : (
-                    <img
-                      className="w-8 h-8 rounded-full object-cover"
-                      src={defaultAvatar}
-                      alt="profile"
-                    />
-                  )}
+                  <IoSearch className="text-2xl text-gray-700" />
                 </IconButton>
-              ) : (
-                <NavLink to="/auth/login">
-                  <IconButton>
-                    <CgProfile className="text-2xl text-gray-700" />
+              </Tooltip>
+
+              {/* Profile */}
+              <div>
+                {user ? (
+                  <Tooltip title="Account" arrow>
+                    <IconButton
+                      onClick={(e) => setopenMyAccMenu(e.currentTarget)}
+                      className="!p-1 hover:!bg-gray-100 !transition-all !duration-200"
+                    >
+                      <div className="w-10 h-10 rounded-full overflow-hidden ring-2 ring-gray-200 hover:ring-blue-300 transition-all duration-200">
+                        <img
+                          className="w-full h-full object-cover"
+                          src={user.avatar?.url || defaultAvatar}
+                          alt="profile"
+                        />
+                      </div>
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Login" arrow>
+                    <NavLink to="/auth/login">
+                      <IconButton className="!p-2 hover:!bg-gray-100 !transition-all !duration-200">
+                        <CgProfile className="text-2xl text-gray-700" />
+                      </IconButton>
+                    </NavLink>
+                  </Tooltip>
+                )}
+              </div>
+
+              {/* Wishlist */}
+              <Tooltip title="Wishlist" arrow>
+                <NavLink to="/myaccount/mywishlist">
+                  <IconButton className="!p-2 hover:!bg-gray-100 !transition-all !duration-200">
+                    <Badge
+                      badgeContent={wishlist?.items?.length || 0}
+                      color="primary"
+                      className="[&_.MuiBadge-badge]:bg-red-500"
+                    >
+                      <FaRegHeart className="text-2xl text-gray-700 hover:text-red-500 transition-colors duration-200" />
+                    </Badge>
                   </IconButton>
                 </NavLink>
-              )}
+              </Tooltip>
+
+              {/* Cart */}
+              <Tooltip title="Cart" arrow>
+                <NavLink to="/cart">
+                  <IconButton className="!p-2 hover:!bg-gray-100 !transition-all !duration-200">
+                    <Badge
+                      badgeContent={cart?.items?.length || 0}
+                      color="primary"
+                      className="[&_.MuiBadge-badge]:bg-blue-500"
+                    >
+                      <MdOutlineShoppingCart className="text-2xl text-gray-700 hover:text-blue-500 transition-colors duration-200" />
+                    </Badge>
+                  </IconButton>
+                </NavLink>
+              </Tooltip>
             </div>
-            {/* Wishlist */}
-            <div>
-              <NavLink to="/myaccount/mywishlist">
-                <Tooltip title="Wishlist" arrow>
-                  <Badge
-                    badgeContent={wishlist?.items?.length || 0}
-                    color="primary"
-                  >
-                    <FaRegHeart className="text-2xl" />
-                  </Badge>
-                </Tooltip>
-              </NavLink>
+
+            {/* Mobile Menu Icons - Just hamburger menu */}
+            <div className="lg:hidden">
+              <IconButton 
+                onClick={() => setDrawerOpen(true)}
+                className="!p-1.5"
+                size="small"
+              >
+                <IoMenu className="text-xl text-gray-700" />
+              </IconButton>
             </div>
-            {/* Cart */}
-            <div>
-              <NavLink to="/cart">
-                <Tooltip title="Cart" arrow>
-                  <Badge
-                    badgeContent={cart?.items?.length || 0}
-                    color="primary"
-                  >
-                    <MdOutlineShoppingCart className="text-2xl" />
-                  </Badge>
-                </Tooltip>
-              </NavLink>
-            </div>
-          </div>{" "}
-          {/* Hamburger for mobile */}
-          <div className="md:hidden flex items-center">
-            <IconButton onClick={() => setDrawerOpen(true)}>
-              <IoMenu className="text-2xl" />
-            </IconButton>
           </div>
         </nav>
 
-        {/* Mobile Menu Dropdown */}
-        {/* {mobileMenuOpen && (
-        <div className="md:hidden bg-white w-full border-t border-gray-200 shadow-sm">
-          <ul className="flex flex-col items-start px-4 py-2 gap-2">
-            {navigationLinks.map((nav, i) => (
-              <li key={i} className="w-full">
-                <NavLink
-                  to={nav.to}
-                  className={({ isActive }) =>
-                    `block w-full py-2 px-2 rounded-lg text-base font-medium hover:bg-blue-50 ${
-                      isActive ? "font-semibold text-blue-600" : "text-gray-700"
-                    }`
-                  }
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {nav.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )} */}
-
-        {showSearchBar && <SearchBar />}
+        {/* Search Bar */}
+        {showSearchBar && (
+          <div className="border-t border-gray-200 bg-white">
+            <SearchBar />
+          </div>
+        )}
       </header>
+
+      {/* Desktop Account Menu */}
       <Menu
         anchorEl={openMyAccMenu}
         id="account-menu"
@@ -206,121 +213,188 @@ export default function ClientNavbar() {
         onClick={() => setopenMyAccMenu(null)}
         slotProps={{
           paper: {
-            elevation: 1,
+            elevation: 3,
             sx: {
-              minWidth: "200px",
+              minWidth: "220px",
+              borderRadius: "12px",
+              border: "1px solid #e5e7eb",
+              marginTop: "8px",
             },
           },
         }}
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {user &&
-          accountActions.map(({ to, icon, label, onClick }) =>
-            onClick ? (
-              <MenuItem key={label} onClick={onClick}>
-                <div className="flex items-center gap-3">
-                  {icon}
-                  <span>{label}</span>
-                </div>
-              </MenuItem>
-            ) : (
-              <MenuItem key={label} onClick={() => setopenMyAccMenu(null)}>
-                <Link to={to}>
-                  <div className="flex items-center gap-3">
-                    {icon}
-                    <span>{label}</span>
-                  </div>
-                </Link>
-              </MenuItem>
-            )
-          )}
+        {accountActions.map(({ to, icon, label, onClick }) =>
+          onClick ? (
+            <MenuItem 
+              key={label} 
+              onClick={onClick}
+              className="!py-3 !px-4 hover:!bg-gray-50 !transition-colors !duration-200"
+            >
+              <div className="flex items-center gap-3">
+                {icon}
+                <span className="text-sm font-medium">{label}</span>
+              </div>
+            </MenuItem>
+          ) : (
+            <MenuItem 
+              key={label} 
+              onClick={() => setopenMyAccMenu(null)}
+              className="!py-3 !px-4 hover:!bg-gray-50 !transition-colors !duration-200"
+            >
+              <Link to={to} className="flex items-center gap-3 w-full">
+                {icon}
+                <span className="text-sm font-medium">{label}</span>
+              </Link>
+            </MenuItem>
+          )
+        )}
       </Menu>
-      {/* Drawer Menu (Mobile) */}
+
+      {/* Mobile Drawer - Contains all mobile actions */}
       <Drawer
         anchor="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
+        slotProps={{
+          paper: {
+            sx: {
+              width: "280px",
+              background: "linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%)",
+            }
+          }
+        }}
       >
-        <div className="w-64 h-full flex flex-col pt-6 px-4 gap-2 bg-white">
-          {/* Close btn */}
-          <button
-            className="self-end pb-4"
-            onClick={() => setDrawerOpen(false)}
-          >
-            ✕
-          </button>
-          {/* Actions */}
-          <div className="flex items-center gap-4 mb-4">
+        <div className="h-full flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-white">
+            <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
             <IconButton
-              color="default"
-              onClick={() => {
-                setShowSearchBar((s) => !s);
-                setDrawerOpen(false);
-              }}
-            >
-              <IoSearch className="text-xl" />
-            </IconButton>
-            <NavLink
-              to="/myaccount/mywishlist"
               onClick={() => setDrawerOpen(false)}
+              className="!p-1 hover:!bg-gray-100"
             >
-              <Tooltip title="Wishlist" arrow>
+              <IoClose className="text-xl text-gray-700" />
+            </IconButton>
+          </div>
+
+          {/* User Profile Section */}
+          {user && (
+            <div className="p-4 bg-white border-b border-gray-200">
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-gray-200">
+                  <img
+                    className="w-full h-full object-cover"
+                    src={user.avatar?.url || defaultAvatar}
+                    alt="profile"
+                  />
+                </div>
+                <div>
+                  <p className="font-semibold text-gray-900">{user.name}</p>
+                  <p className="text-sm text-gray-500">{user.email}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Navigation Links */}
+          <div className="flex-1 p-4">
+            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Navigation</h3>
+            <ul className="space-y-1">
+              {navigationLinks.map(({ to, label }) => (
+                <li key={to}>
+                  <NavLink
+                    to={to}
+                    className={({ isActive }) =>
+                      `block py-3 px-4 rounded-xl text-base font-medium transition-all duration-200 ${
+                        isActive 
+                          ? "bg-gray-200 text-gray-600 border-l-4 border-gray-500" 
+                          : "text-gray-700 hover:bg-white hover:shadow-sm"
+                      }`
+                    }
+                    onClick={() => setDrawerOpen(false)}
+                  >
+                    {label}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+
+            {/* Quick Actions - Cart, Wishlist, and Search */}
+            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 mt-6">Quick Actions</h3>
+            <div className="grid grid-cols-3 gap-2 mb-6">
+              {/* Search in drawer for mobile */}
+              <button
+                onClick={() => {
+                  setShowSearchBar((s) => !s);
+                  setDrawerOpen(false);
+                }}
+                className="flex flex-col items-center gap-2 p-3 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                <IoSearch className="text-2xl text-gray-700" />
+                <span className="text-xs font-medium text-gray-600">Search</span>
+              </button>
+
+              <NavLink
+                to="/myaccount/mywishlist"
+                onClick={() => setDrawerOpen(false)}
+                className="flex flex-col items-center gap-2 p-3 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+              >
                 <Badge
                   badgeContent={wishlist?.items?.length || 0}
                   color="primary"
+                  className="[&_.MuiBadge-badge]:bg-red-500"
                 >
-                  <FaRegHeart className="text-xl" />
+                  <FaRegHeart className="text-2xl text-gray-700" />
                 </Badge>
-              </Tooltip>
-            </NavLink>
-            <NavLink to="/cart" onClick={() => setDrawerOpen(false)}>
-              <Tooltip title="Cart" arrow>
-                <Badge badgeContent={cart?.items?.length || 0} color="primary">
-                  <MdOutlineShoppingCart className="text-xl" />
+                <span className="text-xs font-medium text-gray-600">Wishlist</span>
+              </NavLink>
+              
+              <NavLink
+                to="/cart"
+                onClick={() => setDrawerOpen(false)}
+                className="flex flex-col items-center gap-2 p-3 bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200"
+              >
+                <Badge
+                  badgeContent={cart?.items?.length || 0}
+                  color="primary"
+                  className="[&_.MuiBadge-badge]:bg-blue-500"
+                >
+                  <MdOutlineShoppingCart className="text-2xl text-gray-700" />
                 </Badge>
-              </Tooltip>
-            </NavLink>
-          </div>
-          {/* Nav Links */}
-          <ul className="flex flex-col gap-2 mb-4">
-            {navigationLinks.map(({ to, label }) => (
-              <li key={to}>
-                <NavLink
-                  to={to}
-                  className="py-2 px-2 text-gray-800 font-medium rounded hover:bg-gray-50 block"
-                  onClick={() => setDrawerOpen(false)}
-                >
-                  {label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-          {/* Account Actions */}
-          <div className="border-t pt-4 mt-2 flex flex-col gap-2">
-            {accountActions.map(({ to, icon, label, onClick }) =>
-              onClick ? (
-                <button
-                  className="flex gap-3 px-2 py-2 text-gray-900 items-center rounded hover:bg-gray-100"
-                  key={label}
-                  onClick={() => {
-                    onClick();
-                    setDrawerOpen(false);
-                  }}
-                >
-                  {icon} <span>{label}</span>
-                </button>
-              ) : (
-                <NavLink
-                  to={to}
-                  key={label}
-                  className="flex gap-3 px-2 py-2 text-gray-900 items-center rounded hover:bg-gray-100"
-                  onClick={() => setDrawerOpen(false)}
-                >
-                  {icon} <span>{label}</span>
-                </NavLink>
-              )
-            )}
+                <span className="text-xs font-medium text-gray-600">Cart</span>
+              </NavLink>
+            </div>
+
+            {/* Account Actions */}
+            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Account</h3>
+            <div className="space-y-1">
+              {accountActions.map(({ to, icon, label, onClick }) =>
+                onClick ? (
+                  <button
+                    className="w-full flex items-center gap-3 py-3 px-4 text-gray-700 rounded-xl hover:bg-white hover:shadow-sm transition-all duration-200"
+                    key={label}
+                    onClick={() => {
+                      onClick();
+                      setDrawerOpen(false);
+                    }}
+                  >
+                    {icon}
+                    <span className="font-medium">{label}</span>
+                  </button>
+                ) : (
+                  <NavLink
+                    to={to}
+                    key={label}
+                    className="flex items-center gap-3 py-3 px-4 text-gray-700 rounded-xl hover:bg-white hover:shadow-sm transition-all duration-200"
+                    onClick={() => setDrawerOpen(false)}
+                  >
+                    {icon}
+                    <span className="font-medium">{label}</span>
+                  </NavLink>
+                )
+              )}
+            </div>
           </div>
         </div>
       </Drawer>
