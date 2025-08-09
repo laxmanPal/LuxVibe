@@ -2,12 +2,13 @@ import { useState } from "react";
 import ProductForm from "../../components/admin/ProductForm";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { useProductCtx } from "../../store/ProductContext";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function CreateProduct() {
   const [submitting, setSubmitting] = useState(false);
   const navigation = useNavigate();
-
+  const { fetchProducts } = useProductCtx();
 
   const handleCreateProduct = async (event, formFields, productImages) => {
     event.preventDefault();
@@ -38,6 +39,7 @@ export default function CreateProduct() {
 
       toast.success("✅ Product Created");
       event.target.reset();
+      fetchProducts();
       navigation("/admin/products");
     } catch (error) {
       console.error("Category creation failed:", error);
@@ -47,9 +49,9 @@ export default function CreateProduct() {
     }
   };
 
-const handleDiscard = ()=>{
-  navigation("/admin/products")
-}
+  const handleDiscard = () => {
+    navigation("/admin/products");
+  };
 
   return (
     <>

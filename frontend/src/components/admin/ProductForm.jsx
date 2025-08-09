@@ -57,8 +57,15 @@ const ProductForm = ({
   };
 
   return (
-    <div className="">
-      <h2 className="text-2xl font-semibold mb-6">{title}</h2>
+    <div className="min-h-screen bg-gray-50 pb-32">
+      <div className="mb-8">
+        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+          {title}
+        </h2>
+        <p className="mt-2 text-gray-600">
+          Fill in the information below to manage your product
+        </p>
+      </div>
 
       <form onSubmit={(event) => onSubmit(event, formFields, productImages)}>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-30">
@@ -94,8 +101,6 @@ const ProductForm = ({
                   />
                 </div>
 
-                
-
                 <div>
                   <TextField
                     fullWidth
@@ -114,7 +119,7 @@ const ProductForm = ({
             <div className="bg-white p-6 rounded-lg shadow">
               <h3 className="font-semibold text-lg mb-4">Other Information</h3>
               <div className="space-y-4">
-              <div>
+                <div>
                   <Autocomplete
                     multiple
                     id="categories"

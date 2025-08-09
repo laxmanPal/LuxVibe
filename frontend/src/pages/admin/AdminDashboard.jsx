@@ -17,12 +17,15 @@ const AdminDashboard = () => {
   const { allOrders, allRecentOrders } = useOrderCtx();
   const { products } = useProductCtx();
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     fetchAllUsers();
   }, []);
 
   const fetchAllUsers = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${API_URL}/admin/users`, {
         credentials: "include",
       });
@@ -36,138 +39,242 @@ const AdminDashboard = () => {
       console.log(data.users);
     } catch (error) {
       console.error("Fetching All Users Error:", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   let totalRevenue = 0;
-
   allOrders.forEach((order) => {
     totalRevenue += order.totalAmount;
   });
 
+  const getStatusColor = (status) => {
+    const statusColors = {
+      'pending': 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      'processing': 'bg-blue-100 text-blue-800 border-blue-200',
+      'shipped': 'bg-purple-100 text-purple-800 border-purple-200',
+      'delivered': 'bg-green-100 text-green-800 border-green-200',
+      'cancelled': 'bg-red-100 text-red-800 border-red-200',
+      'default': 'bg-gray-100 text-gray-800 border-gray-200'
+    };
+    return statusColors[status?.toLowerCase()] || statusColors.default;
+  };
+
+  if (loading) {
+    return (
+      <div className="animate-pulse space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="h-24 bg-gray-200 rounded-xl"></div>
+          ))}
+        </div>
+        <div className="h-96 bg-gray-200 rounded-xl"></div>
+      </div>
+    );
+  }
+
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div className="space-y-6 md:space-y-8">
+      {/* Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <StatsCard
           icon={<IoBagCheckOutline />}
           title="Total Orders"
           count={allOrders.length}
+          color="bg-blue-500"
+          trend="+12%"
         />
         <StatsCard
           icon={<MdCurrencyRupee />}
           title="Total Revenue"
           count={currencyFormatter(totalRevenue)}
+          color="bg-green-500"
+          trend="+8%"
         />
         <StatsCard
           icon={<FiUsers />}
           title="Total Customers"
           count={users.length}
+          color="bg-purple-500"
+          trend="+15%"
         />
         <StatsCard
           icon={<BsBoxSeam />}
           title="Total Products"
           count={products.length}
+          color="bg-orange-500"
+          trend="+5%"
         />
       </div>
-      <div className="bg-white rounded-xl shadow p-6 mt-8">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold text-gray-800">Recent Orders</h2>
-          <Link
-            to={"/admin/orders"}
-            variant="outlined"
-            className="border p-2 !text-[14px] !text-[rgba(0,0,0,0.8)] !font-[500]  hover:!bg-gray-100 !border-gray-300"
-          >
-            View Orders
-          </Link>
+
+      {/* Recent Orders */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-4 sm:p-6 border-b border-gray-100">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Recent Orders</h2>
+              <p className="text-sm text-gray-500 mt-1">Latest customer orders and their status</p>
+            </div>
+            <Link
+              to="/admin/orders"
+              className="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-colors duration-200 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            >
+              <span>View All Orders</span>
+              <svg className="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-100 text-gray-600 text-sm uppercase text-left">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="p-4">Order Id</th>
-                <th className="p-4">Customer</th>
-                <th className="p-4">Total Item</th>
-                <th className="p-4">Total Amount</th>
-                <th className="p-4">Status</th>
-                <th className="p-4">Date</th>
-                <th className="p-4">Action</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Order ID
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Customer
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
+                  Items
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Amount
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden md:table-cell">
+                  Status
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden lg:table-cell">
+                  Date
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Action
+                </th>
               </tr>
             </thead>
-            <tbody className="text-gray-700 divide-y divide-gray-200">
-              {allRecentOrders.map((order, index) => {
-                let totalItems = 0;
-                order.items.forEach((item) => {
-                  totalItems += item.quantity;
-                });
-                return (
-                  <tr>
-                    <td className="p-4">{index + 1}</td>
-                    <td className="p-4">
-                      <div className="flex gap-2 items-center">
-                        <img
-                          className="w-10 h-10 rounded-full"
-                          src={order.user.avatar?.url}
-                          alt=""
-                        />
-                        <p>
-                          <span className="font-semibold">
-                            {order.user.name}
-                          </span>{" "}
-                          <br />
-                          <span className="text-sm text-gray-500">
-                            {order.user.email}
-                          </span>
-                        </p>
-                      </div>
-                    </td>
-                    <td className="p-4">{totalItems}</td>
-                    <td className="p-4">
-                      {currencyFormatter(order.totalAmount)}
-                    </td>
-                    <td className="p-4">{order.orderStatus}</td>
-                    <td className="p-4">
-                      {new Date(order.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="p-4">
-                      <Link to={`/admin/orders/${order._id}`}>
-                        <FaRegEye className="text-xl" />
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
+            <tbody className="bg-white divide-y divide-gray-200">
+              {allRecentOrders.length === 0 ? (
+                <tr>
+                  <td colSpan="7" className="px-6 py-12 text-center text-gray-500">
+                    <div className="flex flex-col items-center">
+                      <IoBagCheckOutline className="text-4xl text-gray-300 mb-2" />
+                      <p>No recent orders found</p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                allRecentOrders.map((order, index) => {
+                  let totalItems = 0;
+                  order.items.forEach((item) => {
+                    totalItems += item.quantity;
+                  });
+                  return (
+                    <tr key={order._id} className="hover:bg-gray-50 transition-colors duration-150">
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                        <div className="text-sm font-medium text-gray-900">#{index + 1}</div>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center space-x-3">
+                          <img
+                            className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
+                            src={order.user.avatar?.url}
+                            alt={order.user.name}
+                            onError={(e) => {
+                              e.target.src = '/default-avatar.png';
+                            }}
+                          />
+                          <div className="min-w-0">
+                            <div className="text-sm font-medium text-gray-900 truncate">
+                              {order.user.name}
+                            </div>
+                            <div className="text-xs text-gray-500 truncate hidden sm:block">
+                              {order.user.email}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900 hidden sm:table-cell">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                          {totalItems} items
+                        </span>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {currencyFormatter(order.totalAmount)}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap hidden md:table-cell">
+                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(order.orderStatus)}`}>
+                          {order.orderStatus}
+                        </span>
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 hidden lg:table-cell">
+                        {new Date(order.createdAt).toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
+                      </td>
+                      <td className="px-4 sm:px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <Link
+                          to={`/admin/orders/${order._id}`}
+                          className="text-blue-600 hover:text-blue-900 transition-colors duration-200"
+                        >
+                          <FaRegEye className="text-lg" />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
       </div>
 
-      <div className="bg-white rounded-xl shadow p-6 mt-8">
-        <h2 className="text-lg font-semibold text-gray-800 mb-4">
-          Top Selling Products
-        </h2>
+      {/* Top Selling Products */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="p-4 sm:p-6 border-b border-gray-100">
+          <div>
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Top Selling Products</h2>
+            <p className="text-sm text-gray-500 mt-1">Best performing products by sales volume</p>
+          </div>
+        </div>
+        
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
-            <thead className="bg-gray-100 text-gray-600 text-sm uppercase text-left">
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
               <tr>
-                <th className="p-4">Product Id</th>
-                <th className="p-4">Product</th>
-                <th className="p-4">Units Sold</th>
-                <th className="p-4">Revenue</th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Product ID
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Product
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
+                  Units Sold
+                </th>
+                <th className="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Revenue
+                </th>
               </tr>
             </thead>
-            <tbody className="text-gray-700 divide-y divide-gray-200">
+            <tbody className="bg-white divide-y divide-gray-200">
               <tr>
-                <td className="p-4">1</td>
-                <td className="p-4">Product 1</td>
-                <td className="p-4">00</td>
-                <td className="p-4">$00</td>
+                <td colSpan="4" className="px-6 py-12 text-center text-gray-500">
+                  <div className="flex flex-col items-center">
+                    <BsBoxSeam className="text-4xl text-gray-300 mb-2" />
+                    <p>No sales data available</p>
+                    <p className="text-xs text-gray-400 mt-1">Product sales analytics will appear here</p>
+                  </div>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
