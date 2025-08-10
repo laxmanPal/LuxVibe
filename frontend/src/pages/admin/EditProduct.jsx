@@ -9,10 +9,10 @@ export default function EditProduct() {
   const { productId } = useParams();
   const [submitting, setSubmitting] = useState(false);
   const navigation = useNavigate();
-  const { fetchProducts, handleDeleteProduct, deleting , fetchProduct , productDetails , existingProductImages } = useProductCtx();
+  const { fetchProducts, handleDeleteProduct, deleting , fetchProductDetails , productDetails , existingProductImages } = useProductCtx();
 
   useEffect(() => {
-    fetchProduct(productId);
+    fetchProductDetails(productId);
   }, []);
 
   const handleUpdateProduct = async (event, formFields, productImages) => {

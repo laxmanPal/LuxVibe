@@ -36,7 +36,7 @@ export const OrderContextProvider = ({ children }) => {
 
   const fetchAllOrders = async () => {
     try {
-      const response = await fetch(`${API_URL}/order/orders/all-orders`, {
+      const response = await fetch(`${API_URL}/admin/orders/all-orders`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -54,7 +54,7 @@ export const OrderContextProvider = ({ children }) => {
   const fetchAllRecentOrders = async () => {
     try {
       const response = await fetch(
-        `${API_URL}/order/orders/all-orders?limit=4`,
+        `${API_URL}/admin/orders/all-orders?limit=4`,
         {
           credentials: "include",
         }
@@ -73,7 +73,7 @@ export const OrderContextProvider = ({ children }) => {
 
   const fetchOrderById = async (orderId) => {
     try {
-      const response = await fetch(`${API_URL}/order/orders/${orderId}`, {
+      const response = await fetch(`${API_URL}/order/${orderId}`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -89,7 +89,7 @@ export const OrderContextProvider = ({ children }) => {
 
   const updateOrderStatus = async (orderId, orderStatus) => {
     try {
-      const response = await fetch(`${API_URL}/order/orders/${orderId}`, {
+      const response = await fetch(`${API_URL}/admin/orders/${orderId}`, {
         method: "PUT",
         body: JSON.stringify({ orderStatus }),
         headers: { "Content-Type": "application/json" },

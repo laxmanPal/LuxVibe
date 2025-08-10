@@ -17,6 +17,7 @@ import { useCartCtx } from "../../store/CartContext";
 import { toast } from "react-toastify";
 import { useWishlistCtx } from "../../store/WishListContext";
 import { currencyFormatter } from "../../config/currency-formatter";
+import { useProductCtx } from "../../store/ProductContext";
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Array of image URLs
@@ -25,43 +26,23 @@ const images = [product1, product2, product3, product4];
 export default function ProductDetails() {
   const { addToCart } = useCartCtx();
   const { addToWishlist } = useWishlistCtx();
-  const [mainImage, setMainImage] = useState(null);
+  const { fetchProductDetails, productDetails, fetching } = useProductCtx();
+  const [mainImage, setMainImage] = useState(productDetails.images?.[0].url);
   const { productId } = useParams();
-  const [productDetails, setProductDetails] = useState({});
   const [quantity, setQuantity] = useState(1);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchProductDetails(productId);
   }, [productId]);
 
-  const fetchProductDetails = async (productId) => {
-    try {
-      setLoading(true);
-      const response = await fetch(`${API_URL}/admin/product/${productId}`, {
-        credentials: "include",
-      });
-      const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.message || "Fetching Product Details failed");
-      }
-
-      setProductDetails(data.product);
-      setMainImage(data.product.images?.[0]?.url || null);
-    } catch (error) {
-      console.error("Fetching Product Details Error:", error.message);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (productDetails?.images?.length) {
+      setMainImage(productDetails.images[0].url);
     }
-  };
+  }, [productDetails]);
 
   const handleAddToCart = async () => {
-    try {
-      await addToCart({ productId, quantity });
-      toast.success("Product added to cart!");
-    } catch (error) {
-      toast.error(error.message || "Failed to add product to cart");
-    }
+    await addToCart({ productId, quantity });
   };
 
   const handleAddToWishlist = async () => {
@@ -72,11 +53,16 @@ export default function ProductDetails() {
   const discountPrice = currencyFormatter(productDetails.discountPrice);
 
   // Calculate discount percentage
-  const discountPercentage = productDetails.price && productDetails.discountPrice 
-    ? Math.round(((productDetails.price - productDetails.discountPrice) / productDetails.price) * 100)
-    : 0;
+  const discountPercentage =
+    productDetails.price && productDetails.discountPrice
+      ? Math.round(
+          ((productDetails.price - productDetails.discountPrice) /
+            productDetails.price) *
+            100
+        )
+      : 0;
 
-  if (loading) {
+  if (fetching) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -92,7 +78,6 @@ export default function ProductDetails() {
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 p-6 lg:p-8">
-            
             {/* Images Section */}
             <div className="lg:sticky lg:top-8 self-start">
               <div className="flex flex-col lg:flex-row gap-4">
@@ -132,7 +117,6 @@ export default function ProductDetails() {
 
             {/* Product Details */}
             <div className="flex flex-col justify-start space-y-6">
-              
               {/* Brand and Title */}
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
@@ -163,14 +147,17 @@ export default function ProductDetails() {
                   )}
                 </div>
                 <div className="text-sm text-gray-600">
-                  MRP <span className="line-through text-gray-500">{price}</span> 
+                  MRP{" "}
+                  <span className="line-through text-gray-500">{price}</span>
                   <span className="ml-2">Inclusive of all taxes</span>
                 </div>
               </div>
 
               {/* Description */}
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold text-gray-900">Description</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Description
+                </h3>
                 <p className="text-gray-600 leading-relaxed">
                   {productDetails.description}
                 </p>
@@ -180,8 +167,13 @@ export default function ProductDetails() {
               <div className="space-y-4 pt-4">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm font-medium text-gray-700">Quantity:</span>
-                    <QuantityBox quantity={quantity} setQuantity={setQuantity} />
+                    <span className="text-sm font-medium text-gray-700">
+                      Quantity:
+                    </span>
+                    <QuantityBox
+                      quantity={quantity}
+                      setQuantity={setQuantity}
+                    />
                   </div>
                 </div>
 
@@ -194,7 +186,7 @@ export default function ProductDetails() {
                     <MdOutlineShoppingCart className="text-xl mr-2" />
                     Add to Cart
                   </Button>
-                  
+
                   <Button
                     onClick={handleAddToWishlist}
                     variant="outlined"
@@ -209,7 +201,9 @@ export default function ProductDetails() {
 
               {/* Features/Benefits */}
               <div className="bg-gray-50 rounded-xl p-4 space-y-3">
-                <h4 className="font-semibold text-gray-900">Why choose this product?</h4>
+                <h4 className="font-semibold text-gray-900">
+                  Why choose this product?
+                </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-600">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -232,7 +226,7 @@ export default function ProductDetails() {
             </div>
           </div>
         </div>
-        
+
         {/* Features Section */}
         <div className="mt-8">
           <Features />

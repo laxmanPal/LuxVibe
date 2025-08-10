@@ -46,28 +46,29 @@ app.use("/api/payment", paymentRoutes);
 // Auth Routes
 app.use("/api/auth", authRoutes);
 
-// User Routes
-app.use("/api/user", userRoutes);
+// Admin Routes
+app.use("/api/admin", adminRoutes);
+
+// Products Routes
+app.use("/api/product", productRoutes);
+
+// Categories Routes
+app.use("/api/category", categoryRoutes);
 
 // Cart Routes
 app.use("/api/cart", cartRoutes);
+
+//Order Routes
+app.use("/api/order", orderRoutes);
+
+// User Routes
+app.use("/api/user", userRoutes);
 
 // Wishlist Routes
 app.use("/api/wishlist", wishlistRoutes);
 
 // Address Routes
 app.use("/api/address", addressRoutes);
-
-// Admin Routes
-// Categories
-app.use("/api/admin/category", categoryRoutes);
-// Products
-app.use("/api/admin/product", productRoutes);
-// Users
-app.use("/api/admin/", adminRoutes);
-
-//Order
-app.use("/api/order", orderRoutes);
 
 app.use((err, req, res, next) => {
   if (err.code === "LIMIT_FILE_SIZE") {

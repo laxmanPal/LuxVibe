@@ -114,7 +114,7 @@ const AllCategories = () => {
                       <div className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
                           <img
-                            src={category.images[0].url}
+                            src={category.images?.[0]?.url || "/placeholder.jpg"}
                             alt={category.name}
                             className="w-16 h-16 rounded-lg object-cover border-2 border-gray-200 shadow-sm"
                           />
@@ -172,7 +172,7 @@ const AllCategories = () => {
                 <div className="flex items-start space-x-4">
                   <div className="flex-shrink-0">
                     <img
-                      src={category.images[0].url}
+                      src={category.images?.[0]?.url || "/placeholder.jpg"}
                       alt={category.name}
                       className="w-20 h-20 rounded-lg object-cover border-2 border-gray-200 shadow-sm"
                     />

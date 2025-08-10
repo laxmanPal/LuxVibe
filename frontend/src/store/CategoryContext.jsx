@@ -18,7 +18,7 @@ export const CategoryContectProvider = ({ children }) => {
   const fetchCategories = async () => {
     try {
       setFetching(true);
-      const response = await fetch(`${API_URL}/admin/category/all-categories`, {
+      const response = await fetch(`${API_URL}/category/all-categories`, {
         credentials: "include",
       });
       const data = await response.json();

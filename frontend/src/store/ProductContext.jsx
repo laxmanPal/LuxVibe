@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductContext = createContext();
@@ -11,8 +10,8 @@ export const ProductContextProvider = ({ children }) => {
   const [latestProducts, setLatestProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [deleting, setDeleting] = useState(false);
-    const [productDetails, setProductDetails] = useState({});
-      const [existingProductImages, setExistingProductImages] = useState([]);
+  const [productDetails, setProductDetails] = useState({});
+  const [existingProductImages, setExistingProductImages] = useState([]);
 
   useEffect(() => {
     fetchProducts();
@@ -22,7 +21,7 @@ export const ProductContextProvider = ({ children }) => {
   const fetchProducts = async () => {
     try {
       setFetching(true);
-      const response = await fetch(`${API_URL}/admin/product/all-products`, {
+      const response = await fetch(`${API_URL}/product/all-products`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -40,12 +39,9 @@ export const ProductContextProvider = ({ children }) => {
   const fetchLatestProducts = async () => {
     try {
       setFetching(true);
-      const response = await fetch(
-        `${API_URL}/admin/product/all-products?limit=4`,
-        {
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${API_URL}/product/all-products?limit=4`, {
+        credentials: "include",
+      });
       const data = await response.json();
       if (!response.ok) {
         throw new Error(data.message || "Fetching Latest Product failed");
@@ -77,9 +73,10 @@ export const ProductContextProvider = ({ children }) => {
     }
   };
 
-   const fetchProduct = async (productId) => {
+  const fetchProductDetails = async (productId) => {
     try {
-      const response = await fetch(`${API_URL}/admin/product/${productId}`, {
+        setFetching(true);
+      const response = await fetch(`${API_URL}/product/${productId}`, {
         credentials: "include",
       });
       const data = await response.json();
@@ -93,9 +90,10 @@ export const ProductContextProvider = ({ children }) => {
       setExistingProductImages(data.product.images);
     } catch (error) {
       console.error("Fetching Categories Error:", error.message);
+    } finally {
+      setFetching(false);
     }
   };
-  
 
   const productCtx = {
     products,
@@ -104,9 +102,9 @@ export const ProductContextProvider = ({ children }) => {
     fetchProducts,
     deleting,
     handleDeleteProduct,
-    fetchProduct,
+    fetchProductDetails,
     existingProductImages,
-    productDetails
+    productDetails,
   };
 
   return (
