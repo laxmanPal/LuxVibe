@@ -23,11 +23,13 @@ const API_URL = import.meta.env.VITE_API_URL;
 // Array of image URLs
 const images = [product1, product2, product3, product4];
 
+import Skeleton from "@mui/material/Skeleton";
+
 export default function ProductDetails() {
   const { addToCart } = useCartCtx();
   const { addToWishlist } = useWishlistCtx();
-  const { fetchProductDetails, productDetails, fetching } = useProductCtx();
-  const [mainImage, setMainImage] = useState(productDetails.images?.[0].url);
+  const { fetchProductDetails, productDetails, fetchingProductDetails } = useProductCtx();
+  const [mainImage, setMainImage] = useState(productDetails.images?.[0]?.url);
   const { productId } = useParams();
   const [quantity, setQuantity] = useState(1);
 
@@ -52,7 +54,6 @@ export default function ProductDetails() {
   const price = currencyFormatter(productDetails.price);
   const discountPrice = currencyFormatter(productDetails.discountPrice);
 
-  // Calculate discount percentage
   const discountPercentage =
     productDetails.price && productDetails.discountPrice
       ? Math.round(
@@ -62,12 +63,41 @@ export default function ProductDetails() {
         )
       : 0;
 
-  if (fetching) {
+  if (fetchingProductDetails) {
+    // Skeleton UI while loading
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading product details...</p>
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-8">
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden p-6 lg:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+              {/* Left side - Images */}
+              <div>
+                <Skeleton variant="rectangular" width="100%" height={500} />
+                <div className="flex gap-3 mt-4">
+                  {[1, 2, 3, 4].map((n) => (
+                    <Skeleton
+                      key={n}
+                      variant="rectangular"
+                      width={80}
+                      height={80}
+                      style={{ borderRadius: "8px" }}
+                    />
+                  ))}
+                </div>
+              </div>
+
+              {/* Right side - Details */}
+              <div className="space-y-4">
+                <Skeleton variant="text" width={120} height={30} />
+                <Skeleton variant="text" width="80%" height={40} />
+                <Skeleton variant="rectangular" width="60%" height={50} />
+                <Skeleton variant="rectangular" width="80%" height={80} />
+                <Skeleton variant="rectangular" width="100%" height={56} />
+                <Skeleton variant="rectangular" width="100%" height={56} />
+                <Skeleton variant="rectangular" width="100%" height={150} />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -78,18 +108,18 @@ export default function ProductDetails() {
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 p-6 lg:p-8">
-            {/* Images Section */}
+            {/* Images section */}
             <div className="lg:sticky lg:top-8 self-start">
               <div className="flex flex-col lg:flex-row gap-4">
-                {/* Thumbnails - Left on large screens, bottom on smaller */}
+                {/* Thumbnails */}
                 <div className="order-2 lg:order-1 flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto pb-2 lg:pb-0 lg:w-24">
                   {productDetails.images?.map((imgObj, index) => (
                     <div
                       key={index}
                       onClick={() => setMainImage(imgObj.url)}
-                      className={`flex-shrink-0 w-20 h-20 lg:w-20 lg:h-20 rounded-xl overflow-hidden cursor-pointer transition-all duration-200 ${
+                      className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden cursor-pointer transition-all duration-200 ${
                         mainImage === imgObj.url
-                          ? "  opacity-100"
+                          ? "opacity-100"
                           : "opacity-70 hover:opacity-100"
                       }`}
                     >
@@ -102,7 +132,7 @@ export default function ProductDetails() {
                   ))}
                 </div>
 
-                {/* Main Image */}
+                {/* Main image */}
                 <div className="order-1 lg:order-2 flex-1">
                   <div className="relative bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl overflow-hidden aspect-square">
                     <img
@@ -115,9 +145,9 @@ export default function ProductDetails() {
               </div>
             </div>
 
-            {/* Product Details */}
+            {/* Product details */}
             <div className="flex flex-col justify-start space-y-6">
-              {/* Brand and Title */}
+              {/* Brand and title */}
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <span className="text-sm font-medium text-blue-600 bg-blue-50 px-3 py-1 rounded-full">
@@ -134,7 +164,7 @@ export default function ProductDetails() {
                 </h1>
               </div>
 
-              {/* Pricing */}
+              {/* Price */}
               <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-4 border border-red-100">
                 <div className="flex items-baseline gap-3 mb-2">
                   <span className="text-3xl font-bold text-red-600">
@@ -163,7 +193,7 @@ export default function ProductDetails() {
                 </p>
               </div>
 
-              {/* Action Buttons */}
+              {/* Quantity and actions */}
               <div className="space-y-4 pt-4">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center space-x-2">
@@ -180,7 +210,7 @@ export default function ProductDetails() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Button
                     onClick={handleAddToCart}
-                    className="!bg-black hover:!bg-gray-800 !text-white !rounded-xl !py-3 !font-semibold !text-base !transition-all !duration-200 !shadow-lg hover:!shadow-xl !transform hover:!scale-105"
+                    className="!bg-black hover:!bg-gray-800 !text-white !rounded-xl !py-3 !font-semibold !text-base"
                     size="large"
                   >
                     <MdOutlineShoppingCart className="text-xl mr-2" />
@@ -190,7 +220,7 @@ export default function ProductDetails() {
                   <Button
                     onClick={handleAddToWishlist}
                     variant="outlined"
-                    className="!border-2 !border-gray-300 hover:!border-gray-400 !text-gray-700 hover:!text-gray-900 !rounded-xl !py-3 !font-semibold !text-base !transition-all !duration-200 hover:!shadow-md"
+                    className="!rounded-xl !py-3 !font-semibold !text-base"
                     size="large"
                   >
                     <FaRegHeart className="text-xl mr-2" />
@@ -199,7 +229,7 @@ export default function ProductDetails() {
                 </div>
               </div>
 
-              {/* Features/Benefits */}
+              {/* Benefits */}
               <div className="bg-gray-50 rounded-xl p-4 space-y-3">
                 <h4 className="font-semibold text-gray-900">
                   Why choose this product?
@@ -227,7 +257,7 @@ export default function ProductDetails() {
           </div>
         </div>
 
-        {/* Features Section */}
+        {/* Extra features */}
         <div className="mt-8">
           <Features />
         </div>
@@ -235,3 +265,4 @@ export default function ProductDetails() {
     </div>
   );
 }
+

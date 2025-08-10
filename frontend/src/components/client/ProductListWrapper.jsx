@@ -7,17 +7,27 @@ import Pagination from "@mui/material/Pagination";
 import { useProductCtx } from "../../store/ProductContext";
 import FetchingData from "../UI/FetchingData";
 
+import { Skeleton, Box } from '@mui/material';
+import ProductCardSkeleton from "../UI/ProductCardSkeleton";
+
 const ProductListWrapper = ({ children, title, totalProducts }) => {
-  const { fetching } = useProductCtx();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
+  const { fetchingProducts } = useProductCtx();
+  // const [anchorEl, setAnchorEl] = useState(null);
+  // const open = Boolean(anchorEl);
   
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
   
-  const handleClose = () => {
-    setAnchorEl(null);
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
+
+  // Generate array of skeleton components
+  const renderSkeletons = (count = 8) => {
+    return Array.from({ length: count }, (_, index) => (
+      <ProductCardSkeleton key={`skeleton-${index}`} />
+    ));
   };
 
   return (
@@ -34,10 +44,24 @@ const ProductListWrapper = ({ children, title, totalProducts }) => {
           <div className="bg-gradient-to-r from-gray-50 to-gray-100 px-6 py-4 border-b border-gray-200">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
-                  {totalProducts} Products
-                </span>
-                <span className="text-gray-600 text-sm">Available in our collection</span>
+                {fetchingProducts ? (
+                  <>
+                    <Skeleton 
+                      variant="rectangular" 
+                      width={100} 
+                      height={24} 
+                      sx={{ borderRadius: '12px', bgcolor: 'grey.300' }}
+                    />
+                    <Skeleton variant="text" width={150} sx={{ bgcolor: 'grey.300' }} />
+                  </>
+                ) : (
+                  <>
+                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">
+                      {totalProducts} Products
+                    </span>
+                    <span className="text-gray-600 text-sm">Available in our collection</span>
+                  </>
+                )}
               </div>
               
               {/* Uncomment when ready to use sorting */}
@@ -84,9 +108,9 @@ const ProductListWrapper = ({ children, title, totalProducts }) => {
 
           {/* Products Grid */}
           <div className="p-6">
-            {fetching ? (
-              <div className="flex items-center justify-center py-16">
-                <FetchingData title={"Loading Products..."} />
+            {fetchingProducts ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+                {renderSkeletons()}
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
@@ -97,7 +121,7 @@ const ProductListWrapper = ({ children, title, totalProducts }) => {
         </div>
 
         {/* Pagination */}
-        {!fetching && totalProducts > 0 && (
+        {!fetchingProducts && totalProducts > 0 && (
           <div className="flex justify-center mt-12">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
               <Pagination 
@@ -113,5 +137,6 @@ const ProductListWrapper = ({ children, title, totalProducts }) => {
     </div>
   );
 };
+
 
 export default ProductListWrapper;

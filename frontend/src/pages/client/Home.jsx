@@ -8,10 +8,17 @@ import { Link } from "react-router-dom";
 import { useProductCtx } from "../../store/ProductContext";
 import { CircularProgress } from "@mui/material";
 import FetchingData from "../../components/UI/FetchingData";
+import ProductCardSkeleton from "../../components/UI/ProductCardSkeleton";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Home() {
-  const { latestProducts, fetching } = useProductCtx();
+  const { latestProducts, fetchingLatestProducts } = useProductCtx();
+
+  const renderSkeletons = (count = 4) => {
+    return Array.from({ length: count }, (_, index) => (
+      <ProductCardSkeleton key={`skeleton-${index}`} />
+    ));
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -32,10 +39,10 @@ export default function Home() {
             />
           </div>
           
-          {fetching ? (
-            <div className="flex items-center justify-center py-20">
-              <FetchingData title="Getting Latest Products" />
-            </div>
+          {fetchingLatestProducts ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+                {renderSkeletons()}
+              </div>
           ) : latestProducts && latestProducts.length > 0 ? (
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:p-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">

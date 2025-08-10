@@ -6,7 +6,11 @@ const ProductContext = createContext();
 export const useProductCtx = () => useContext(ProductContext);
 
 export const ProductContextProvider = ({ children }) => {
-  const [fetching, setFetching] = useState(false);
+  // Separate loading states for different operations
+  const [fetchingProducts, setFetchingProducts] = useState(false);
+  const [fetchingLatestProducts, setFetchingLatestProducts] = useState(false);
+  const [fetchingProductDetails, setFetchingProductDetails] = useState(false);
+  
   const [latestProducts, setLatestProducts] = useState([]);
   const [products, setProducts] = useState([]);
   const [deleting, setDeleting] = useState(false);
@@ -14,13 +18,20 @@ export const ProductContextProvider = ({ children }) => {
   const [existingProductImages, setExistingProductImages] = useState([]);
 
   useEffect(() => {
-    fetchProducts();
-    fetchLatestProducts();
+    // Run both fetches concurrently but with separate loading states
+    const initializeData = async () => {
+      await Promise.all([
+        fetchProducts(),
+        fetchLatestProducts()
+      ]);
+    };
+    
+    initializeData();
   }, []);
 
   const fetchProducts = async () => {
     try {
-      setFetching(true);
+      setFetchingProducts(true);
       const response = await fetch(`${API_URL}/product/all-products`, {
         credentials: "include",
       });
@@ -32,13 +43,13 @@ export const ProductContextProvider = ({ children }) => {
     } catch (error) {
       console.error("Fetching Products Error:", error.message);
     } finally {
-      setFetching(false);
+      setFetchingProducts(false);
     }
   };
 
   const fetchLatestProducts = async () => {
     try {
-      setFetching(true);
+      setFetchingLatestProducts(true);
       const response = await fetch(`${API_URL}/product/all-products?limit=4`, {
         credentials: "include",
       });
@@ -50,7 +61,7 @@ export const ProductContextProvider = ({ children }) => {
     } catch (error) {
       console.error("Fetching Latest Products Error:", error.message);
     } finally {
-      setFetching(false);
+      setFetchingLatestProducts(false);
     }
   };
 
@@ -65,7 +76,9 @@ export const ProductContextProvider = ({ children }) => {
 
       if (!res.ok)
         throw new Error(result.message || "Failed to delete product");
-      fetchProducts();
+      
+      // Refresh products after deletion
+      await fetchProducts();
     } catch (error) {
       console.log(error);
     } finally {
@@ -75,30 +88,32 @@ export const ProductContextProvider = ({ children }) => {
 
   const fetchProductDetails = async (productId) => {
     try {
-        setFetching(true);
+      setFetchingProductDetails(true);
       const response = await fetch(`${API_URL}/product/${productId}`, {
         credentials: "include",
       });
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Fetching Users failed");
+        throw new Error(data.message || "Fetching Product Details failed");
       }
       console.log(data);
 
       setProductDetails(data.product);
       setExistingProductImages(data.product.images);
     } catch (error) {
-      console.error("Fetching Categories Error:", error.message);
+      console.error("Fetching Product Details Error:", error.message);
     } finally {
-      setFetching(false);
+      setFetchingProductDetails(false);
     }
   };
 
   const productCtx = {
     products,
     latestProducts,
-    fetching,
+    fetchingProducts,
+    fetchingLatestProducts,
+    fetchingProductDetails,
     fetchProducts,
     deleting,
     handleDeleteProduct,
