@@ -23,7 +23,7 @@ import defaultAvatar from "../../assets/user.jpg";
 export default function ClientNavbar() {
   const { cart } = useCartCtx();
   const { wishlist } = useWishlistCtx();
-  const [showSearchBar, setShowSearchBar] = useState(false);
+  // const [showSearchBar, setShowSearchBar] = useState(false);
   const { user, logout } = useAuth();
 
   const [openMyAccMenu, setopenMyAccMenu] = useState(null);
@@ -115,14 +115,14 @@ export default function ClientNavbar() {
             {/* Desktop Action Icons - Only on desktop */}
             <div className="hidden lg:flex items-center gap-2">
               {/* Search */}
-              <Tooltip title="Search" arrow>
+              {/* <Tooltip title="Search" arrow>
                 <IconButton 
                   onClick={() => setShowSearchBar((s) => !s)}
                   className="!p-2 hover:!bg-gray-100 !transition-all !duration-200"
                 >
                   <IoSearch className="text-2xl text-gray-700" />
                 </IconButton>
-              </Tooltip>
+              </Tooltip> */}
 
               {/* Profile */}
               <div>
@@ -197,11 +197,11 @@ export default function ClientNavbar() {
         </nav>
 
         {/* Search Bar */}
-        {showSearchBar && (
+        {/* {showSearchBar && (
           <div className="border-t border-gray-200 bg-white">
             <SearchBar />
           </div>
-        )}
+        )} */}
       </header>
 
       {/* Desktop Account Menu */}
@@ -324,7 +324,7 @@ export default function ClientNavbar() {
             <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 mt-6">Quick Actions</h3>
             <div className="grid grid-cols-3 gap-2 mb-6">
               {/* Search in drawer for mobile */}
-              <button
+              {/* <button
                 onClick={() => {
                   setShowSearchBar((s) => !s);
                   setDrawerOpen(false);
@@ -333,7 +333,7 @@ export default function ClientNavbar() {
               >
                 <IoSearch className="text-2xl text-gray-700" />
                 <span className="text-xs font-medium text-gray-600">Search</span>
-              </button>
+              </button> */}
 
               <NavLink
                 to="/myaccount/mywishlist"
