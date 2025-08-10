@@ -138,7 +138,7 @@ function App() {
                   {/* <Suspense fallback={<PageLoader />}> */}
                     <RouterProvider router={router} />
                   {/* </Suspense> */}
-                  <ToastContainer position="top-center" autoClose={3000} />
+                  <ToastContainer position="top-center" autoClose={1000} />
                 </OrderContextProvider>
               </AddressContextProvider>
             </WishlistContextProvider>

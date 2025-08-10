@@ -34,6 +34,9 @@ export const WishlistContextProvider = ({ children }) => {
       return data;
     } catch (error) {
       console.error("Add to wishlist error:", error.message);
+      if (error.message === "Access token missing") {
+        return toast.error("Please Login");
+      }
       toast.error("Failed Adding to wishlist " + error);
     }
   };
