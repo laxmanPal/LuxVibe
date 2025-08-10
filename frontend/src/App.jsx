@@ -5,45 +5,50 @@ import {
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Home from "./pages/client/Home";
-import Shop from "./pages/client/Shop";
-import Categories from "./pages/client/Categories";
-import ProductDetails from "./pages/client/ProductDetails";
-import Login from "./pages/auth/Login";
-import ClientLayout from "./layouts/ClientLayout";
-import AuthLayout from "./layouts/AuthLayout";
-import Register from "./pages/auth/Register";
-import Cart from "./pages/client/Cart";
-import Dashboard from "./pages/client/Dashboard";
-import MyAccount from "./components/client/MyAccount";
-import MyWishlist from "./pages/client/MyWishlist";
-import MyOrders from "./pages/client/MyOrders";
-import MyAddresses from "./pages/client/MyAddresses";
-import AccountDetails from "./pages/client/AccountDetails";
-import AdminLayout from "./layouts/AdminLayout";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import AllProducts from "./pages/admin/AllProducts";
-import CreateProduct from "./pages/admin/CreateProduct";
-import EditProduct from "./pages/admin/EditProduct";
-import AllCategories from "./pages/admin/AllCategories";
-import Users from "./pages/admin/Users";
-import Orders from "./pages/admin/Orders";
-import NotFound from "./pages/NotFound";
-import Category from "./pages/client/Category";
-import AdminRoute from "./components/routes/AdminRoute";
-import PrivateRoute from "./components/routes/PrivateRoute";
+import { Suspense, lazy } from "react";
+
+const Home = lazy(() => import("./pages/client/Home"));
+const Shop = lazy(() => import("./pages/client/Shop"));
+const Categories = lazy(() => import("./pages/client/Categories"));
+const ProductDetails = lazy(() => import("./pages/client/ProductDetails"));
+const Login = lazy(() => import("./pages/auth/Login"));
+const ClientLayout = lazy(() => import("./layouts/ClientLayout"));
+const AuthLayout = lazy(() => import("./layouts/AuthLayout"));
+const Register = lazy(() => import("./pages/auth/Register"));
+const Cart = lazy(() => import("./pages/client/Cart"));
+const Dashboard = lazy(() => import("./pages/client/Dashboard"));
+const MyAccount = lazy(() => import("./components/client/MyAccount"));
+const MyWishlist = lazy(() => import("./pages/client/MyWishlist"));
+const MyOrders = lazy(() => import("./pages/client/MyOrders"));
+const MyAddresses = lazy(() => import("./pages/client/MyAddresses"));
+const AccountDetails = lazy(() => import("./pages/client/AccountDetails"));
+const AdminLayout = lazy(() => import("./layouts/AdminLayout"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
+const AllProducts = lazy(() => import("./pages/admin/AllProducts"));
+const CreateProduct = lazy(() => import("./pages/admin/CreateProduct"));
+const EditProduct = lazy(() => import("./pages/admin/EditProduct"));
+const AllCategories = lazy(() => import("./pages/admin/AllCategories"));
+const Users = lazy(() => import("./pages/admin/Users"));
+const Orders = lazy(() => import("./pages/admin/Orders"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const Category = lazy(() => import("./pages/client/Category"));
+const AdminRoute = lazy(() => import("./components/routes/AdminRoute"));
+const PrivateRoute = lazy(() => import("./components/routes/PrivateRoute"));
+const Checkout = lazy(() => import("./pages/client/Checkout"));
+const PaymentSuccess = lazy(() => import("./pages/client/PaymentSuccess"));
+const Order = lazy(() => import("./pages/client/Order"));
+const SingleOrder = lazy(() => import("./pages/admin/SingleOrder"));
+
 import { AuthContextProvider } from "./store/AuthContext";
 import { CategoryContectProvider } from "./store/CategoryContext";
 import { ProductContextProvider } from "./store/ProductContext";
 import { CartContextProvider } from "./store/CartContext";
 import { WishlistContextProvider } from "./store/WishListContext";
-import Checkout from "./pages/client/Checkout";
-import PaymentSuccess from "./pages/client/PaymentSuccess";
 import { OrderContextProvider } from "./store/OrderContext";
-import Order from "./pages/client/Order";
-import SingleOrder from "./pages/admin/SingleOrder";
 import { AddressContextProvider } from "./store/AddressContext";
+import { PageLoader } from "./components/UI/PageLoader";
 
+// Router
 const router = createBrowserRouter([
   {
     path: "/",
@@ -123,24 +128,24 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <>
-      <AuthContextProvider>
-        <ProductContextProvider>
-          <CategoryContectProvider>
-            <CartContextProvider>
-              <WishlistContextProvider>
-                <AddressContextProvider>
-                  <OrderContextProvider>
+    <AuthContextProvider>
+      <ProductContextProvider>
+        <CategoryContectProvider>
+          <CartContextProvider>
+            <WishlistContextProvider>
+              <AddressContextProvider>
+                <OrderContextProvider>
+                  {/* <Suspense fallback={<PageLoader />}> */}
                     <RouterProvider router={router} />
-                    <ToastContainer position="top-center" autoClose={3000} />
-                  </OrderContextProvider>
-                </AddressContextProvider>
-              </WishlistContextProvider>
-            </CartContextProvider>
-          </CategoryContectProvider>
-        </ProductContextProvider>
-      </AuthContextProvider>
-    </>
+                  {/* </Suspense> */}
+                  <ToastContainer position="top-center" autoClose={3000} />
+                </OrderContextProvider>
+              </AddressContextProvider>
+            </WishlistContextProvider>
+          </CartContextProvider>
+        </CategoryContectProvider>
+      </ProductContextProvider>
+    </AuthContextProvider>
   );
 }
 
