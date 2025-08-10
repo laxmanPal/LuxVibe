@@ -15,9 +15,10 @@ import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useOrderCtx } from "../../store/OrderContext";
 import { currencyFormatter } from "../../config/currency-formatter";
+import FetchingData from "../../components/UI/FetchingData";
 
 const Orders = () => {
-  const { allOrders } = useOrderCtx();
+  const { allOrders , fetching } = useOrderCtx();
 
   console.log(allOrders);
 
@@ -32,6 +33,10 @@ const Orders = () => {
     };
     return statusColors[status?.toLowerCase()] || 'bg-gray-100 text-gray-800 border-gray-200';
   };
+
+  if (fetching) {
+   return <FetchingData/>
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 mx-auto">

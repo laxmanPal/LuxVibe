@@ -22,7 +22,7 @@ import { useProductCtx } from "../../store/ProductContext";
 const AllProducts = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const { products, handleDeleteProduct } = useProductCtx();
+  const { products, handleDeleteProduct , fetchingProducts } = useProductCtx();
   // const [products, setProducts] = useState([]);
   const [deletingId, setDeletingId] = useState(null);
 
@@ -43,6 +43,10 @@ const AllProducts = () => {
       setDeletingId(null);
     }
   };
+
+  if (fetchingProducts) {
+   return <FetchingData/>
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 mx-auto">

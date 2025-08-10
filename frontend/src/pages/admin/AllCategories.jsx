@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useCategoryCtx } from "../../store/CategoryContext";
 import CreateCategory from "../../components/admin/CreateCategory";
 import UpdateCategory from "../../components/admin/UpdateCategory";
+import FetchingData from "../../components/UI/FetchingData";
 
 const AllCategories = () => {
   const [deletingId, setDeletingId] = useState(null);
@@ -22,6 +23,7 @@ const AllCategories = () => {
     showUpdateCategoryModal,
     showCreateCategoryModal,
     fetchCategories,
+    fetching
   } = useCategoryCtx();
 
   const handleDeleteCategory = async (id) => {
@@ -43,6 +45,10 @@ const AllCategories = () => {
       setDeletingId(null);
     }
   };
+
+  if (fetching) {
+   return <FetchingData/>
+  }
 
   return (
     <>

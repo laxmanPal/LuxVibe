@@ -7,6 +7,7 @@ const OrderContext = createContext();
 export const useOrderCtx = () => useContext(OrderContext);
 
 export const OrderContextProvider = ({ children }) => {
+  const [fetching , setFetching] = useState(false)
   const [userOrders, setUserOrders] = useState([]);
   const [allOrders, setAllOrders] = useState([]);
   const [allRecentOrders, setAllResentOrders] = useState([]);
@@ -36,6 +37,7 @@ export const OrderContextProvider = ({ children }) => {
 
   const fetchAllOrders = async () => {
     try {
+      setFetching(true)
       const response = await fetch(`${API_URL}/admin/orders/all-orders`, {
         credentials: "include",
       });
@@ -48,6 +50,8 @@ export const OrderContextProvider = ({ children }) => {
       setAllOrders(data.orders);
     } catch (error) {
       console.error("Fetching All Orders Error:", error.message);
+    }finally{
+      setFetching(false)
     }
   };
 
@@ -111,6 +115,7 @@ export const OrderContextProvider = ({ children }) => {
     userOrders,
     allRecentOrders,
     allOrders,
+    fetching,
     fetchOrderById,
     updateOrderStatus,
   };

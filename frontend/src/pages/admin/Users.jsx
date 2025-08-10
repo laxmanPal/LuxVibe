@@ -14,7 +14,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 import { useMemo } from "react";
 import { FiUsers } from "react-icons/fi";
-
+import FetchingData from "../../components/UI/FetchingData";
 
 const Users = () => {
   const [users, setUsers] = useState([]);
@@ -47,36 +47,30 @@ const Users = () => {
 
   const getStatusBadge = (status) => {
     const statusConfig = {
-      'active': { bg: 'bg-green-100', text: 'text-green-800', dot: 'bg-green-400' },
-      'blocked': { bg: 'bg-red-100', text: 'text-red-800', dot: 'bg-red-400' }
+      active: {
+        bg: "bg-green-100",
+        text: "text-green-800",
+        dot: "bg-green-400",
+      },
+      blocked: { bg: "bg-red-100", text: "text-red-800", dot: "bg-red-400" },
     };
-    
+
     const config = statusConfig[status?.toLowerCase()] || statusConfig.active;
-    
+
     return (
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.bg} ${config.text}`}>
-        <span className={`w-1.5 h-1.5 ${config.dot} rounded-full mr-1.5`}></span>
-        {status || 'Active'}
+      <span
+        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${config.bg} ${config.text}`}
+      >
+        <span
+          className={`w-1.5 h-1.5 ${config.dot} rounded-full mr-1.5`}
+        ></span>
+        {status || "Active"}
       </span>
     );
   };
 
   if (loading) {
-    return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <div className="animate-pulse">
-          <div className="flex justify-between items-center mb-6">
-            <div className="h-6 bg-gray-200 rounded w-32"></div>
-            <div className="h-10 bg-gray-200 rounded w-64 sm:w-80"></div>
-          </div>
-          <div className="space-y-4">
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="h-16 bg-gray-200 rounded"></div>
-            ))}
-          </div>
-        </div>
-      </div>
-    );
+    return <FetchingData />;
   }
 
   return (
@@ -85,12 +79,14 @@ const Users = () => {
       <div className="p-4 sm:p-6 border-b border-gray-100">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">Customers</h2>
+            <h2 className="text-xl sm:text-2xl font-semibold text-gray-800">
+              Customers
+            </h2>
             <p className="text-sm text-gray-600 mt-1">
               Manage all registered customers ({users.length} total)
             </p>
           </div>
-          
+
           {/* Search Box */}
           <div className="relative w-full lg:w-80">
             <div className="relative bg-gray-50 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors duration-200">
@@ -139,16 +135,25 @@ const Users = () => {
                 <td colSpan="6" className="px-6 py-12 text-center">
                   <div className="flex flex-col items-center">
                     <FiUsers className="text-4xl text-gray-300 mb-3" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">No customers found</h3>
-                    <p className="text-gray-500">No customers have been registered yet</p>
+                    <h3 className="text-lg font-medium text-gray-900 mb-1">
+                      No customers found
+                    </h3>
+                    <p className="text-gray-500">
+                      No customers have been registered yet
+                    </p>
                   </div>
                 </td>
               </tr>
             ) : (
               users.map((user, index) => (
-                <tr key={user._id || index} className="hover:bg-gray-50 transition-colors duration-150">
+                <tr
+                  key={user._id || index}
+                  className="hover:bg-gray-50 transition-colors duration-150"
+                >
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
-                    <span className="text-sm font-medium text-gray-900">{index + 1}</span>
+                    <span className="text-sm font-medium text-gray-900">
+                      {index + 1}
+                    </span>
                   </td>
                   <td className="px-4 sm:px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center space-x-3">
