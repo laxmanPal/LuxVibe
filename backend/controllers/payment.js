@@ -2,7 +2,7 @@ import Stripe from "stripe";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 import Order from "../models/Order.js";
 import User from "../models/user.js";
-import Cart from "../models/Cart.js";
+import Cart from "../models/cart.js";
 
 async function handleStripeOrder(session) {
   try {
