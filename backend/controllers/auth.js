@@ -105,7 +105,7 @@ export const loginUser = async (req, res) => {
 
     const cookiesOption = {
       httpOnly: true,
-      sameSite: "Strict",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       secure: process.env.NODE_ENV === "production",
       path: "/",
     };
@@ -146,7 +146,7 @@ export const logout = async (req, res) => {
 
     const cookiesOption = {
       httpOnly: true,
-      sameSite: "Strict",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
       secure: process.env.NODE_ENV === "production",
       path: "/",
     };
