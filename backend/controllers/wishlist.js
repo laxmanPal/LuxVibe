@@ -1,5 +1,5 @@
-import Wishlist from "../models/Wishlist.js";
-import Product from "../models/Product.js";
+import Wishlist from "../models/wishlist.js";
+import Product from "../models/product.js";
 import mongoose from "mongoose";
 
 
