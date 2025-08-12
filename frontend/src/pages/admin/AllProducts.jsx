@@ -18,6 +18,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 import CircularProgress from "@mui/material/CircularProgress";
 import { currencyFormatter } from "../../config/currency-formatter";
 import { useProductCtx } from "../../store/ProductContext";
+import FetchingData from "../../components/UI/FetchingData";
 
 const AllProducts = () => {
   const [anchorEl, setAnchorEl] = useState(null);
