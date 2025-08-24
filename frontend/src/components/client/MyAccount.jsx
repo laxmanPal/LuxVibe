@@ -119,7 +119,7 @@ const MyAccount = () => {
           {/* Main Content Area */}
           <div className="xl:col-span-3">
             <div className="bg-white rounded-2xl shadow-xl border border-gray-200 min-h-[600px] overflow-hidden">
-              <div className="p-8">
+              <div className="p-4 lg:p-8">
                 <Outlet />
               </div>
             </div>

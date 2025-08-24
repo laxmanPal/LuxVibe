@@ -189,7 +189,7 @@ const MyOrders = () => {
                         <img
                           key={i}
                           className="w-14 h-14 object-cover rounded-lg border border-gray-200 flex-shrink-0"
-                          src={item.product.images?.[0]?.url || logo}
+                          src={getProductImage(item.product)}
                           alt="product"
                         />
                       ))}

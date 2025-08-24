@@ -253,12 +253,6 @@ const AllProducts = () => {
         {/* Mobile Card Layout */}
         <div className="lg:hidden space-y-4 p-4">
           {products.map((product, index) => {
-            const productImage =
-              product.images &&
-                product.images.length > 0 &&
-                product.images[0].url
-                ? product.images[0].url
-                : productImg;
 
             return (
               <div
@@ -267,7 +261,7 @@ const AllProducts = () => {
               >
                 <div className="flex items-start space-x-4">
                   <img
-                    src={productImage}
+                    src={getProductImage(product)}
                     alt={product.name}
                     className="w-16 h-16 rounded-lg object-cover border border-gray-200 flex-shrink-0"
                   />

@@ -184,7 +184,7 @@ const Orders = () => {
                   <div className="flex items-center space-x-3">
                     <img
                       className="w-12 h-12 rounded-full border-2 border-gray-200 object-cover flex-shrink-0"
-                      src={order.user.avatar?.url || '/default-avatar.png'}
+                      src={order.user.avatar?.url || userDefaultImage}
                       alt={order.user.name}
                     />
                     <div className="min-w-0 flex-1">

@@ -13,6 +13,7 @@ import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import getProductImage from "../../utils/productImagePlaceholder";
+import userDefaultImage from "../../assets/user.jpg";
 
 const SingleOrder = () => {
   const { orderId } = useParams();
@@ -232,7 +233,7 @@ const SingleOrder = () => {
                 <div className="flex items-start gap-4">
                   <img
                     className="w-16 h-16 rounded-full border-2 border-gray-200 object-cover flex-shrink-0"
-                    src={order.user?.avatar?.url || '/default-avatar.png'}
+                    src={order.user?.avatar?.url || userDefaultImage}
                     alt={order.user?.name}
                   />
                   <div className="flex-1 min-w-0">

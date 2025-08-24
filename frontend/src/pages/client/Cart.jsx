@@ -106,7 +106,7 @@ const Cart = () => {
                             <td className="px-6 py-4 whitespace-nowrap">
                               <div className="flex items-center space-x-4">
                                 <img
-                                  src={item.product.images?.[0]?.url || getProductImage(item.product)}
+                                  src={getProductImage(item.product)}
                                   alt={item.product.name}
                                   className="w-16 h-16 rounded-lg object-cover border border-gray-200"
                                 />
@@ -177,7 +177,7 @@ const Cart = () => {
                       <div className="flex gap-4">
                         <div className="flex-shrink-0">
                           <img
-                            src={item.product.images?.[0]?.url || "/placeholder.jpg"}
+                            src={getProductImage(item.product)}
                             alt={item.product.name}
                             className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover border border-gray-200"
                           />
@@ -217,7 +217,7 @@ const Cart = () => {
                               </div>
                             )}
 
-                            <div className="flex items-center justify-between">
+                            <div className="flex gap-4 flex-col">
                               <div className="flex items-center gap-2">
                                 <span className="text-sm text-gray-600">Qty:</span>
                                 <QuantityBox

@@ -172,10 +172,10 @@ const MyWishlist = () => {
                 key={item.product._id}
                 className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300"
               >
-                <div className="flex gap-4 p-6">
+                <div className="flex gap-4 p-2">
                   <div className="relative flex-shrink-0">
                     <img
-                      src={item.product.images?.[0]?.url || logo}
+                      src={getProductImage(item.product)}
                       alt={item.product.name}
                       className="w-20 h-20 object-cover rounded-xl border border-gray-200 shadow-sm"
                     />
