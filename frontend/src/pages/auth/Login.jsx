@@ -95,11 +95,10 @@ const Login = () => {
           <button
             disabled={submitting}
             type="submit"
-            className={`w-full border bg-black text-white py-3 font-bold uppercase  cursor-pointer transition ${
-              submitting
-                ? "bg-gray-300 cursor-not-allowed"
-                : "hover:bg-white hover:border hover:border-black hover:text-black"
-            }`}
+            className={`w-full border bg-black text-white py-3 font-bold uppercase  cursor-pointer transition ${submitting
+              ? "bg-gray-300 cursor-not-allowed"
+              : "hover:bg-white hover:border hover:border-black hover:text-black"
+              }`}
           >
             {submitting ? (
               <CircularProgress size="20px" color="inherit" />
@@ -108,6 +107,19 @@ const Login = () => {
             )}
           </button>
         </form>
+        <div className="mt-4">
+          <div class="flex items-center gap-4">
+            <div class="flex-1 border-t border-gray-300"></div>
+            <span class="text-gray-500 text-sm font-medium">For Admin Panel</span>
+            <div class="flex-1 border-t border-gray-300"></div>
+          </div>
+          <p className="text-sm text-gray-600 mt-2">
+            Email: demo.admin@gmail.com
+          </p>
+          <p className="text-sm text-gray-600 mt-2">
+            Password: demoAdminPass
+          </p>
+        </div>
       </div>
     </>
   );
