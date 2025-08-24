@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/client/ProductCard";
-import product1 from "../../assets/product-2.jpg";
-
 import ProductListWrapper from "../../components/client/ProductListWrapper";
 import Title from "../../components/client/Title";
 import { useProductCtx } from "../../store/ProductContext";
 import { Link } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 import { FaBox } from "react-icons/fa";
+import getProductImage from "../../utils/productImagePlaceholder";
+
 
 const Shop = () => {
   const { products } = useProductCtx();
@@ -28,7 +28,7 @@ const Shop = () => {
               key={product._id}
               productId={product._id}
               title={product.name}
-              image={product.images?.[0]?.url || product1}
+              image={getProductImage(product)}
               price={product.price}
               discountPrice={product.discountPrice}
             />

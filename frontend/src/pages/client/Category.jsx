@@ -6,6 +6,7 @@ import product1 from "../../assets/product-2.jpg";
 import { Link, useParams } from "react-router-dom";
 import { useProductCtx } from "../../store/ProductContext";
 import { FaBox } from "react-icons/fa";
+import getProductImage from "../../utils/productImagePlaceholder";
 
 const Category = () => {
   const { categoryName } = useParams();
@@ -37,7 +38,7 @@ const Category = () => {
             <ProductCard
               productId={product._id}
               title={product.name}
-              image={product.images?.[0]?.url || product1}
+              image={getProductImage(product)}
               price={product.price}
               discountPrice={product.discountPrice}
             />
