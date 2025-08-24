@@ -10,6 +10,7 @@ import { useCartCtx } from "../../store/CartContext";
 import { currencyFormatter } from "../../config/currency-formatter";
 import stripeCheckout from "../../payments/StripeCheckout";
 import { useAddressCtx } from "../../store/AddressContext";
+import getProductImage from "../../utils/productImagePlaceholder";
 
 const Checkout = () => {
   const { addresses, selectedAddressId } = useAddressCtx();
@@ -69,7 +70,7 @@ const Checkout = () => {
                       <div className="flex-shrink-0">
                         <img
                           className="w-24 h-24 sm:w-15 sm:h-15 rounded-lg object-cover border border-gray-200 shadow-sm"
-                          src={item.product.images[0].url}
+                          src={getProductImage(item.product)}
                           alt={item.product.name}
                         />
                       </div>
@@ -106,9 +107,9 @@ const Checkout = () => {
               </div>
             </div>
             <div className="mt-5">
-                <h3 className="text-xl font-semibold text-gray-900 mb-6">
-                  Order Summary
-                </h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-6">
+                Order Summary
+              </h3>
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600">Subtotal</span>

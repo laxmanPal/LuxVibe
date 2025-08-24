@@ -11,6 +11,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
 import { CiFilter } from "react-icons/ci";
+import userDefaultImage from "../../assets/user.jpg";
 import { IoSearch } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { useOrderCtx } from "../../store/OrderContext";
@@ -18,7 +19,7 @@ import { currencyFormatter } from "../../config/currency-formatter";
 import FetchingData from "../../components/UI/FetchingData";
 
 const Orders = () => {
-  const { allOrders , fetching } = useOrderCtx();
+  const { allOrders, fetching } = useOrderCtx();
 
   console.log(allOrders);
 
@@ -35,12 +36,12 @@ const Orders = () => {
   };
 
   if (fetching) {
-   return <FetchingData/>
+    return <FetchingData />
   }
 
   return (
     <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 mx-auto">
-      
+
       {/* Header Section */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
         <div>
@@ -71,7 +72,7 @@ const Orders = () => {
 
       {/* Content Section */}
       <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-        
+
         {/* Desktop Table */}
         <div className="hidden lg:block overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -106,7 +107,7 @@ const Orders = () => {
                 order.items.forEach((item) => {
                   totalItems += item.quantity;
                 });
-                
+
                 return (
                   <tr key={order._id} className="hover:bg-gray-50 transition-colors duration-150">
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -119,7 +120,7 @@ const Orders = () => {
                         <div className="flex-shrink-0">
                           <img
                             className="w-10 h-10 rounded-full border-2 border-gray-200 object-cover"
-                            src={order.user.avatar?.url || '/default-avatar.png'}
+                            src={order.user.avatar?.url || userDefaultImage}
                             alt={order.user.name}
                           />
                         </div>
@@ -257,8 +258,8 @@ const Orders = () => {
       {/* Pagination */}
       {allOrders.length > 0 && (
         <div className="mt-6 flex justify-center">
-          <Pagination 
-            count={10} 
+          <Pagination
+            count={10}
             color="primary"
             size="medium"
             className="!text-sm"

@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { currencyFormatter } from "../../config/currency-formatter";
 import { Chip } from "@mui/material";
 import { useOrderCtx } from "../../store/OrderContext";
+import getProductImage from "../../utils/productImagePlaceholder";
 const API_URL = import.meta.env.VITE_API_URL;
 const Order = () => {
   const { orderId } = useParams();
@@ -76,7 +77,7 @@ const Order = () => {
                   <div className="flex-shrink-0">
                     <img
                       className="w-24 h-24 sm:w-28 sm:h-28 rounded-lg object-cover border border-gray-200 shadow-sm"
-                      src={item.product.images[0].url}
+                      src={getProductImage(item.product)}
                       alt={item.product.name}
                     />
                   </div>

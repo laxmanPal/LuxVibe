@@ -88,7 +88,10 @@ export const addToCart = async (req, res) => {
 export const getCart = async (req, res) => {
   try {
     const userId = req.userId;
-    const cart = await Cart.findOne({ user: userId }).populate("items.product");
+    const cart = await Cart.findOne({ user: userId }).populate({
+      path: "items.product",
+      populate: { path: "categories", select: "name" },
+    });
 
     if (!cart) {
       return res.status(200).json({
@@ -143,9 +146,10 @@ export const updateCartItem = async (req, res) => {
     await calculateCartTotals(cart);
     await cart.save();
 
-    const updatedCart = await Cart.findOne({ user: userId }).populate(
-      "items.product"
-    );
+    const updatedCart = await Cart.findOne({ user: userId }).populate({
+      path: "items.product",
+      populate: { path: "categories", select: "name" },
+    });
     res
       .status(200)
       .json({ success: true, message: "Cart updated", updatedCart });

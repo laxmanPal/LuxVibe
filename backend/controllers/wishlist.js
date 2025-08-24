@@ -55,12 +55,15 @@ export const getWishlist = async (req, res) => {
     const userId = req.userId;
 
     const wishlist = await Wishlist.findOne({ user: userId })
-      .populate("items.product");
+      .populate({
+        path: "items.product",
+        populate: { path: "categories", select: "name" },
+      });
 
     if (!wishlist) {
-      return res.status(200).json({ 
-        success: true, 
-        wishlist: { user: userId, items: [] } 
+      return res.status(200).json({
+        success: true,
+        wishlist: { user: userId, items: [] }
       });
     }
 
@@ -112,10 +115,10 @@ export const clearWishlist = async (req, res) => {
     const wishlist = await Wishlist.findOne({ user: userId });
 
     if (!wishlist) {
-      return res.status(200).json({ 
-        success: true, 
-        message: "Wishlist already empty", 
-        wishlist: { items: [] } 
+      return res.status(200).json({
+        success: true,
+        message: "Wishlist already empty",
+        wishlist: { items: [] }
       });
     }
 

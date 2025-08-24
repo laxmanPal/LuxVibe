@@ -64,20 +64,29 @@ export const createStripeCheckoutSession = async (req, res) => {
     const { cartItems, shippingInfo } = req.body;
     const userId = req.userId;
 
-    const lineItems = cartItems.map((item) => ({
-      price_data: {
-        currency: "inr",
-        product_data: {
-          images: [item.product.images[0].url],
-          name: item.product.name,
-          metadata: {
-            productId: item.product._id.toString(),
+    const placeholderImage = `${process.env.CLIENT_URL}/assets/products_placeholder_imgs/default.webp`;
+
+    const lineItems = cartItems.map((item) => {
+      const productImage =
+        item?.product?.images?.length > 0 && item.product.images[0]?.url
+          ? item.product.images[0].url
+          : placeholderImage;
+
+      return {
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: item.product.name,
+            images: [productImage],
+            metadata: {
+              productId: item.product._id.toString(),
+            },
           },
+          unit_amount: Math.round(item.product.discountPrice * 100), // ₹ → paise
         },
-        unit_amount: Math.round(item.product.discountPrice * 100), // ₹ → paise
-      },
-      quantity: item.quantity,
-    }));
+        quantity: item.quantity,
+      };
+    });
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],

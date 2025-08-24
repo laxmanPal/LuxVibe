@@ -4,7 +4,10 @@ export const getOrders = async (req, res) => {
   try {
     const userId = req.userId;
     const orders = await Order.find({ user: userId })
-      .populate("items.product")
+      .populate({
+        path: "items.product",
+        populate: { path: "categories", select: "name" },
+      })
       .sort({ createdAt: -1 });
 
     if (!orders) {
@@ -24,7 +27,10 @@ export const getOrders = async (req, res) => {
 export const getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
-      .populate("items.product")
+      .populate({
+        path: "items.product",
+        populate: { path: "categories", select: "name" },
+      })
       .populate("user")
       .sort({ createdAt: -1 });
 
@@ -46,9 +52,13 @@ export const getAllOrders = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 0;
     const ordersQuery = Order.find()
-      .populate("items.product")
+      .populate({
+        path: "items.product",
+        populate: { path: "categories", select: "name" },
+      })
       .populate("user")
       .sort({ createdAt: -1 });
+
 
     if (limit > 0) {
       ordersQuery.limit(limit);

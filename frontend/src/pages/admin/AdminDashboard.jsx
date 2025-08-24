@@ -11,6 +11,7 @@ import { useProductCtx } from "../../store/ProductContext";
 import { currencyFormatter } from "../../config/currency-formatter";
 import { Link } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa";
+import userDefaultImage from "../../assets/user.jpg";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const AdminDashboard = () => {
@@ -180,7 +181,7 @@ const AdminDashboard = () => {
                         <div className="flex items-center space-x-3">
                           <img
                             className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover"
-                            src={order.user.avatar?.url}
+                            src={order.user.avatar?.url || userDefaultImage}
                             alt={order.user.name}
                             onError={(e) => {
                               e.target.src = '/default-avatar.png';
@@ -241,7 +242,7 @@ const AdminDashboard = () => {
             <p className="text-sm text-gray-500 mt-1">Best performing products by sales volume</p>
           </div>
         </div>
-        
+
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">

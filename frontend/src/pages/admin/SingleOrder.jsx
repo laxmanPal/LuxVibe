@@ -12,6 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import getProductImage from "../../utils/productImagePlaceholder";
 
 const SingleOrder = () => {
   const { orderId } = useParams();
@@ -66,7 +67,7 @@ const SingleOrder = () => {
   return (
     <div className="min-h-screen bg-gray-50 pb-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        
+
         {/* Header */}
         <div className="mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -97,10 +98,10 @@ const SingleOrder = () => {
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 lg:gap-8">
-          
+
           {/* Left Column - Takes up 2/3 on large screens */}
           <div className="xl:col-span-2 space-y-6">
-            
+
             {/* Products Ordered */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
@@ -113,7 +114,7 @@ const SingleOrder = () => {
                 {order.items?.map((item) => {
                   const itemTotal = item.quantity * item.product.discountPrice;
                   const savings = item.quantity * (item.product.price - item.product.discountPrice);
-                  
+
                   return (
                     <div
                       key={item.product._id}
@@ -122,11 +123,11 @@ const SingleOrder = () => {
                       <div className="flex-shrink-0">
                         <img
                           className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg object-cover border border-gray-200"
-                          src={item.product.images[0].url}
+                          src={getProductImage(item.product)}
                           alt={item.product.name}
                         />
                       </div>
-                      
+
                       <div className="flex-1 flex flex-col sm:flex-row sm:justify-between gap-3">
                         <div className="flex-1">
                           <h6 className="font-semibold text-gray-900 mb-2 line-clamp-2">
@@ -153,7 +154,7 @@ const SingleOrder = () => {
                             </div>
                           )}
                         </div>
-                        
+
                         <div className="flex-shrink-0 text-right">
                           <div className="font-bold text-lg text-gray-900">
                             {currencyFormatter(itemTotal)}
@@ -176,11 +177,10 @@ const SingleOrder = () => {
                   </h3>
                   <Chip
                     size="small"
-                    className={`!font-semibold ${
-                      order.paymentStatus?.isPaid 
-                        ? '!bg-green-100 !text-green-800 !border-green-200' 
+                    className={`!font-semibold ${order.paymentStatus?.isPaid
+                        ? '!bg-green-100 !text-green-800 !border-green-200'
                         : '!bg-red-100 !text-red-800 !border-red-200'
-                    }`}
+                      }`}
                     label={order.paymentStatus?.isPaid ? "Paid" : "Unpaid"}
                   />
                 </div>
@@ -219,7 +219,7 @@ const SingleOrder = () => {
 
           {/* Right Column - Takes up 1/3 on large screens */}
           <div className="xl:col-span-1 space-y-6">
-            
+
             {/* Customer Information */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
               <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
@@ -352,7 +352,7 @@ const SingleOrder = () => {
                       </MenuItem>
                     </Select>
                   </FormControl>
-                  
+
                   <Button
                     type="submit"
                     variant="contained"
@@ -377,9 +377,8 @@ const SingleOrder = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Payment:</span>
-                  <span className={`font-semibold ${
-                    order.paymentStatus?.isPaid ? 'text-green-600' : 'text-red-600'
-                  }`}>
+                  <span className={`font-semibold ${order.paymentStatus?.isPaid ? 'text-green-600' : 'text-red-600'
+                    }`}>
                     {order.paymentStatus?.isPaid ? 'Paid' : 'Unpaid'}
                   </span>
                 </div>

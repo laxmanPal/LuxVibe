@@ -24,12 +24,13 @@ const API_URL = import.meta.env.VITE_API_URL;
 const images = [product1, product2, product3, product4];
 
 import Skeleton from "@mui/material/Skeleton";
+import getProductImage from "../../utils/productImagePlaceholder";
 
 export default function ProductDetails() {
   const { addToCart } = useCartCtx();
   const { addToWishlist } = useWishlistCtx();
   const { fetchProductDetails, productDetails, fetchingProductDetails } = useProductCtx();
-  const [mainImage, setMainImage] = useState(productDetails.images?.[0]?.url);
+  const [mainImage, setMainImage] = useState(productDetails.images?.[0]?.url || getProductImage(productDetails));
   const { productId } = useParams();
   const [quantity, setQuantity] = useState(1);
 
@@ -38,10 +39,13 @@ export default function ProductDetails() {
   }, [productId]);
 
   useEffect(() => {
-    if (productDetails?.images?.length) {
+    if (productDetails?.images?.length > 0) {
       setMainImage(productDetails.images[0].url);
+    } else {
+      setMainImage(getProductImage(productDetails));
     }
   }, [productDetails]);
+
 
   const handleAddToCart = async () => {
     await addToCart({ productId, quantity });
@@ -57,10 +61,10 @@ export default function ProductDetails() {
   const discountPercentage =
     productDetails.price && productDetails.discountPrice
       ? Math.round(
-          ((productDetails.price - productDetails.discountPrice) /
-            productDetails.price) *
-            100
-        )
+        ((productDetails.price - productDetails.discountPrice) /
+          productDetails.price) *
+        100
+      )
       : 0;
 
   if (fetchingProductDetails) {
@@ -113,23 +117,34 @@ export default function ProductDetails() {
               <div className="flex flex-col lg:flex-row gap-4">
                 {/* Thumbnails */}
                 <div className="order-2 lg:order-1 flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto pb-2 lg:pb-0 lg:w-24">
-                  {productDetails.images?.map((imgObj, index) => (
-                    <div
-                      key={index}
-                      onClick={() => setMainImage(imgObj.url)}
-                      className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden cursor-pointer transition-all duration-200 ${
-                        mainImage === imgObj.url
+                  {productDetails.images?.length > 0 ? (
+                    productDetails.images.map((imgObj, index) => (
+                      <div
+                        key={index}
+                        onClick={() => setMainImage(imgObj.url)}
+                        className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden cursor-pointer transition-all duration-200 ${mainImage === imgObj.url
                           ? "opacity-100"
                           : "opacity-70 hover:opacity-100"
-                      }`}
-                    >
+                          }`}
+                      >
+                        <img
+                          src={imgObj.url}
+                          alt={`Thumbnail ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    // Single placeholder thumb
+                    <div className="flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden">
                       <img
-                        src={imgObj.url}
-                        alt={`Thumbnail ${index + 1}`}
+                        src={getProductImage(productDetails)}
+                        alt="Placeholder Thumbnail"
                         className="w-full h-full object-cover"
                       />
                     </div>
-                  ))}
+                  )}
+
                 </div>
 
                 {/* Main image */}

@@ -19,11 +19,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { currencyFormatter } from "../../config/currency-formatter";
 import { useProductCtx } from "../../store/ProductContext";
 import FetchingData from "../../components/UI/FetchingData";
+import getProductImage from "../../utils/productImagePlaceholder";
 
 const AllProducts = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const { products, handleDeleteProduct , fetchingProducts } = useProductCtx();
+  const { products, handleDeleteProduct, fetchingProducts } = useProductCtx();
   // const [products, setProducts] = useState([]);
   const [deletingId, setDeletingId] = useState(null);
 
@@ -46,7 +47,7 @@ const AllProducts = () => {
   };
 
   if (fetchingProducts) {
-   return <FetchingData/>
+    return <FetchingData />
   }
 
   return (
@@ -151,12 +152,7 @@ const AllProducts = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {products.map((product, index) => {
-                const productImage =
-                  product.images &&
-                  product.images.length > 0 &&
-                  product.images[0].url
-                    ? product.images[0].url
-                    : productImg;
+
 
                 return (
                   <tr
@@ -169,7 +165,7 @@ const AllProducts = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center space-x-3">
                         <img
-                          src={productImage}
+                          src={getProductImage(product)}
                           alt={product.name}
                           className="w-12 h-12 rounded-lg object-cover border border-gray-200"
                         />
@@ -199,13 +195,12 @@ const AllProducts = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                          product.inStock > 10
-                            ? "bg-green-100 text-green-800"
-                            : product.inStock > 0
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${product.inStock > 10
+                          ? "bg-green-100 text-green-800"
+                          : product.inStock > 0
                             ? "bg-yellow-100 text-yellow-800"
                             : "bg-red-100 text-red-800"
-                        }`}
+                          }`}
                       >
                         {product.inStock}
                       </span>
@@ -260,8 +255,8 @@ const AllProducts = () => {
           {products.map((product, index) => {
             const productImage =
               product.images &&
-              product.images.length > 0 &&
-              product.images[0].url
+                product.images.length > 0 &&
+                product.images[0].url
                 ? product.images[0].url
                 : productImg;
 
@@ -316,13 +311,12 @@ const AllProducts = () => {
                       <div>
                         <span className="text-gray-500">Stock:</span>
                         <span
-                          className={`inline-flex px-2 py-0.5 text-xs font-semibold rounded-full ml-1 ${
-                            product.inStock > 10
-                              ? "bg-green-100 text-green-800"
-                              : product.inStock > 0
+                          className={`inline-flex px-2 py-0.5 text-xs font-semibold rounded-full ml-1 ${product.inStock > 10
+                            ? "bg-green-100 text-green-800"
+                            : product.inStock > 0
                               ? "bg-yellow-100 text-yellow-800"
                               : "bg-red-100 text-red-800"
-                          }`}
+                            }`}
                         >
                           {product.inStock}
                         </span>

@@ -3,10 +3,12 @@ import QuantityBox from "../../components/client/QuantityBox";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import { RxCross2 } from "react-icons/rx";
 import logo from "../../assets/logo-2.png";
+import defaultProductImage from "../../assets/products_placeholder_imgs/default.webp";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { useWishlistCtx } from "../../store/WishListContext";
 import { useCartCtx } from "../../store/CartContext";
 import { currencyFormatter } from "../../config/currency-formatter";
+import getProductImage from "../../utils/productImagePlaceholder";
 
 const MyWishlist = () => {
   const { wishlist, removeWishlistItem } = useWishlistCtx();
@@ -26,12 +28,12 @@ const MyWishlist = () => {
           <div>
             <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
               <svg className="w-8 h-8 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
               </svg>
               My Wishlist
             </h2>
             <p className="text-gray-600">
-              {wishlistItems.length > 0 
+              {wishlistItems.length > 0
                 ? `${wishlistItems.length} ${wishlistItems.length === 1 ? 'item' : 'items'} saved for later`
                 : 'Save your favorite items here'
               }
@@ -51,7 +53,7 @@ const MyWishlist = () => {
         <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
           <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <svg className="w-10 h-10 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
             </svg>
           </div>
           <h3 className="text-xl font-semibold text-gray-800 mb-2">Your wishlist is empty</h3>
@@ -100,7 +102,7 @@ const MyWishlist = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <img
-                        src={item.product.images?.[0]?.url || logo}
+                        src={getProductImage(item.product)}
                         alt={item.product.name}
                         className="w-16 h-16 object-cover rounded-xl border border-gray-200 shadow-sm"
                       />
@@ -183,7 +185,7 @@ const MyWishlist = () => {
                       </span>
                     </div>
                   </div>
-                  
+
                   <div className="flex-grow min-w-0">
                     <div className="flex justify-between items-start mb-2">
                       <h3 className="font-semibold text-base text-gray-900 line-clamp-2 pr-2">
@@ -200,7 +202,7 @@ const MyWishlist = () => {
                         </IconButton>
                       </Tooltip>
                     </div>
-                    
+
                     <div className="mb-3">
                       <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                         <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -209,7 +211,7 @@ const MyWishlist = () => {
                         In Stock
                       </span>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col">
                         <span className="text-lg font-bold text-gray-900">
@@ -226,7 +228,7 @@ const MyWishlist = () => {
                           )}
                         </div>
                       </div>
-                      
+
                       <button
                         onClick={() =>
                           handleAddToCart({ productId: item.product._id, quantity: 1 })

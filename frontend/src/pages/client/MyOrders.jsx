@@ -8,6 +8,7 @@ import { useOrderCtx } from "../../store/OrderContext";
 import { currencyFormatter } from "../../config/currency-formatter";
 import { Link } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa";
+import getProductImage from "../../utils/productImagePlaceholder";
 
 const MyOrders = () => {
   const { userOrders } = useOrderCtx();
@@ -72,7 +73,7 @@ const MyOrders = () => {
                               <img
                                 key={i}
                                 className="w-10 h-10 object-cover rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform duration-200"
-                                src={item.product.images?.[0]?.url || logo}
+                                src={getProductImage(item.product)}
                                 alt="product"
                               />
                             ))}
@@ -111,7 +112,7 @@ const MyOrders = () => {
                         />
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <Link 
+                        <Link
                           to={`/myaccount/myorders/${order._id}`}
                           className="text-indigo-600 hover:text-indigo-900 transition-colors duration-200"
                         >
@@ -182,7 +183,7 @@ const MyOrders = () => {
                         </Link>
                       </div>
                     </div>
-                    
+
                     <div className="flex gap-3 mb-4 overflow-x-auto pb-2">
                       {order.items.map((item, i) => (
                         <img
@@ -193,7 +194,7 @@ const MyOrders = () => {
                         />
                       ))}
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4 text-sm">
                       <div>
                         <span className="text-gray-500">Total Amount</span>
