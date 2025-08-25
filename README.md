@@ -18,19 +18,19 @@ password : demoAdminPass
 
 ## Table of Contents  
 
-- [Features](#-features)  
-  - [User Features](#-user-features)  
-  - [Admin Features](#-admin-features)  
-- [Tech Stack](#️-tech-stack)  
-- [Project Structure](#-project-structure)
+- [Features](#features)  
+  - [User Features](#user-features)  
+  - [Admin Features](#admin-features)  
+- [Tech Stack](#️tech-stack)  
+- [Project Structure](#project-structure)
 - [Prerequisites](#prerequisites) 
-- [Installation](#-installation)  
+- [Installation](#installation)  
   - [Backend Setup](#backend-setup)  
   - [Frontend Setup](#frontend-setup)  
-- [Screenshots](#-screenshots)  
-- [What I Learned](#-what-i-learned)  
-- [Roadmap / Future Improvements](#-roadmap--future-improvements)  
-- [Author](#-author)  
+- [Screenshots](#screenshots)  
+- [What I Learned](#what-i-learned)  
+- [Roadmap / Future Improvements](#roadmap--future-improvements)  
+- [Author](#author)  
 
 ---
 
