@@ -9,6 +9,7 @@ import { useProductCtx } from "../../store/ProductContext";
 import { CircularProgress } from "@mui/material";
 import FetchingData from "../../components/UI/FetchingData";
 import ProductCardSkeleton from "../../components/UI/ProductCardSkeleton";
+import getProductImage from "../../utils/productImagePlaceholder";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Home() {
@@ -38,11 +39,11 @@ export default function Home() {
               discription="Explore our most popular pieces that customers can't get enough of"
             />
           </div>
-          
+
           {fetchingLatestProducts ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
-                {renderSkeletons()}
-              </div>
+              {renderSkeletons()}
+            </div>
           ) : latestProducts && latestProducts.length > 0 ? (
             <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 lg:p-8">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
@@ -51,7 +52,7 @@ export default function Home() {
                     key={product._id}
                     productId={product._id}
                     title={product.name}
-                    image={product.images?.[0]?.url || product1}
+                    image={getProductImage(product)}
                     price={product.price}
                     discountPrice={product.discountPrice}
                   />
